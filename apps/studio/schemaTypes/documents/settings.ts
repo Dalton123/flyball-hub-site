@@ -87,6 +87,13 @@ export const settings = defineType({
       description: "Primary contact email address for your website",
       validation: (rule) => rule.email(),
     }),
+    defineField({
+      name: "showFooter",
+      type: "boolean",
+      title: "Show Footer",
+      description: "Toggle to show or hide the footer on your website",
+      initialValue: true,
+    }),
     socialLinks,
   ],
   preview: {

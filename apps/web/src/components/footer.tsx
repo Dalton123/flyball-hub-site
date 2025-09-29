@@ -36,6 +36,12 @@ export async function FooterServer() {
   ]);
 
   if (!response?.data || !settingsResponse?.data) return <FooterSkeleton />;
+  
+  // Check if footer should be shown
+  if (settingsResponse.data.showFooter === false) {
+    return null;
+  }
+  
   return <Footer data={response.data} settingsData={settingsResponse.data} />;
 }
 

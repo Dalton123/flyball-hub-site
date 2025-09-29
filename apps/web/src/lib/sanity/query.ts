@@ -374,6 +374,7 @@ export const queryGlobalSeoSettings = defineQuery(`
       ${imageFields}
     },
     siteDescription,
+    showFooter,
     socialLinks{
       linkedin,
       facebook,

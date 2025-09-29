@@ -170,8 +170,7 @@ function MobileMenu({ navbarData, settingsData }: NavigationData) {
                   <Logo
                     alt={siteTitle || ""}
                     image={logo}
-                    width={120}
-                    height={40}
+                    className="h-10 w-auto max-w-[160px]" // Slightly larger for mobile
                   />
                 </div>
               )}
@@ -253,13 +252,10 @@ function NavbarSkeleton() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo skeleton - matches Logo component dimensions: width={120} height={40} */}
-          {/* <div className="flex items-center">
-            <div className="h-10 w-[120px] rounded bg-muted/50 animate-pulse" />
-          </div> */}
-          <div className="flex items-center w-[120px] h-[40px]">
-            <div className="h-10 w-[120px] rounded bg-muted/50 animate-pulse" />
+        <div className="flex items-center justify-between">
+          {/* Logo skeleton - flexible for different logo shapes */}
+          <div className="flex items-center">
+            <div className="h-8 w-[120px] rounded bg-muted/50 animate-pulse" />
           </div>
 
           {/* Desktop nav skeleton - matches nav gap-1 and px-3 py-2 buttons */}
@@ -323,16 +319,15 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center w-[120px] h-[40px]">
+          <div className="flex items-center">
             {logo && (
               <Logo
                 alt={siteTitle || ""}
                 image={logo}
                 priority
-                width={120}
-                height={40}
+                className="h-8 w-auto !max-w-[140px]"
               />
             )}
           </div>

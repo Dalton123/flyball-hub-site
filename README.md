@@ -79,10 +79,10 @@ To add sample data programmatically, run the following command:
 
 ```shell
 cd apps/studio
-npx sanity exec scripts/create-data.ts --with-user-token
+npx sanity dataset import seed-data.tar.gz production
 ```
 
-This command executes a TypeScript script that creates and populates content in your Sanity dataset.
+This command imports the provided seed data file into your Sanity dataset.
 
 #### 4. Extending the Sanity schema
 

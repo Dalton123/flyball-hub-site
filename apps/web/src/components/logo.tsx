@@ -15,6 +15,7 @@ interface LogoProps {
   width?: number;
   height?: number;
   priority?: boolean;
+  className?: string;
 }
 
 export function Logo({
@@ -24,16 +25,15 @@ export function Logo({
   width = 170,
   height = 40,
   priority = true,
+  className = "h-8 w-auto max-w-[170px]", // Default responsive class
 }: LogoProps) {
   return (
-    <Link href="/" className="">
+    <Link href="/" className="flex items-center">
       {image ? (
         <SanityImage
           image={image}
           alt={alt ?? "logo"}
-          // width={width}
-          // height={height}
-          className="w-[170px]  dark:invert"
+          className={className}
           loading="eager"
           decoding="sync"
         />
@@ -42,8 +42,8 @@ export function Logo({
           src={src ?? LOGO_URL}
           alt={alt ?? "logo"}
           width={width}
-          className="w-[170px] h-[40px] dark:invert"
           height={height}
+          className={className}
           loading="eager"
           priority={priority}
           decoding="sync"
