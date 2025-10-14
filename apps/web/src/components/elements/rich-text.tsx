@@ -57,6 +57,18 @@ const components: Partial<PortableTextReactComponents> = {
       );
     },
   },
+  list: {
+    bullet: ({ children }) => (
+      <ul className="my-4 ml-6 list-disc space-y-2">{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className="my-4 ml-6 list-decimal space-y-2">{children}</ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="leading-7">{children}</li>,
+    number: ({ children }) => <li className="leading-7">{children}</li>,
+  },
   marks: {
     code: ({ children }) => (
       <code className="rounded-md border border-white/10 bg-opacity-5 p-1 text-sm lg:whitespace-nowrap">
@@ -108,19 +120,30 @@ const components: Partial<PortableTextReactComponents> = {
   hardBreak: () => <br />,
 };
 
+type TextAlignment = "left" | "center" | "right";
+
 export function RichText<T>({
   richText,
   className,
+  alignment = "left",
 }: {
   richText?: T | null;
   className?: string;
+  alignment?: TextAlignment;
 }) {
   if (!richText) return null;
+
+  const alignmentClass = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
+  }[alignment];
 
   return (
     <div
       className={cn(
         "prose prose-zinc prose-headings:scroll-m-24 prose-headings:text-opacity-90 prose-p:text-opacity-80 prose-a:decoration-dotted prose-ol:text-opacity-80 prose-ul:text-opacity-80 prose-h2:border-b prose-h2:pb-2 prose-h2:text-3xl prose-h2:font-semibold prose-h2:first:mt-0 max-w-none dark:prose-invert",
+        alignmentClass,
         className,
       )}
     >

@@ -164,17 +164,6 @@ function MobileMenu({ navbarData, settingsData }: NavigationData) {
         <div className="fixed inset-0 top-16 z-50 bg-background/80 backdrop-blur-sm md:hidden">
           <div className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-full border-r bg-background p-6 shadow-lg">
             <div className="grid gap-6">
-              {/* Logo for mobile */}
-              {logo && (
-                <div className="flex justify-center pb-4 border-b">
-                  <Logo
-                    alt={siteTitle || ""}
-                    image={logo}
-                    className="h-10 w-auto max-w-[160px]" // Slightly larger for mobile
-                  />
-                </div>
-              )}
-
               {/* Navigation items */}
               <div className="grid gap-4">
                 {columns?.map((column) => {
@@ -318,7 +307,7 @@ export function Navbar({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto p-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
@@ -327,7 +316,7 @@ export function Navbar({
                 alt={siteTitle || ""}
                 image={logo}
                 priority
-                className="h-8 w-auto !max-w-[140px]"
+                className="h-8 w-auto !max-h-[100px]"
               />
             )}
           </div>

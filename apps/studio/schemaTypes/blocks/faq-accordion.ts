@@ -46,7 +46,7 @@ export const faqAccordion = defineType({
         }),
         defineField({
           name: "url",
-          type: "customUrl",
+          type: "optionalUrl",
           title: "URL",
           description: "The destination URL for the link",
         }),

@@ -14,6 +14,7 @@ import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
 import { HeroBlock } from "./sections/hero";
 import { ImageLinkCards } from "./sections/image-link-cards";
 import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
+import { TextBlock } from "./sections/text-block";
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<
@@ -45,6 +46,7 @@ const BLOCK_COMPONENTS = {
     PagebuilderType<"faqAccordion">
   >,
   hero: HeroBlock as React.ComponentType<PagebuilderType<"hero">>,
+  textBlock: TextBlock as React.ComponentType<PagebuilderType<"textBlock">>,
   featureCardsIcon: FeatureCardsWithIcon as React.ComponentType<
     PagebuilderType<"featureCardsIcon">
   >,

@@ -25,7 +25,7 @@ export function Logo({
   width = 170,
   height = 40,
   priority = true,
-  className = "h-8 w-auto max-w-[170px]", // Default responsive class
+  className = "h-8 w-auto max-h-[80px]", // Default responsive class
 }: LogoProps) {
   return (
     <Link href="/" className="flex items-center">
