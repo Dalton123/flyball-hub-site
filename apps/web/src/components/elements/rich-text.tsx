@@ -142,8 +142,26 @@ export function RichText<T>({
   return (
     <div
       className={cn(
-        "prose prose-zinc prose-headings:scroll-m-24 prose-headings:text-opacity-90 prose-p:text-opacity-80 prose-a:decoration-dotted prose-ol:text-opacity-80 prose-ul:text-opacity-80 prose-h2:border-b prose-h2:pb-2 prose-h2:text-3xl prose-h2:font-semibold prose-h2:first:mt-0 max-w-none dark:prose-invert",
+        // Base prose styles
+        "prose prose-zinc max-w-none",
+        // Responsive sizing
+        "prose-base md:prose-lg",
+        // Heading styles
+        "prose-headings:scroll-m-24 prose-headings:font-semibold",
+        "prose-h2:border-b prose-h2:pb-2 prose-h2:first:mt-0",
+        // Link styles
+        "prose-a:decoration-dotted prose-a:underline-offset-2 prose-a:transition-colors",
+        // List styles
+        "prose-li:leading-7",
+        // Code styles
+        "prose-code:rounded-md prose-code:border prose-code:px-1 prose-code:py-0.5",
+        // Image styles
+        "prose-img:rounded-lg",
+        // Dark mode
+        "dark:prose-invert",
+        // Alignment
         alignmentClass,
+        // Custom overrides
         className,
       )}
     >

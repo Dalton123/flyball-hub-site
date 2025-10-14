@@ -316,7 +316,7 @@ export function Navbar({
                 alt={siteTitle || ""}
                 image={logo}
                 priority
-                className="h-8 w-auto !max-h-[100px]"
+                className="h-8 w-auto !max-h-[70px] md:!max-h-[100px]"
               />
             )}
           </div>

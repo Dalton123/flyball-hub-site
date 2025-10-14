@@ -27,13 +27,13 @@ export function HeroBlock({
               </h1>
               <RichText
                 richText={richText}
-                className="text-base md:text-lg font-normal"
+                className="text-base md:text-lg font-normal lg:text-left text-center"
               />
             </div>
             <SanityButtons
               buttons={buttons}
               buttonClassName="w-full sm:w-auto"
-              className="w-full sm:w-fit grid gap-2 sm:grid-flow-col lg:justify-start mb-8"
+              className="w-full sm:w-fit grid gap-2 sm:grid-flow-col lg:justify-start"
             />
           </div>
 
