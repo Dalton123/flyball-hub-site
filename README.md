@@ -1,8 +1,8 @@
-# Next.js Monorepo with Sanity CMS
+# Flyball Hub
 
-A modern, full-stack monorepo template built with Next.js App Router, Sanity CMS, Shadcn UI, and TurboRepo.
+Manage flyball teams, dogs, training sessions and RSVPs in one simple app. Built for UK teams.
 
-![Easiest way to build a webpage](https://raw.githubusercontent.com/robotostudio/turbo-start-sanity/main/turbo-start-sanity-og.png)
+A modern web application built with Next.js App Router, Sanity CMS, Shadcn UI, and TurboRepo.
 
 ## Features
 

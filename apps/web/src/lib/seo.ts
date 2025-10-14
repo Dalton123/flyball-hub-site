@@ -31,10 +31,10 @@ interface OgImageParams {
 
 // Default site configuration
 const siteConfig: SiteConfig = {
-  title: "Roboto Studio Demo",
-  description: "Roboto Studio Demo",
-  twitterHandle: "@studioroboto",
-  keywords: ["roboto", "studio", "demo", "sanity", "next", "react", "template"],
+  title: "Flyball Hub",
+  description: "Manage flyball teams, dogs, training sessions and RSVPs in one simple app. Built for UK teams.",
+  twitterHandle: "@flyballhub", // Update this to your actual Twitter handle
+  keywords: ["flyball", "dogs", "training", "teams", "rsvp", "uk", "canine", "sport", "agility", "competition"],
 };
 
 function generateOgImageUrl(params: OgImageParams = {}): string {

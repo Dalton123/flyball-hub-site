@@ -3,44 +3,98 @@ export function Logo() {
     <svg
       width="32"
       height="32"
-      viewBox="0 0 32 32"
+      viewBox="0 0 100 100"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>Turbo Start</title>
-      <rect width="32" height="32" rx="16" fill="var(--card-fg-color)" />
+      <title>Flyball Hub</title>
+      {/* Outer green circle */}
+      <circle
+        cx="50"
+        cy="50"
+        r="48"
+        fill="#2D5A2D"
+        stroke="#ffffff"
+        strokeWidth="2"
+      />
+
+      {/* Inner circle */}
+      <circle
+        cx="50"
+        cy="50"
+        r="38"
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth="1.5"
+      />
+
+      {/* Tennis ball center */}
+      <circle cx="50" cy="50" r="12" fill="#B8D42F" />
       <path
-        d="M4.68629 21.159C2.98673 19.4595 2.98673 16.704 4.68629 15.0044L12.1081 7.5826L18.2627 13.7373L10.841 21.159C9.14139 22.8586 6.38585 22.8586 4.68629 21.159Z"
-        fill="url(#paint0_linear_2_18)"
+        d="M42 45 Q50 50 58 45"
+        stroke="#ffffff"
+        strokeWidth="2"
+        fill="none"
       />
       <path
-        d="M27.3137 10.841C25.6142 9.14139 22.8586 9.14139 21.1591 10.841L13.7373 18.2627L19.8919 24.4174L27.3137 16.9956C29.0133 15.2961 29.0133 12.5405 27.3137 10.841Z"
-        fill="url(#paint1_linear_2_18)"
+        d="M42 55 Q50 50 58 55"
+        stroke="#ffffff"
+        strokeWidth="2"
+        fill="none"
       />
-      <defs>
-        <linearGradient
-          id="paint0_linear_2_18"
-          x1="14.9316"
-          y1="10.9137"
-          x2="4.68629"
-          y2="21.159"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="var(--card-fg-color)" />
-          <stop offset="1" stopColor="var(--card-bg-color)" />
-        </linearGradient>
-        <linearGradient
-          id="paint1_linear_2_18"
-          x1="17.0684"
-          y1="21.0863"
-          x2="27.3137"
-          y2="10.841"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="var(--card-fg-color)" />
-          <stop offset="1" stopColor="var(--card-bg-color)" />
-        </linearGradient>
-      </defs>
+
+      {/* FLYBALL text (top arc) */}
+      <text
+        x="50"
+        y="20"
+        textAnchor="middle"
+        fill="white"
+        fontSize="8"
+        fontWeight="bold"
+        fontFamily="Arial, sans-serif"
+      >
+        FLYBALL
+      </text>
+
+      {/* HUB text (bottom) */}
+      <text
+        x="50"
+        y="85"
+        textAnchor="middle"
+        fill="white"
+        fontSize="10"
+        fontWeight="bold"
+        fontFamily="Arial, sans-serif"
+      >
+        HUB
+      </text>
+
+      {/* Left paw print */}
+      <g fill="#B8D42F" transform="translate(25, 40)">
+        <circle cx="0" cy="0" r="1.5" />
+        <circle cx="3" cy="-1" r="1" />
+        <circle cx="3" cy="1" r="1" />
+        <circle cx="6" cy="0" r="1" />
+        <ellipse cx="3" cy="3" rx="2" ry="1.5" />
+      </g>
+
+      {/* Right paw print */}
+      <g fill="#B8D42F" transform="translate(75, 40)">
+        <circle cx="0" cy="0" r="1.5" />
+        <circle cx="-3" cy="-1" r="1" />
+        <circle cx="-3" cy="1" r="1" />
+        <circle cx="-6" cy="0" r="1" />
+        <ellipse cx="-3" cy="3" rx="2" ry="1.5" />
+      </g>
+
+      {/* Decorative lines */}
+      <line x1="15" y1="45" x2="20" y2="45" stroke="white" strokeWidth="1.5" />
+      <line x1="15" y1="50" x2="18" y2="50" stroke="white" strokeWidth="1.5" />
+      <line x1="15" y1="55" x2="20" y2="55" stroke="white" strokeWidth="1.5" />
+
+      <line x1="80" y1="45" x2="85" y2="45" stroke="white" strokeWidth="1.5" />
+      <line x1="82" y1="50" x2="85" y2="50" stroke="white" strokeWidth="1.5" />
+      <line x1="80" y1="55" x2="85" y2="55" stroke="white" strokeWidth="1.5" />
     </svg>
   );
 }
