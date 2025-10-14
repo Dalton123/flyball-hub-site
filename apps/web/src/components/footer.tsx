@@ -213,7 +213,7 @@ function Footer({ data, settingsData }: FooterProps) {
                   <Link href="/terms">Terms and Conditions</Link>
                 </li>
                 <li className="hover:text-primary">
-                  <Link href="/privacy">Privacy Policy</Link>
+                  <Link href="/privacy-policy">Privacy Policy</Link>
                 </li>
               </ul>
             </div>

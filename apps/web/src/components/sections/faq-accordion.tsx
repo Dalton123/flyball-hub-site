@@ -40,7 +40,7 @@ export function FaqAccordion({
             )}
           </div>
         </div>
-        <div className="my-16 max-w-xl mx-auto">
+        <div className="my-8 lg:my-16 max-w-xl mx-auto">
           <Accordion
             type="single"
             collapsible
