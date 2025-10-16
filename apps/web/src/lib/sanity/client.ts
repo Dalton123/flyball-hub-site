@@ -12,7 +12,10 @@ export const client = createClient({
   perspective: "published",
   stega: {
     studioUrl,
-    enabled: process.env.NEXT_PUBLIC_VERCEL_ENV === "preview",
+    // Enable in development for local visual editing OR on Vercel preview deployments
+    enabled:
+      process.env.NODE_ENV === "development" ||
+      process.env.NEXT_PUBLIC_VERCEL_ENV === "preview",
   },
 });
 

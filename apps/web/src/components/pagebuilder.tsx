@@ -39,24 +39,16 @@ interface SanityDataAttributeConfig {
   readonly path: string;
 }
 
-// Strongly typed component mapping with proper component signatures
-const BLOCK_COMPONENTS = {
-  cta: CTABlock as React.ComponentType<PagebuilderType<"cta">>,
-  faqAccordion: FaqAccordion as React.ComponentType<
-    PagebuilderType<"faqAccordion">
-  >,
-  hero: HeroBlock as React.ComponentType<PagebuilderType<"hero">>,
-  textBlock: TextBlock as React.ComponentType<PagebuilderType<"textBlock">>,
-  featureCardsIcon: FeatureCardsWithIcon as React.ComponentType<
-    PagebuilderType<"featureCardsIcon">
-  >,
-  subscribeNewsletter: SubscribeNewsletter as React.ComponentType<
-    PagebuilderType<"subscribeNewsletter">
-  >,
-  imageLinkCards: ImageLinkCards as React.ComponentType<
-    PagebuilderType<"imageLinkCards">
-  >,
-} as const satisfies Record<PageBuilderBlockTypes, React.ComponentType<any>>;
+// Component mapping for page builder blocks
+const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
+  cta: CTABlock,
+  faqAccordion: FaqAccordion,
+  hero: HeroBlock,
+  textBlock: TextBlock,
+  featureCardsIcon: FeatureCardsWithIcon,
+  subscribeNewsletter: SubscribeNewsletter,
+  imageLinkCards: ImageLinkCards,
+};
 
 /**
  * Helper function to create consistent Sanity data attributes

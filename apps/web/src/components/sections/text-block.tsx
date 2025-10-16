@@ -1,8 +1,10 @@
-import type { PagebuilderType } from "@/types";
-
 import { RichText } from "../elements/rich-text";
 
-type TextBlockProps = PagebuilderType<"textBlock">;
+interface TextBlockProps {
+  title?: string | null;
+  richText?: any;
+  alignment?: "left" | "center" | "right" | null;
+}
 
 export function TextBlock({ title, richText, alignment }: TextBlockProps) {
   return (

@@ -6,7 +6,9 @@
       "Bash(pnpm run:*)",
       "Bash(timeout 30 pnpm run dev)",
       "Bash(lsof:*)",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "Bash(npx sanity typegen:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []
