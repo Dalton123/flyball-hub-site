@@ -1,23 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PRODUCTION_URL = "flyballhub.com";
-
 export function middleware(request: NextRequest) {
-  const hostname = request.headers.get("host") || "";
+  const hostname = request.headers.get("host");
 
-  // Check if we need to redirect to production domain
-  const shouldRedirect =
-    hostname === "www.flyballhub.com" ||
-    hostname === "flyball-hub-site-web.vercel.app";
+  // Only redirect the Vercel subdomain
+  // Let Vercel domain settings handle www redirect to avoid conflicts
+  if (hostname === "flyball-hub-site-web.vercel.app") {
+    const newUrl = new URL(request.url);
+    newUrl.hostname = "flyballhub.com";
+    newUrl.protocol = "https:";
+    newUrl.port = "";
 
-  if (shouldRedirect) {
-    const url = request.nextUrl.clone();
-    url.host = PRODUCTION_URL;
-    url.protocol = "https:";
-    
-    return NextResponse.redirect(url, {
-      status: 308, // Permanent redirect
-    });
+    return NextResponse.redirect(newUrl, 308);
   }
 
   return NextResponse.next();
@@ -25,13 +19,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - api routes
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico, sitemap.xml, robots.txt
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };
