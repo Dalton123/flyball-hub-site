@@ -3,7 +3,27 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "redirects": [
-    { "source": "https://www.flyballhub.com/:path*", "destination": "https://flyballhub.com/:path*", "permanent": true },
-    { "source": "https://flyball-hub-site-web.vercel.app/:path*", "destination": "https://flyballhub.com/:path*", "permanent": true }
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.flyballhub.com"
+        }
+      ],
+      "destination": "https://flyballhub.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "flyball-hub-site-web.vercel.app"
+        }
+      ],
+      "destination": "https://flyballhub.com/:path*",
+      "permanent": true
+    }
   ]
 }

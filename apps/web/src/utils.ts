@@ -10,13 +10,15 @@ export function assertValue<T>(v: T | undefined, errorMessage: string): T {
 }
 
 export const getBaseUrl = () => {
+  // Always use the production domain in production environment
   if (process.env.VERCEL_ENV === "production") {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    return "https://flyballhub.com";
   }
+  // Use the preview URL for preview deployments
   if (process.env.VERCEL_ENV === "preview") {
     return `https://${process.env.VERCEL_URL}`;
   }
-
+  // Local development
   return "http://localhost:3000";
 };
 
