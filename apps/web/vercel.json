@@ -1,5 +1,9 @@
 {
   "buildCommand": "pnpm build",
   "outputDirectory": ".next",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "redirects": [
+    { "source": "https://www.flyballhub.com/:path*", "destination": "https://flyballhub.com/:path*", "permanent": true },
+    { "source": "https://flyball-hub-site-web.vercel.app/:path*", "destination": "https://flyballhub.com/:path*", "permanent": true }
+  ]
 }
