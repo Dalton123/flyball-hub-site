@@ -206,9 +206,31 @@ function Footer({ data, settingsData }: FooterProps) {
           </div>
           <div className="mt-20 border-t pt-8">
             <div className="flex flex-col justify-between gap-4  text-center text-sm font-normal text-muted-foreground lg:flex-row lg:items-center lg:text-left mx-auto max-w-7xl px-4 md:px-6">
-              <p>
-                © {year} {siteTitle}. All rights reserved.
-              </p>
+              <div className="flex flex-col items-center gap-4 md:gap-2 lg:items-start">
+                <p>
+                  © {year} {siteTitle}. All rights reserved.
+                </p>
+                <a
+                  className="copyrighted-badge"
+                  title="Copyrighted.com Registered &amp; Protected"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://app.copyrighted.com/website/aJWdIX7UbvTht2VR/"
+                >
+                  <img
+                    alt="Copyrighted.com Registered &amp; Protected"
+                    width={125}
+                    height={25}
+                    srcSet="https://static.copyrighted.com/badges/125x25/01_1_2x.png 2x"
+                    src="https://static.copyrighted.com/badges/125x25/01_1.png"
+                    style={{ border: 0 }}
+                  />
+                </a>
+                <Script
+                  src="https://static.copyrighted.com/badges/helper.js"
+                  strategy="lazyOnload"
+                />
+              </div>
               <ul className="flex justify-center gap-4 lg:justify-start">
                 <li className="hover:text-primary">
                   <Link href="/terms">Terms and Conditions</Link>
@@ -217,26 +239,7 @@ function Footer({ data, settingsData }: FooterProps) {
                   <Link href="/privacy-policy">Privacy Policy</Link>
                 </li>
               </ul>
-              <a
-                className="copyrighted-badge"
-                title="Copyrighted.com Registered &amp; Protected"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://app.copyrighted.com/website/aJWdIX7UbvTht2VR/"
-              >
-                <img
-                  alt="Copyrighted.com Registered &amp; Protected"
-                  width={125}
-                  height={25}
-                  srcSet="https://static.copyrighted.com/badges/125x25/01_1_2x.png 2x"
-                  src="https://static.copyrighted.com/badges/125x25/01_1.png"
-                  style={{ border: 0 }}
-                />
-              </a>
-              <Script
-                src="https://static.copyrighted.com/badges/helper.js"
-                strategy="lazyOnload"
-              />
+              
             </div>
           </div>
         </div>
