@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryFooterData, queryGlobalSeoSettings } from "@/lib/sanity/query";
@@ -216,6 +217,26 @@ function Footer({ data, settingsData }: FooterProps) {
                   <Link href="/privacy-policy">Privacy Policy</Link>
                 </li>
               </ul>
+              <a
+                className="copyrighted-badge"
+                title="Copyrighted.com Registered &amp; Protected"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://app.copyrighted.com/website/aJWdIX7UbvTht2VR/"
+              >
+                <img
+                  alt="Copyrighted.com Registered &amp; Protected"
+                  width={125}
+                  height={25}
+                  srcSet="https://static.copyrighted.com/badges/125x25/01_1_2x.png 2x"
+                  src="https://static.copyrighted.com/badges/125x25/01_1.png"
+                  style={{ border: 0 }}
+                />
+              </a>
+              <Script
+                src="https://static.copyrighted.com/badges/helper.js"
+                strategy="lazyOnload"
+              />
             </div>
           </div>
         </div>
