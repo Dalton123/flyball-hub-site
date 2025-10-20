@@ -3,11 +3,20 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const hostname = request.headers.get("host");
 
-  // Only redirect the Vercel subdomain
-  // Let Vercel domain settings handle www redirect to avoid conflicts
+  // Redirect non-www to www
+  if (hostname === "flyballhub.com") {
+    const newUrl = new URL(request.url);
+    newUrl.hostname = "www.flyballhub.com";
+    newUrl.protocol = "https:";
+    newUrl.port = "";
+
+    return NextResponse.redirect(newUrl, 308);
+  }
+
+  // Redirect Vercel subdomain to production domain
   if (hostname === "flyball-hub-site-web.vercel.app") {
     const newUrl = new URL(request.url);
-    newUrl.hostname = "flyballhub.com";
+    newUrl.hostname = "www.flyballhub.com";
     newUrl.protocol = "https:";
     newUrl.port = "";
 
