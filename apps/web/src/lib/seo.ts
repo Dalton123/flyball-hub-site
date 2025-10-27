@@ -112,7 +112,6 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
   const defaultMetadata: Metadata = {
     title: fullTitle,
     description: defaultDescription,
-    metadataBase: new URL(baseUrl),
     creator: siteConfig.title,
     authors: [{ name: siteConfig.title }],
     icons: {

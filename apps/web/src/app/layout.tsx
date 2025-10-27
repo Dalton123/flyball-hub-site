@@ -26,6 +26,7 @@ const fontMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.flyballhub.com"),
   verification: {
     other: {
       "copyrighted-site-verification": "f1ee49580e68fe32",
