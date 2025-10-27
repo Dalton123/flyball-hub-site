@@ -30,6 +30,7 @@ export const metadata: Metadata = {
   verification: {
     other: {
       "copyrighted-site-verification": "f1ee49580e68fe32",
+      "google-adsense-account": "ca-pub-7614147681863452",
     },
   },
 };
