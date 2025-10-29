@@ -4,7 +4,7 @@ import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 import type {
@@ -275,6 +275,23 @@ export function Navbar({
   navbarData: initialNavbarData,
   settingsData: initialSettingsData,
 }: NavigationData) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    // Set initial scroll state
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const { data, error, isLoading } = useSWR<NavigationData>(
     "/api/navigation",
     fetcher,
@@ -307,7 +324,7 @@ export function Navbar({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto py-2 md:py-4 px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
@@ -316,7 +333,12 @@ export function Navbar({
                 alt={siteTitle || ""}
                 image={logo}
                 priority
-                className="h-8 w-auto !max-h-[70px] md:!max-h-[100px]"
+                className={cn(
+                  "w-auto transition-all duration-300",
+                  isMounted && isScrolled 
+                    ? "h-6 !max-h-[50px] md:!max-h-[60px]" 
+                    : "h-8 !max-h-[70px] md:!max-h-[100px]"
+                )}
               />
             )}
           </div>
