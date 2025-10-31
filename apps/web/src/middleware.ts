@@ -29,6 +29,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Exclude static files, images, favicon, robots.txt, and ads.txt from middleware
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|ads.txt).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|ads.txt|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.gif$|.*\\.svg$|.*\\.webp$|.*\\.ico$).*)",
   ],
 };
