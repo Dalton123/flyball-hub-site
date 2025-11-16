@@ -1,3 +1,4 @@
+import { contactForm } from "./contact-form";
 import { cta } from "./cta";
 import { faqAccordion } from "./faq-accordion";
 import { featureCardsIcon } from "./feature-cards-icon";
@@ -14,4 +15,5 @@ export const pageBuilderBlocks = [
   faqAccordion,
   imageLinkCards,
   subscribeNewsletter,
+  contactForm,
 ];

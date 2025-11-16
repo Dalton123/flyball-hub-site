@@ -13,6 +13,50 @@
  */
 
 // Source: schema.json
+export type ContactForm = {
+  _type: "contactForm";
+  eyebrow?: string;
+  title: string;
+  subTitle?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
+    listItem?: "number" | "bullet";
+    markDefs?: Array<{
+      customLink?: CustomUrl;
+      _type: "customLink";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  buttonText?: string;
+  helperText?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
+    listItem?: "number" | "bullet";
+    markDefs?: Array<{
+      customLink?: CustomUrl;
+      _type: "customLink";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  successMessage?: string;
+};
+
 export type SubscribeNewsletter = {
   _type: "subscribeNewsletter";
   title?: string;
@@ -306,6 +350,9 @@ export type PageBuilder = Array<
   | ({
       _key: string;
     } & SubscribeNewsletter)
+  | ({
+      _key: string;
+    } & ContactForm)
 >;
 
 export type Button = {
@@ -928,6 +975,7 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | ContactForm
   | SubscribeNewsletter
   | ImageLinkCards
   | FaqAccordion

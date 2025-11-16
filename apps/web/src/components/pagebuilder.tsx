@@ -9,6 +9,7 @@ import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
 import type { PageBuilderBlockTypes, PagebuilderType } from "@/types";
 
 import { CTABlock } from "./sections/cta";
+import { ContactForm } from "./sections/contact-form";
 import { FaqAccordion } from "./sections/faq-accordion";
 import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
 import { HeroBlock } from "./sections/hero";
@@ -42,6 +43,7 @@ interface SanityDataAttributeConfig {
 // Component mapping for page builder blocks
 const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
   cta: CTABlock,
+  contactForm: ContactForm,
   faqAccordion: FaqAccordion,
   hero: HeroBlock,
   textBlock: TextBlock,
