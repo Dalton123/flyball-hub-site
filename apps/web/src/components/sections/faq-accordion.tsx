@@ -45,7 +45,7 @@ export function FaqAccordion({
             type="single"
             collapsible
             className="w-full"
-            defaultValue="3"
+            defaultValue={faqs?.[0]?._id}
           >
             {faqs?.map((faq, index) => (
               <AccordionItem
