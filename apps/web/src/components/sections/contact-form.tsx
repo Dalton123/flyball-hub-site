@@ -79,7 +79,7 @@ export function ContactForm({
         <form
           ref={formRef}
           action={formAction}
-          className="space-y-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-8"
+          className="space-y-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-8"
         >
           {/* Name and Email Row */}
           <div className="grid gap-6 sm:grid-cols-2">
