@@ -8,7 +8,9 @@
       "Bash(lsof:*)",
       "Bash(xargs kill:*)",
       "Bash(npx sanity typegen:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(pnpm dev)",
+      "Skill(frontend-design:frontend-design)"
     ],
     "deny": [],
     "ask": []
