@@ -43,7 +43,7 @@ function LogoItem({ logo, isVisible }: LogoItemProps) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="block"
+        className="block flex items-center justify-center"
         aria-label={`Visit ${name}'s website`}
       >
         {content}

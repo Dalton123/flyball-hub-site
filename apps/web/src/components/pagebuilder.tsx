@@ -44,7 +44,7 @@ interface SanityDataAttributeConfig {
 }
 
 // Block types that should span full viewport width
-const FULL_WIDTH_BLOCKS = new Set<string>(["hero"]);
+const FULL_WIDTH_BLOCKS = new Set<string>(["hero", "statsSection"]);
 
 // Component mapping for page builder blocks
 const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
