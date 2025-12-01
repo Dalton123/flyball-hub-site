@@ -109,7 +109,7 @@ const components: Partial<PortableTextReactComponents> = {
             height={900}
           />
           {value?.caption && (
-            <figcaption className="mt-2 text-center text-sm text-zinc-500 dark:text-zinc-400">
+            <figcaption className="mt-2 text-center text-sm text-muted-foreground">
               {value.caption}
             </figcaption>
           )}
@@ -157,8 +157,6 @@ export function RichText<T>({
         "prose-code:rounded-md prose-code:border prose-code:px-1 prose-code:py-0.5",
         // Image styles
         "prose-img:rounded-lg",
-        // Dark mode
-        "dark:prose-invert",
         // Alignment
         alignmentClass,
         // Custom overrides

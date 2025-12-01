@@ -35,6 +35,58 @@ export const hero = defineType({
       },
     }),
     buttonsField,
+    defineField({
+      name: "stats",
+      type: "array",
+      title: "Social Proof Stats",
+      description:
+        "Key metrics to display below the hero content (e.g., '150+ Teams', 'Lightning Fast')",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "value",
+              type: "string",
+              title: "Value",
+              description: "The statistic value (e.g., '150+', 'Lightning Fast')",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "label",
+              type: "string",
+              title: "Label",
+              description: "Description of the stat (e.g., 'Teams', 'Performance')",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              value: "value",
+              label: "label",
+            },
+            prepare: ({ value, label }) => ({
+              title: value,
+              subtitle: label,
+            }),
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: "variant",
+      type: "string",
+      title: "Hero Variant",
+      description: "Choose the visual style for this hero section",
+      options: {
+        list: [
+          { title: "Dynamic (Bold, energetic design)", value: "dynamic" },
+          { title: "Classic (Original design)", value: "classic" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "classic",
+    }),
   ],
   preview: {
     select: {

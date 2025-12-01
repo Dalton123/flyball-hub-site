@@ -89,7 +89,7 @@ function SocialLinks({ data }: SocialLinksProps) {
             rel="noopener noreferrer"
             aria-label={label}
           >
-            <Icon className="fill-muted-foreground hover:fill-primary/80 dark:fill-zinc-400 dark:hover:fill-primary" />
+            <Icon className="fill-muted-foreground hover:fill-primary" />
             <span className="sr-only">{label}</span>
           </Link>
         </li>
@@ -165,7 +165,7 @@ function Footer({ data, settingsData }: FooterProps) {
                   <Logo alt={siteTitle} priority image={logo} />
                 </span>
                 {subtitle && (
-                  <p className="mt-6 text-sm text-muted-foreground dark:text-zinc-400">
+                  <p className="mt-6 text-sm text-muted-foreground">
                     {subtitle}
                   </p>
                 )}
@@ -178,7 +178,7 @@ function Footer({ data, settingsData }: FooterProps) {
                   <div key={`column-${column?._key}-${index}`}>
                     <h3 className="mb-6 font-semibold">{column?.title}</h3>
                     {column?.links && column?.links?.length > 0 && (
-                      <ul className="space-y-4 text-sm text-muted-foreground dark:text-zinc-400">
+                      <ul className="space-y-4 text-sm text-muted-foreground">
                         {column?.links?.map((link, index) => (
                           <li
                             key={`${link?._key}-${index}-column-${column?._key}`}

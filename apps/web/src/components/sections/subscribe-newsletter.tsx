@@ -1,47 +1,40 @@
 "use client";
+
 import { Button } from "@workspace/ui/components/button";
 import { ChevronRight, LoaderCircle } from "lucide-react";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
-// import { newsletterSubmission } from "@/action/newsletter-submission";
 import type { PagebuilderType } from "@/types";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
+import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
 
-// const InteractiveGridPattern = dynamic(
-//   () =>
-//     import("@workspace/ui/components/interactive-grid-pattern").then(
-//       (mod) => mod.InteractiveGridPattern,
-//     ),
-//   {
-//     ssr: false,
-//   },
-// );
-
 type SubscribeNewsletterProps = PagebuilderType<"subscribeNewsletter">;
-export default function SubscribeNewsletterButton() {
+
+function SubscribeNewsletterButton() {
   const { pending } = useFormStatus();
   return (
     <Button
       size="icon"
       type="submit"
       disabled={pending}
-      className="size-8 aspect-square bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+      className="size-9 aspect-square bg-primary hover:bg-primary/90 rounded-lg"
       aria-label={pending ? "Subscribing..." : "Subscribe to newsletter"}
     >
       <span className="flex items-center justify-center gap-2">
         {pending ? (
           <LoaderCircle
-            className="animate-spin text-black"
-            size={16}
+            className="animate-spin text-primary-foreground"
+            size={18}
             strokeWidth={2}
             aria-hidden="true"
           />
         ) : (
           <ChevronRight
-            className="text-black dark:text-neutral-300"
-            size={16}
+            className="text-primary-foreground"
+            size={18}
             strokeWidth={2}
             aria-hidden="true"
           />
@@ -56,31 +49,39 @@ export function SubscribeNewsletter({
   subTitle,
   helperText,
 }: SubscribeNewsletterProps) {
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
+
   return (
-    <section id="subscribe" className="px-4 py-8 sm:py-12 md:py-16">
-      <div className="relative container mx-auto px-4 md:px-8 py-8 sm:py-16 md:py-24 lg:py-32 bg-gray-50 dark:bg-zinc-900 rounded-3xl overflow-hidden">
-        <div className="relative z-10 mx-auto text-center">
-          <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-neutral-300 sm:text-3xl md:text-5xl text-balance">
+    <section ref={ref} id="subscribe" className="px-4 py-8 sm:py-12 md:py-16">
+      <div className="relative container mx-auto px-4 md:px-8 py-12 sm:py-20 md:py-28 lg:py-32 bg-gradient-to-br from-accent to-muted rounded-3xl overflow-hidden">
+        {/* Paw prints background pattern */}
+        <BackgroundPattern pattern="paw-prints" opacity={0.06} />
+
+        <div
+          className={`relative z-10 mx-auto text-center max-w-2xl transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <h2 className="mb-4 text-2xl font-semibold text-foreground sm:text-3xl md:text-4xl lg:text-5xl text-balance">
             {title}
           </h2>
           {subTitle && (
             <RichText
               richText={subTitle}
-              className="mb-6 text-sm text-gray-600 sm:mb-8 text-balance sm:text-base dark:text-neutral-300"
+              className="mb-8 text-sm text-muted-foreground sm:mb-10 text-balance sm:text-base max-w-xl mx-auto"
             />
           )}
           <Form
             className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-2"
-            // action={newsletterSubmission}
             action={() => {}}
           >
-            <div className="flex bg-white dark:bg-zinc-200 items-center border rounded-xl p-2 drop-shadow-lg md:w-96 justify-between pl-4">
+            <div className="flex bg-background items-center border border-border/50 rounded-xl p-2 shadow-lg md:w-[28rem] justify-between pl-4 transition-shadow hover:shadow-xl focus-within:ring-2 focus-within:ring-primary/20">
               <input
                 type="email"
                 name="email"
                 required
                 placeholder="Enter your email address"
-                className="rounded-e-none border-e-0 focus-visible:ring-0 outline-none bg-transparent w-full dark:text-zinc-900 dark:placeholder:text-zinc-900"
+                className="rounded-e-none border-e-0 focus-visible:ring-0 outline-none bg-transparent w-full text-foreground placeholder:text-muted-foreground text-sm sm:text-base"
               />
               <SubscribeNewsletterButton />
             </div>
@@ -88,16 +89,10 @@ export function SubscribeNewsletter({
           {helperText && (
             <RichText
               richText={helperText}
-              className="mt-3 text-sm text-gray-800 opacity-80 sm:mt-4 dark:text-neutral-300"
+              className="mt-4 text-xs text-muted-foreground sm:mt-5 sm:text-sm"
             />
           )}
         </div>
-        {/* <InteractiveGridPattern
-          className={cn(
-            "absolute scale-125 inset-0 -z-0 w-full opacity-50",
-            "[mask-image:radial-gradient(1000px_circle_at_center,transparent,white)]",
-          )}
-        /> */}
       </div>
     </section>
   );

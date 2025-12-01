@@ -14,7 +14,10 @@ import { FaqAccordion } from "./sections/faq-accordion";
 import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
 import { HeroBlock } from "./sections/hero";
 import { ImageLinkCards } from "./sections/image-link-cards";
+import { LogoCloud } from "./sections/logo-cloud";
+import { StatsSection } from "./sections/stats-section";
 import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
+import { Testimonials } from "./sections/testimonials";
 import { TextBlock } from "./sections/text-block";
 
 // More specific and descriptive type aliases
@@ -40,6 +43,9 @@ interface SanityDataAttributeConfig {
   readonly path: string;
 }
 
+// Block types that should span full viewport width
+const FULL_WIDTH_BLOCKS = new Set<string>(["hero"]);
+
 // Component mapping for page builder blocks
 const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
   cta: CTABlock,
@@ -50,6 +56,9 @@ const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
   featureCardsIcon: FeatureCardsWithIcon,
   subscribeNewsletter: SubscribeNewsletter,
   imageLinkCards: ImageLinkCards,
+  testimonials: Testimonials,
+  logoCloud: LogoCloud,
+  statsSection: StatsSection,
 };
 
 /**
@@ -140,9 +149,15 @@ function useBlockRenderer(id: string, type: string) {
         );
       }
 
+      const isFullWidth = FULL_WIDTH_BLOCKS.has(block._type);
+      const wrapperClasses = isFullWidth
+        ? "w-full"
+        : "max-w-7xl mx-auto px-4 my-16";
+
       return (
         <div
           key={`${block._type}-${block._key}`}
+          className={wrapperClasses}
           data-sanity={createBlockDataAttribute(block._key)}
         >
           <Component {...(block as any)} />
@@ -177,7 +192,7 @@ export function PageBuilder({
 
   return (
     <section
-      className="flex flex-col gap-16 my-16 max-w-7xl mx-auto"
+      className="flex flex-col"
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >

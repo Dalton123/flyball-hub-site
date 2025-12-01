@@ -120,7 +120,13 @@ const heroBlock = /* groq */ `
     ...,
     ${imageFragment},
     ${buttonsFragment},
-    ${richTextFragment}
+    ${richTextFragment},
+    variant,
+    "stats": array::compact(stats[]{
+      _key,
+      value,
+      label
+    })
   }
 `;
 
@@ -181,6 +187,55 @@ const textBlockFragment = /* groq */ `
   }
 `;
 
+const testimonialsBlock = /* groq */ `
+  _type == "testimonials" => {
+    ...,
+    ${richTextFragment},
+    "testimonials": array::compact(testimonials[]{
+      ...,
+      _key,
+      quote,
+      authorName,
+      authorRole,
+      rating,
+      "authorImage": authorImage {
+        ${imageFields}
+      }
+    })
+  }
+`;
+
+const logoCloudBlock = /* groq */ `
+  _type == "logoCloud" => {
+    ...,
+    ${richTextFragment},
+    "logos": array::compact(logos[]{
+      ...,
+      _key,
+      name,
+      url,
+      "logo": logo {
+        ${imageFields}
+      }
+    })
+  }
+`;
+
+const statsSectionBlock = /* groq */ `
+  _type == "statsSection" => {
+    ...,
+    ${richTextFragment},
+    variant,
+    "stats": array::compact(stats[]{
+      ...,
+      _key,
+      value,
+      label,
+      description
+    })
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
@@ -191,7 +246,10 @@ const pageBuilderFragment = /* groq */ `
     ${featureCardsIconBlock},
     ${subscribeNewsletterBlock},
     ${imageLinkCardsBlock},
-    ${textBlockFragment}
+    ${textBlockFragment},
+    ${testimonialsBlock},
+    ${logoCloudBlock},
+    ${statsSectionBlock}
   }
 `;
 

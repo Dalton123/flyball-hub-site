@@ -406,8 +406,8 @@ const TableOfContentAnchor: FC<AnchorProps> = ({
           className={cn(
             "min-w-1.5 min-h-1.5 size-1.5 transition-colors duration-200",
             !isChild
-              ? "dark:fill-zinc-100 fill-zinc-900"
-              : "dark:fill-zinc-400 fill-zinc-600",
+              ? "fill-foreground"
+              : "fill-muted-foreground",
           )}
           aria-hidden="true"
         />
@@ -468,9 +468,8 @@ export const TableOfContent: FC<TableOfContentProps> = ({
     <aside
       className={cn(
         "sticky top-8 flex flex-col w-full max-w-xs p-4",
-        "bg-gradient-to-b from-zinc-50 to-zinc-100",
-        "dark:from-zinc-800 dark:to-zinc-900",
-        "shadow-sm rounded-lg border border-zinc-300 dark:border-zinc-700",
+        "bg-gradient-to-b from-muted/50 to-muted",
+        "shadow-sm rounded-lg border border-border",
         "transition-all duration-200",
         className,
       )}
@@ -481,8 +480,8 @@ export const TableOfContent: FC<TableOfContentProps> = ({
         <summary
           className={cn(
             "flex cursor-pointer items-center justify-between",
-            "text-lg font-semibold text-zinc-800 dark:text-zinc-200",
-            "hover:text-blue-600 dark:hover:text-blue-400",
+            "text-lg font-semibold text-foreground",
+            "hover:text-primary",
             "transition-colors duration-200 focus:outline-none",
             "rounded-sm p-1",
           )}

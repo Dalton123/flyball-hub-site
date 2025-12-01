@@ -10,7 +10,13 @@
       "Bash(npx sanity typegen:*)",
       "Bash(curl:*)",
       "Bash(pnpm dev)",
-      "Skill(frontend-design:frontend-design)"
+      "Skill(frontend-design:frontend-design)",
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm type:*)",
+      "Bash(NODE_ENV=development pnpm type:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm --filter web typecheck:*)",
+      "Bash(NODE_ENV=development pnpm:*)"
     ],
     "deny": [],
     "ask": []

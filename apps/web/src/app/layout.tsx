@@ -2,7 +2,7 @@ import "@workspace/ui/globals.css";
 
 import type { Metadata } from "next";
 import { VisualEditing } from "next-sanity";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Geist, Geist_Mono, Outfit } from "next/font/google";
 import { draftMode } from "next/headers";
 import { Suspense } from "react";
 
@@ -25,6 +25,18 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 });
 
+const fontDisplay = Outfit({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700"],
+});
+
+const fontHero = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-hero",
+  weight: ["700", "800", "900"],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.flyballhub.com"),
   verification: {
@@ -45,7 +57,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
+        className={`${fontSans.variable} ${fontMono.variable} ${fontDisplay.variable} ${fontHero.variable} font-sans antialiased`}
       >
         <Providers>
           <Navbar navbarData={nav.navbarData} settingsData={nav.settingsData} />

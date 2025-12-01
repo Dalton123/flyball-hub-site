@@ -15,7 +15,6 @@ import type {
 import { SanityButtons } from "./elements/sanity-buttons";
 import { SanityIcon } from "./elements/sanity-icon";
 import { Logo } from "./logo";
-import { ModeToggle } from "./mode-toggle";
 
 // Type helpers using utility types
 type NavigationData = {
@@ -220,9 +219,6 @@ function MobileMenu({ navbarData, settingsData }: NavigationData) {
 
               {/* Action buttons */}
               <div className="grid gap-3 pt-4 border-t">
-                <div className="flex justify-center">
-                  <ModeToggle />
-                </div>
                 <SanityButtons
                   buttons={buttons || []}
                   className="grid gap-3"
@@ -360,7 +356,6 @@ export function Navbar({
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <ModeToggle />
             <SanityButtons
               buttons={buttons || []}
               className="flex items-center gap-2"
