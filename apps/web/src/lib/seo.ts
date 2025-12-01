@@ -21,6 +21,10 @@ interface PageSeoData extends Metadata {
   keywords?: string[];
   seoNoIndex?: boolean;
   pageType?: Extract<Metadata["openGraph"], { type: string }>["type"];
+  // Article-specific properties
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
 }
 
 // OpenGraph image generation parameters
@@ -83,6 +87,9 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
     keywords: pageKeywords = [],
     seoNoIndex = false,
     pageType = "website",
+    publishedTime,
+    modifiedTime,
+    author,
     ...pageOverrides
   } = page;
 
@@ -144,6 +151,12 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
         },
       ],
       url: pageUrl,
+      // Article-specific properties (only included when pageType is 'article')
+      ...(pageType === "article" && {
+        publishedTime,
+        modifiedTime,
+        authors: author ? [author] : undefined,
+      }),
     },
   };
 

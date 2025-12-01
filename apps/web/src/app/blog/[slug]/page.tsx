@@ -1,11 +1,17 @@
+import { stegaClean } from "next-sanity";
 import { notFound } from "next/navigation";
 
 import { RichText } from "@/components/elements/rich-text";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { TableOfContent } from "@/components/elements/table-of-content";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { client } from "@/lib/sanity/client";
 import { sanityFetch } from "@/lib/sanity/live";
-import { queryBlogPaths, queryBlogSlugPageData } from "@/lib/sanity/query";
+import {
+  queryBlogPaths,
+  queryBlogSlugPageData,
+  querySettingsData,
+} from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
 
 async function fetchBlogSlugPageData(slug: string, stega = true) {
@@ -43,6 +49,10 @@ export async function generateMetadata({
           contentId: data?._id,
           contentType: data?._type,
           pageType: "article",
+          // Article-specific properties for Open Graph
+          publishedTime: data?.publishedAt ?? data?._createdAt,
+          modifiedTime: data?._updatedAt,
+          author: data?.authors?.name,
         }
       : {},
   );
@@ -58,15 +68,28 @@ export default async function BlogSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { data } = await fetchBlogSlugPageData(slug);
+  const [{ data }, settings] = await Promise.all([
+    fetchBlogSlugPageData(slug),
+    client.fetch(querySettingsData),
+  ]);
   if (!data) return notFound();
   const { title, description, image, richText } = data ?? {};
 
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Blog", url: "/blog" },
+    { name: title ?? "Article", url: data.slug ?? `/blog/${slug}` },
+  ];
+
   return (
     <div className="container my-16 mx-auto px-4 md:px-6">
+      <ArticleJsonLd
+        article={stegaClean(data)}
+        settings={stegaClean(settings)}
+      />
+      <BreadcrumbJsonLd items={breadcrumbs} />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
         <main>
-          {/* <ArticleJsonLd article={stegaClean(data)} /> */}
           <header className="mb-8">
             <h1 className="mt-2 text-4xl font-bold">{title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">{description}</p>

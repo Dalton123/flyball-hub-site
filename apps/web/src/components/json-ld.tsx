@@ -2,9 +2,11 @@ import { stegaClean } from "next-sanity";
 import type {
   Answer,
   Article,
+  BreadcrumbList,
   ContactPoint,
   FAQPage,
   ImageObject,
+  ListItem,
   Organization,
   Person,
   Question,
@@ -171,6 +173,37 @@ export function ArticleJsonLd({ article, settings }: ArticleJsonLdProps) {
   return (
     <JsonLdScript data={articleJsonLd} id={`article-json-ld-${article.slug}`} />
   );
+}
+
+// Breadcrumb JSON-LD Component
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface BreadcrumbJsonLdProps {
+  items: BreadcrumbItem[];
+}
+
+export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
+  if (!items?.length) return null;
+
+  const baseUrl = getBaseUrl();
+
+  const breadcrumbJsonLd: WithContext<BreadcrumbList> = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map(
+      (item, index): ListItem => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        item: item.url.startsWith("http") ? item.url : `${baseUrl}${item.url}`,
+      }),
+    ),
+  };
+
+  return <JsonLdScript data={breadcrumbJsonLd} id="breadcrumb-json-ld" />;
 }
 
 // Organization JSON-LD Component
