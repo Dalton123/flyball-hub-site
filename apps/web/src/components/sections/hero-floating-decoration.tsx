@@ -3,7 +3,7 @@
 import { TennisBall } from "../icons/tennis-ball";
 
 interface FloatingDecorationProps {
-  position: "top-right" | "left" | "bottom-left";
+  position: "top-right" | "left" | "bottom-left" | "bottom-right";
   size?: number;
   opacity?: number;
 }
@@ -15,8 +15,9 @@ export function HeroFloatingDecoration({
 }: FloatingDecorationProps) {
   const positionClasses = {
     "top-right": "top-16 right-12 md:right-24",
-    left: "top-1/3 left-8 md:left-16",
-    "bottom-left": "bottom-16 left-12 md:left-24",
+    left: "top-1/3 left-8 md:left-16 rotate-12",
+    "bottom-left": "bottom-16 left-12 md:left-24 -rotate-28",
+    "bottom-right": "bottom-46 right-25 md:right-42 rotate-12",
   };
 
   const animationClass = position === "left" ? "float-diagonal" : "float-slow";
