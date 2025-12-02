@@ -8,15 +8,20 @@ interface FloatingCardProps {
   children: ReactNode;
 }
 
-export function HeroFloatingCard({ position, delay, children }: FloatingCardProps) {
+export function HeroFloatingCard({
+  position,
+  delay,
+  children,
+}: FloatingCardProps) {
   const positionClasses = {
-    "top-right": "top-8 -right-12 lg:-right-16",
-    left: "top-1/3 -left-8 lg:-left-12",
-    "bottom-right": "bottom-12 -right-8 lg:-right-12",
+    "top-right": "top-8 -right-12 lg:-right-16 xl:-right-6 2xl:-right-16",
+    left: "top-1/2 -left-8 lg:-left-12 2xl:-left-24",
+    "bottom-right": "bottom-12 -right-8 lg:-right-12 xl:-right-4 2xl:-right-8",
   };
 
-  const animationClass =
-    position.includes("right") ? "animate-float-in-right" : "animate-float-in-left";
+  const animationClass = position.includes("right")
+    ? "animate-float-in-right"
+    : "animate-float-in-left";
 
   return (
     <div
@@ -33,7 +38,7 @@ export function HeroFloatingCard({ position, delay, children }: FloatingCardProp
         animationFillMode: "forwards",
       }}
     >
-      <div className="bg-card rounded-2xl shadow-2xl p-4 border border-border">
+      <div className="bg-card rounded-2xl shadow-2xl p-3 xl:p-4 border border-border">
         {children}
       </div>
     </div>

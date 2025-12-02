@@ -30,11 +30,7 @@ export function HeroDynamic({
   });
 
   return (
-    <section
-      ref={ref}
-      id="hero"
-      className="relative min-h-[85vh] lg:min-h-[92vh]"
-    >
+    <section ref={ref} id="hero" className="relative overflow-hidden">
       {/* Background Layers */}
       <HeroBackground />
       <BackgroundPattern pattern="tennis-balls" opacity={0.08} />
@@ -49,7 +45,7 @@ export function HeroDynamic({
         opacity={0.4}
       />
 
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10 py-8 md:py-12 lg:py-16">
+      <div className="container mx-auto px-4 relative z-10 py-8 md:py-12 lg:py-16">
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-12 items-center">
           {/* Content - 7 columns */}
           <div className="lg:col-span-7 space-y-4 lg:space-y-6">
@@ -75,7 +71,7 @@ export function HeroDynamic({
             <h1
               className={`
                 font-hero font-black
-                text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl
+                text-5xl sm:text-7xl lg:text-7xl xl:text-8xl
                 leading-[0.9]
                 bg-gradient-to-br from-primary via-primary to-secondary
                 bg-clip-text text-transparent
@@ -171,29 +167,33 @@ export function HeroDynamic({
               {/* Floating Cards - Placeholders for user's screenshots */}
               {/* Users can replace these with actual card components showing their app UI */}
               <HeroFloatingCard position="top-right" delay={800}>
-                <div className="w-64 space-y-2">
-                  <div className="text-sm font-semibold">Dog Profile</div>
-                  <div className="text-xs text-muted-foreground">
+                <div className="space-y-1">
+                  <div className="text-xs xl:text-sm font-semibold">
+                    Dog Profile
+                  </div>
+                  <div className="text-[10px] xl:text-xs text-muted-foreground">
                     Quick access to team member info
                   </div>
                 </div>
               </HeroFloatingCard>
 
               <HeroFloatingCard position="left" delay={1000}>
-                <div className="w-56 space-y-2">
-                  <div className="text-sm font-semibold">Team Stats</div>
-                  <div className="text-xs text-muted-foreground">
+                <div className="space-y-1">
+                  <div className="text-xs xl:text-sm font-semibold">
+                    Team Stats
+                  </div>
+                  <div className="text-[10px] xl:text-xs text-muted-foreground">
                     Real-time performance tracking
                   </div>
                 </div>
               </HeroFloatingCard>
 
               <HeroFloatingCard position="bottom-right" delay={1200}>
-                <div className="w-60 space-y-2">
-                  <div className="text-sm font-semibold">
+                <div className="space-y-1">
+                  <div className="text-xs xl:text-sm font-semibold">
                     Event Notification
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-[10px] xl:text-xs text-muted-foreground">
                     Never miss a tournament
                   </div>
                 </div>
