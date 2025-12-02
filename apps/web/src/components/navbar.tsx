@@ -276,7 +276,7 @@ export function Navbar({
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -319,7 +319,9 @@ export function Navbar({
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
+    <header
+      className={`sticky top-0 z-40 w-full border-b  backdrop-blur-sm ${isScrolled ? "bg-accent/60" : "bg-background/80"} transition-colors duration-300`}
+    >
       <div className="container mx-auto py-2 md:py-4 px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -331,9 +333,9 @@ export function Navbar({
                 priority
                 className={cn(
                   "w-auto transition-all duration-300",
-                  isMounted && isScrolled 
-                    ? "h-6 !max-h-[50px] md:!max-h-[60px]" 
-                    : "h-8 !max-h-[70px] md:!max-h-[100px]"
+                  isMounted && isScrolled
+                    ? "h-6 !max-h-[50px] md:!max-h-[60px]"
+                    : "h-8 !max-h-[70px] md:!max-h-[100px]",
                 )}
               />
             )}
