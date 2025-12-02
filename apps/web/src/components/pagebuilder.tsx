@@ -11,10 +11,12 @@ import type { PageBuilderBlockTypes, PagebuilderType } from "@/types";
 import { CTABlock } from "./sections/cta";
 import { ContactForm } from "./sections/contact-form";
 import { FaqAccordion } from "./sections/faq-accordion";
+import { FeatureCardsScreenshot } from "./sections/feature-cards-screenshot";
 import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
 import { HeroBlock } from "./sections/hero";
 import { ImageLinkCards } from "./sections/image-link-cards";
 import { LogoCloud } from "./sections/logo-cloud";
+import { MacbookScroll } from "./sections/macbook-scroll";
 import { StatsSection } from "./sections/stats-section";
 import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
 import { Testimonials } from "./sections/testimonials";
@@ -44,7 +46,7 @@ interface SanityDataAttributeConfig {
 }
 
 // Block types that should span full viewport width
-const FULL_WIDTH_BLOCKS = new Set<string>(["hero", "statsSection"]);
+const FULL_WIDTH_BLOCKS = new Set<string>(["hero", "statsSection", "macbookScroll"]);
 
 // Component mapping for page builder blocks
 const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
@@ -54,11 +56,13 @@ const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
   hero: HeroBlock,
   textBlock: TextBlock,
   featureCardsIcon: FeatureCardsWithIcon,
+  featureCardsScreenshot: FeatureCardsScreenshot,
   subscribeNewsletter: SubscribeNewsletter,
   imageLinkCards: ImageLinkCards,
   testimonials: Testimonials,
   logoCloud: LogoCloud,
   statsSection: StatsSection,
+  macbookScroll: MacbookScroll,
 };
 
 /**

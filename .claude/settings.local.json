@@ -17,7 +17,9 @@
       "Bash(pnpm typecheck:*)",
       "Bash(pnpm --filter web typecheck:*)",
       "Bash(NODE_ENV=development pnpm:*)",
-      "Bash(timeout 15 pnpm:*)"
+      "Bash(timeout 15 pnpm:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm build:*)"
     ],
     "deny": [],
     "ask": []

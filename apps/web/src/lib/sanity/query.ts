@@ -236,6 +236,35 @@ const statsSectionBlock = /* groq */ `
   }
 `;
 
+const macbookScrollBlock = /* groq */ `
+  _type == "macbookScroll" => {
+    ...,
+    eyebrow,
+    title,
+    description,
+    "screenImage": screenImage {
+      ${imageFields}
+    },
+    showGradient
+  }
+`;
+
+const featureCardsScreenshotBlock = /* groq */ `
+  _type == "featureCardsScreenshot" => {
+    ...,
+    ${richTextFragment},
+    "cards": array::compact(cards[]{
+      ...,
+      _key,
+      title,
+      description,
+      "screenshot": screenshot {
+        ${imageFields}
+      }
+    })
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
@@ -244,12 +273,14 @@ const pageBuilderFragment = /* groq */ `
     ${heroBlock},
     ${faqAccordionBlock},
     ${featureCardsIconBlock},
+    ${featureCardsScreenshotBlock},
     ${subscribeNewsletterBlock},
     ${imageLinkCardsBlock},
     ${textBlockFragment},
     ${testimonialsBlock},
     ${logoCloudBlock},
-    ${statsSectionBlock}
+    ${statsSectionBlock},
+    ${macbookScrollBlock}
   }
 `;
 
