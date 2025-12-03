@@ -63,8 +63,8 @@ export function MacbookScroll({
     target: ref,
     offset:
       scaleFactor < 0.5
-        ? ["start 0.45", "end start"] // Mobile: start when section is 70% up from bottom
-        : ["start start", "end start"], // Desktop: normal timing
+        ? ["start 0.45", "end start"] // Mobile:
+        : ["start 0.55", "end start"], // Desktop:
   });
 
   // Track scale factor for responsive animations
@@ -83,7 +83,7 @@ export function MacbookScroll({
       const imageHeight = imageContainerRef.current?.offsetHeight || 300;
       const textHeight = 200;
       const paddingTop = window.innerWidth >= 768 ? 320 : 80;
-      const buffer = 150;
+      const buffer = scaleFactor < 0.5 ? 150 : 0;
 
       const totalHeight =
         paddingTop + textHeight + laptopHeightPx + imageHeight + buffer;
@@ -153,7 +153,7 @@ export function MacbookScroll({
   const translateEndValue =
     scaleFactor < 0.5
       ? scaledLaptopHeight + 200 // More movement on mobile
-      : scaledLaptopHeight + 150;
+      : scaledLaptopHeight + 200;
 
   const imageTranslateY = useTransform(scrollYProgress, translateKeyframes, [
     0,
@@ -163,7 +163,7 @@ export function MacbookScroll({
   return (
     <section
       ref={ref}
-      className="relative flex flex-col items-center justify-start md:py-60"
+      className="relative flex flex-col items-center justify-start "
       style={{ minHeight: containerHeight }}
     >
       {/* Text content - fades out on scroll */}
