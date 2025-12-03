@@ -108,7 +108,7 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
               image={screenshot}
               width={800}
               height={600}
-              className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 rounded-none"
+              className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 !rounded-none"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
