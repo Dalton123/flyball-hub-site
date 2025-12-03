@@ -6,7 +6,10 @@ import { motion } from "framer-motion";
 import { Badge } from "@workspace/ui/components/badge";
 
 import type { PagebuilderType } from "@/types";
-import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
+import {
+  useScrollAnimation,
+  useStaggeredAnimation,
+} from "@/hooks/use-scroll-animation";
 
 import { RichText } from "../elements/rich-text";
 import { SanityImage } from "../elements/sanity-image";
@@ -96,7 +99,7 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
           stiffness: 300,
           damping: 20,
         }}
-        className="relative overflow-hidden rounded-2xl border border-border/50 bg-card shadow-lg"
+        className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-primary to-primary/80 shadow-lg"
       >
         {/* Screenshot container */}
         <div className="relative aspect-[4/3] overflow-hidden bg-muted">
@@ -105,7 +108,7 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
               image={screenshot}
               width={800}
               height={600}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 rounded-none"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
@@ -184,16 +187,16 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
         {/* Content */}
         <div className="relative p-5 md:p-6">
           {/* Subtle gradient background */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-accent/30" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-accent/10" />
 
           <div className="relative">
             {title && (
-              <h3 className="mb-2 text-lg font-semibold text-foreground md:text-xl">
+              <h3 className="mb-2 text-lg font-semibold text-primary-foreground md:text-xl">
                 {title}
               </h3>
             )}
             {description && (
-              <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+              <p className="text-sm leading-relaxed text-primary-foreground md:text-base">
                 {description}
               </p>
             )}
@@ -221,10 +224,15 @@ export function FeatureCardsScreenshot({
   richText,
   cards,
 }: FeatureCardsScreenshotProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
-  const { containerRef, visibleItems } = useStaggeredAnimation(cards?.length ?? 0, {
-    staggerDelay: 150,
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+    threshold: 0.1,
   });
+  const { containerRef, visibleItems } = useStaggeredAnimation(
+    cards?.length ?? 0,
+    {
+      staggerDelay: 150,
+    },
+  );
 
   return (
     <section ref={ref} className="py-16 md:py-24">
@@ -236,7 +244,10 @@ export function FeatureCardsScreenshot({
           }`}
         >
           {eyebrow && (
-            <Badge variant="secondary" className="mb-4 px-4 py-1.5 text-sm font-medium">
+            <Badge
+              variant="secondary"
+              className="mb-4 px-4 py-1.5 text-sm font-medium"
+            >
               {eyebrow}
             </Badge>
           )}

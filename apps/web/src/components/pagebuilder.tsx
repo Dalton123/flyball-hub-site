@@ -46,7 +46,11 @@ interface SanityDataAttributeConfig {
 }
 
 // Block types that should span full viewport width
-const FULL_WIDTH_BLOCKS = new Set<string>(["hero", "statsSection", "macbookScroll"]);
+const FULL_WIDTH_BLOCKS = new Set<string>([
+  "hero",
+  "statsSection",
+  "macbookScroll",
+]);
 
 // Component mapping for page builder blocks
 const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
@@ -156,7 +160,7 @@ function useBlockRenderer(id: string, type: string) {
       const isFullWidth = FULL_WIDTH_BLOCKS.has(block._type);
       const wrapperClasses = isFullWidth
         ? "w-full"
-        : "max-w-7xl mx-auto px-4 my-16";
+        : "max-w-7xl mx-auto px-4 my-4 md:my-16";
 
       return (
         <div
