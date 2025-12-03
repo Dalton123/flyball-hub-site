@@ -160,7 +160,7 @@ function useBlockRenderer(id: string, type: string) {
       const isFullWidth = FULL_WIDTH_BLOCKS.has(block._type);
       const wrapperClasses = isFullWidth
         ? "w-full"
-        : "max-w-7xl mx-auto px-4 my-4 md:my-16";
+        : "max-w-7xl mx-auto px-4 my-4 md:my-16 first:mt-4";
 
       return (
         <div
