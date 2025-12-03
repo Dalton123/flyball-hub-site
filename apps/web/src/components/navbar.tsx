@@ -335,7 +335,7 @@ export function Navbar({
                   "w-auto transition-all duration-300",
                   isMounted && isScrolled
                     ? "h-6 !max-h-[50px] md:!max-h-[60px]"
-                    : "h-8 !max-h-[70px] md:!max-h-[100px]",
+                    : "h-8 !max-h-[60px] md:!max-h-[70px]",
                 )}
               />
             )}
