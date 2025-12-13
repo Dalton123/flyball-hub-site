@@ -16,11 +16,21 @@ const urlPreview = {
     internalUrl: "internal.slug.current",
     openInNewTab: "openInNewTab",
   },
-  prepare({ externalUrl, urlType, internalUrl, openInNewTab }) {
+  prepare({
+    externalUrl,
+    urlType,
+    internalUrl,
+    openInNewTab,
+  }: {
+    externalUrl?: string;
+    urlType?: string;
+    internalUrl?: string;
+    openInNewTab?: boolean;
+  }) {
     const url = urlType === "external" ? externalUrl : `/${internalUrl}`;
     const newTabIndicator = openInNewTab ? " ↗" : "";
     const truncatedUrl =
-      url?.length > 30 ? `${url.substring(0, 30)}...` : url;
+      url && url.length > 30 ? `${url.substring(0, 30)}...` : url;
 
     return {
       title: `${urlType === "external" ? "External" : "Internal"} Link`,

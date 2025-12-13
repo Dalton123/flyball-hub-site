@@ -281,21 +281,6 @@ function Lid({ rotate }: { rotate: MotionValue<number> }) {
           <span className="text-white">{/* Logo placeholder */}</span>
         </div>
       </div>
-
-      {/* Animated lid overlay (opens with rotation) */}
-      <motion.div
-        style={{
-          rotateX: rotate,
-          transformStyle: "preserve-3d",
-          transformOrigin: "bottom",
-        }}
-        className="absolute inset-0 h-[12rem] w-[32rem] rounded-2xl bg-[#010101] p-2"
-      >
-        {/* Screen bezel */}
-        <div className="absolute inset-0 rounded-lg bg-[#272729]" />
-        {/* Empty screen area - image is rendered separately */}
-        <div className="absolute inset-2 rounded-md bg-black/50" />
-      </motion.div>
     </div>
   );
 }

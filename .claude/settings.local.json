@@ -19,7 +19,14 @@
       "Bash(NODE_ENV=development pnpm:*)",
       "Bash(timeout 15 pnpm:*)",
       "Bash(pnpm add:*)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "WebSearch",
+      "WebFetch(domain:vercel.com)",
+      "Bash(cat:*)",
+      "Bash(pnpm list:*)",
+      "Bash(pnpm check-types:*)",
+      "Bash(pnpm outdated:*)",
+      "Bash(pnpm audit:*)"
     ],
     "deny": [],
     "ask": []

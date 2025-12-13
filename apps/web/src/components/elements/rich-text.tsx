@@ -13,6 +13,17 @@ import { SanityImage } from "./sanity-image";
 
 const components: Partial<PortableTextReactComponents> = {
   block: {
+    h1: ({ children, value }) => {
+      const slug = parseChildrenToSlug(value.children);
+      return (
+        <h1
+          id={slug}
+          className="scroll-m-20 border-b pb-2 text-4xl font-semibold first:mt-0"
+        >
+          {children}
+        </h1>
+      );
+    },
     h2: ({ children, value }) => {
       const slug = parseChildrenToSlug(value.children);
       return (
@@ -143,7 +154,7 @@ export function RichText<T>({
     <div
       className={cn(
         // Base prose styles
-        "prose prose-zinc max-w-none",
+        "prose max-w-none",
         // Responsive sizing
         "prose-base md:prose-lg",
         // Heading styles

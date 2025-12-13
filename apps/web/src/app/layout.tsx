@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { VisualEditing } from "next-sanity";
 import { DM_Sans, Geist, Geist_Mono, Outfit } from "next/font/google";
 import { draftMode } from "next/headers";
+import Script from "next/script";
 import { Suspense } from "react";
 
 import { FooterServer, FooterSkeleton } from "@/components/footer";
@@ -59,6 +60,18 @@ export default async function RootLayout({
       <body
         className={`${fontSans.variable} ${fontMono.variable} ${fontDisplay.variable} ${fontHero.variable} font-sans antialiased`}
       >
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-TJ9VYF25SX"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TJ9VYF25SX');
+          `}
+        </Script>
         <Providers>
           <Navbar navbarData={nav.navbarData} settingsData={nav.settingsData} />
           {children}

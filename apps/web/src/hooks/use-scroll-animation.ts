@@ -48,6 +48,18 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
     const element = ref.current;
     if (!element) return;
 
+    // Check if element is already in viewport on mount
+    const rect = element.getBoundingClientRect();
+    const isInViewport =
+      rect.top < window.innerHeight &&
+      rect.bottom > 0 &&
+      rect.top < window.innerHeight * (1 - threshold);
+
+    if (isInViewport) {
+      setIsVisible(true);
+      if (triggerOnce) return; // Don't need observer if already visible and triggerOnce
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
