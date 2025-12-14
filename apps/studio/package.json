@@ -30,6 +30,7 @@
     "@sanity/functions": "^1.1.0",
     "@sanity/icons": "^3.7.4",
     "@sanity/orderable-document-list": "^1.4.1",
+    "@sanity/table": "^2.0.0",
     "@sanity/ui": "^3.1.11",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^4.21.1",

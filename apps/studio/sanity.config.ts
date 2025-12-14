@@ -1,4 +1,5 @@
 import { assist } from "@sanity/assist";
+import { table } from "@sanity/table";
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
 import { presentationTool } from "sanity/presentation";
@@ -48,6 +49,7 @@ export default defineConfig({
     media(),
     iconPicker(),
     assist(),
+    table(),
   ],
   document: {
     newDocumentOptions: (prev, { creationContext }) => {

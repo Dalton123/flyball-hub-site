@@ -49,6 +49,31 @@ const richTextFragment = /* groq */ `
     _type == "image" => {
       ${imageFields},
       "caption": caption
+    },
+    _type == "break" => {
+      _type,
+      _key,
+      style
+    },
+    _type == "blockquote" => {
+      _type,
+      _key,
+      quote,
+      attribution,
+      source
+    },
+    _type == "codeBlock" => {
+      _type,
+      _key,
+      code,
+      language,
+      filename,
+      highlightLines
+    },
+    _type == "table" => {
+      _type,
+      _key,
+      rows
     }
   }
 `;
