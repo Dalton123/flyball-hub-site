@@ -239,7 +239,7 @@ const components: Partial<PortableTextReactComponents> = {
       const [headerRow, ...bodyRows] = rows;
 
       return (
-        <div className="not-prose my-6 overflow-x-auto max-w-[calc(100dvw-90px)] md:max-w-[calc(100dvw-100px)] xl:max-w-none">
+        <div className="not-prose my-6 overflow-x-auto max-w-[calc(100dvw-90px)] md:max-w-[calc(100dvw-100px)] xl:max-w-full">
           <table
             className="border-collapse border border-border text-sm md:text-base"
             style={{ width: "max-content", minWidth: "100%" }}
