@@ -167,7 +167,7 @@ export function BlogCard({ blog }: BlogCardProps) {
   const { title, publishedAt, slug, authors, description, image } = blog;
 
   return (
-    <article className="grid grid-cols-1 gap-4 w-full">
+    <article className="flex flex-col gap-4 w-full">
       <div className="relative w-full h-auto aspect-[16/9] overflow-hidden rounded-2xl">
         <BlogImage image={image} title={title} />
         <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />

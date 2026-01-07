@@ -141,6 +141,7 @@ const components: Partial<PortableTextReactComponents> = {
         <figure className="my-4">
           <SanityImage
             image={value}
+            alt={value?.alt || "Image"}
             className="h-auto rounded-lg w-full"
             width={1600}
             height={900}

@@ -79,6 +79,14 @@ export const settings = defineType({
       options: {
         hotspot: true,
       },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "Describe this image for screen readers and SEO",
+        }),
+      ],
     }),
     defineField({
       name: "contactEmail",

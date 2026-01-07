@@ -28,6 +28,7 @@ export function CTACard({ card, className }: CTACardProps) {
         <div className="absolute inset-0 z-[1] mix-blend-multiply">
           <SanityImage
             image={image}
+            alt={image?.alt || title || "Card image"}
             loading="eager"
             width={1920}
             height={1080}

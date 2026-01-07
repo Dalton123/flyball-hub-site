@@ -25,6 +25,17 @@ const imageLinkCard = defineField({
       title: "Card Image",
       type: "image",
       description: "Add an image or illustration for this card",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "Describe this image for screen readers and SEO",
+        }),
+      ],
     }),
     defineField({
       name: "url",

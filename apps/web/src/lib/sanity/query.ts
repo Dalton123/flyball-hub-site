@@ -3,6 +3,7 @@ import { defineQuery } from "next-sanity";
 const imageFields = /* groq */ `
   "id": asset._ref,
   "preview": asset->metadata.lqip,
+  "alt": alt,
   hotspot {
     x,
     y
@@ -48,6 +49,7 @@ const richTextFragment = /* groq */ `
     },
     _type == "image" => {
       ${imageFields},
+      "alt": alt,
       "caption": caption
     },
     _type == "break" => {
@@ -285,8 +287,66 @@ const featureCardsScreenshotBlock = /* groq */ `
       description,
       "screenshot": screenshot {
         ${imageFields}
-      }
+      },
+      "openInNewTab": url.openInNewTab,
+      "href": select(
+        url.type == "internal" => url.internal->slug.current,
+        url.type == "external" => url.external,
+        url.href
+      )
     })
+  }
+`;
+
+const videoSectionBlock = /* groq */ `
+  _type == "videoSection" => {
+    ...,
+    eyebrow,
+    title,
+    description,
+    videoUrl,
+    "posterImage": posterImage {
+      ${imageFields}
+    }
+  }
+`;
+
+const latestPostsBlock = /* groq */ `
+  _type == "latestPosts" => {
+    ...,
+    eyebrow,
+    title,
+    description,
+    postsCount,
+    showViewAll,
+    "posts": *[_type == "blog" && seoHideFromLists != true] | order(publishedAt desc)[0..6]{
+      ${blogCardFragment}
+    }
+  }
+`;
+
+const teamFinderTeaserBlock = /* groq */ `
+  _type == "teamFinderTeaser" => {
+    _type,
+    _key,
+    eyebrow,
+    title,
+    description,
+    searchPlaceholder,
+    showStats,
+    ctaText
+  }
+`;
+
+const teamFinderBlock = /* groq */ `
+  _type == "teamFinder" => {
+    _type,
+    _key,
+    eyebrow,
+    title,
+    description,
+    searchPlaceholder,
+    noResultsMessage
   }
 `;
 
@@ -305,7 +365,11 @@ const pageBuilderFragment = /* groq */ `
     ${testimonialsBlock},
     ${logoCloudBlock},
     ${statsSectionBlock},
-    ${macbookScrollBlock}
+    ${macbookScrollBlock},
+    ${videoSectionBlock},
+    ${latestPostsBlock},
+    ${teamFinderBlock},
+    ${teamFinderTeaserBlock}
   }
 `;
 

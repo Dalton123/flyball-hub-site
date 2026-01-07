@@ -10,10 +10,16 @@ import { RichText } from "../elements/rich-text";
 import { SanityButtons } from "../elements/sanity-buttons";
 import { SanityImage } from "../elements/sanity-image";
 import { HeroDynamic } from "./hero-dynamic";
+import { HeroGlobe } from "./hero-globe";
 
 type HeroBlockProps = PagebuilderType<"hero">;
 
 export function HeroBlock(props: HeroBlockProps) {
+  // Route to globe variant if selected
+  if (props.variant === "globe") {
+    return <HeroGlobe {...props} />;
+  }
+
   // Route to dynamic variant if selected
   if (props.variant === "dynamic") {
     return <HeroDynamic {...props} />;
@@ -77,6 +83,7 @@ export function HeroBlock(props: HeroBlockProps) {
               <div className="absolute -inset-4 bg-gradient-to-br from-secondary/20 to-accent/30 rounded-[2rem] -z-10" />
               <SanityImage
                 image={image}
+                alt={image?.alt || "Hero image"}
                 loading="eager"
                 width={800}
                 height={800}

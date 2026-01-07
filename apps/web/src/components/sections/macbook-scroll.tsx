@@ -244,6 +244,7 @@ export function MacbookScroll({
             <div className="overflow-hidden rounded-lg shadow-2xl">
               <SanityImage
                 image={screenImage}
+                alt={screenImage?.alt || "Screen preview"}
                 width={1920}
                 height={1200}
                 className="w-full h-auto object-cover"

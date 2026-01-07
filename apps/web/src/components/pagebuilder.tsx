@@ -15,12 +15,16 @@ import { FeatureCardsScreenshot } from "./sections/feature-cards-screenshot";
 import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
 import { HeroBlock } from "./sections/hero";
 import { ImageLinkCards } from "./sections/image-link-cards";
+import { LatestPosts } from "./sections/latest-posts";
 import { LogoCloud } from "./sections/logo-cloud";
 import { MacbookScroll } from "./sections/macbook-scroll";
 import { StatsSection } from "./sections/stats-section";
 import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
+import { TeamFinder } from "./sections/team-finder";
+import { TeamFinderTeaser } from "./sections/team-finder-teaser";
 import { Testimonials } from "./sections/testimonials";
 import { TextBlock } from "./sections/text-block";
+import { VideoSection } from "./sections/video-section";
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<
@@ -50,6 +54,9 @@ const FULL_WIDTH_BLOCKS = new Set<string>([
   "hero",
   "statsSection",
   "macbookScroll",
+  "cta",
+  "videoSection",
+  "teamFinderTeaser",
 ]);
 
 // Component mapping for page builder blocks
@@ -67,6 +74,10 @@ const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
   logoCloud: LogoCloud,
   statsSection: StatsSection,
   macbookScroll: MacbookScroll,
+  videoSection: VideoSection,
+  latestPosts: LatestPosts,
+  teamFinder: TeamFinder,
+  teamFinderTeaser: TeamFinderTeaser,
 };
 
 /**

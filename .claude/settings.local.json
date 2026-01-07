@@ -26,7 +26,12 @@
       "Bash(pnpm list:*)",
       "Bash(pnpm check-types:*)",
       "Bash(pnpm outdated:*)",
-      "Bash(pnpm audit:*)"
+      "Bash(pnpm audit:*)",
+      "Bash(SANITY_STUDIO_PRESENTATION_URL=http://localhost:3000 pnpm type:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)",
+      "mcp__ide__getDiagnostics",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

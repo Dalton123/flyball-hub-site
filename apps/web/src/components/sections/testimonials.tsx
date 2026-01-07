@@ -48,7 +48,7 @@ function TestimonialCard({ testimonial, isVisible }: TestimonialCardProps) {
       <div className="flex items-center gap-4">
         {authorImage && (
           <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-            <SanityImage image={authorImage} alt={authorName || "Testimonial author"} />
+            <SanityImage image={authorImage} alt={authorImage?.alt || authorName || "Testimonial author"} />
           </div>
         )}
         <div>

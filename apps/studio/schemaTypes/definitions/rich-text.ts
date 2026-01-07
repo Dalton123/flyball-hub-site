@@ -58,6 +58,12 @@ const richTextMembers = [
     },
     fields: [
       defineField({
+        name: "alt",
+        title: "Alt Text",
+        type: "string",
+        description: "Describe this image for screen readers and SEO",
+      }),
+      defineField({
         name: "caption",
         type: "string",
         title: "Caption Text",

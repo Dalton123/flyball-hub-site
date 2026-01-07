@@ -15,6 +15,14 @@ const featureCardItem = defineField({
         hotspot: true,
       },
       validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "Describe this image for screen readers and SEO",
+        }),
+      ],
     }),
     defineField({
       name: "title",
@@ -29,6 +37,12 @@ const featureCardItem = defineField({
       title: "Description",
       description: "Brief description of the feature",
       rows: 2,
+    }),
+    defineField({
+      name: "url",
+      type: "optionalUrl",
+      title: "Link URL",
+      description: "Optional link - if set, the entire card becomes clickable",
     }),
   ],
   preview: {

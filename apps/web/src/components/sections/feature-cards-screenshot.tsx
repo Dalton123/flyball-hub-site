@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 import { Badge } from "@workspace/ui/components/badge";
 
@@ -23,7 +24,7 @@ type FeatureCardProps = {
 };
 
 function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
-  const { screenshot, title, description } = card ?? {};
+  const { screenshot, title, description, href, openInNewTab } = card ?? {};
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -66,7 +67,7 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
     setGlarePosition({ x: 50, y: 50 });
   };
 
-  return (
+  const cardContent = (
     <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
@@ -86,7 +87,7 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
         transformStyle: "preserve-3d",
         perspective: "1000px",
       }}
-      className="group relative"
+      className="group relative h-full"
     >
       <motion.div
         animate={{
@@ -99,19 +100,20 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
           stiffness: 300,
           damping: 20,
         }}
-        className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-primary to-primary/80 shadow-lg"
+        className="relative overflow-hidden rounded-2xl border border-border/50 bg-linear-to-br from-primary to-primary/80 shadow-lg h-full"
       >
         {/* Screenshot container */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+        <div className="relative aspect-4/3 overflow-hidden bg-muted">
           {screenshot ? (
             <SanityImage
               image={screenshot}
+              alt={screenshot?.alt || title || "Feature screenshot"}
               width={800}
               height={600}
-              className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 !rounded-none"
+              className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-101 !rounded-none"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
+            <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-primary/10 to-secondary/10">
               <span className="text-muted-foreground">Screenshot</span>
             </div>
           )}
@@ -185,9 +187,9 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
         </div>
 
         {/* Content */}
-        <div className="relative p-5 md:p-6">
+        <div className="relative p-4 h-full">
           {/* Subtle gradient background */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-accent/10" />
+          <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-transparent to-accent/10" />
 
           <div className="relative">
             {title && (
@@ -216,6 +218,21 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
       </motion.div>
     </motion.div>
   );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        target={openInNewTab ? "_blank" : undefined}
+        rel={openInNewTab ? "noopener noreferrer" : undefined}
+        className="block"
+      >
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 }
 
 export function FeatureCardsScreenshot({
@@ -235,11 +252,11 @@ export function FeatureCardsScreenshot({
   );
 
   return (
-    <section ref={ref} className="py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
+    <section ref={ref} className="py-4 md:py-8">
+      <div className="container mx-auto">
         {/* Header */}
         <div
-          className={`mb-12 flex flex-col items-center text-center transition-all duration-700 lg:mb-16 ${
+          className={`mb-12 flex flex-col items-center text-center transition-all duration-700 px-4 lg:mb-16 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -259,7 +276,7 @@ export function FeatureCardsScreenshot({
           {richText && (
             <RichText
               richText={richText}
-              className="mt-4 max-w-2xl text-base text-muted-foreground md:text-lg"
+              className="mt-4 max-w-3xl text-base text-muted-foreground md:text-lg text-center text-pretty"
             />
           )}
         </div>
@@ -267,7 +284,7 @@ export function FeatureCardsScreenshot({
         {/* Cards grid */}
         <div
           ref={containerRef}
-          className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+          className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 lg:gap-4 xl:gap-6 px-6"
         >
           {cards?.map((card, index) => (
             <FeatureCard

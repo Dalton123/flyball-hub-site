@@ -38,6 +38,14 @@ export const macbookScroll = defineType({
         hotspot: true,
       },
       validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "Describe this image for screen readers and SEO",
+        }),
+      ],
     }),
     defineField({
       name: "showGradient",

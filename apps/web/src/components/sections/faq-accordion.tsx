@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -17,6 +18,27 @@ import { RichText } from "../elements/rich-text";
 
 type FaqAccordionProps = PagebuilderType<"faqAccordion">;
 
+/**
+ * Convert Portable Text blocks to plain text for JSON-LD schema
+ */
+function portableTextToPlainText(blocks: unknown[] | null | undefined): string {
+  if (!blocks || !Array.isArray(blocks)) return "";
+
+  return blocks
+    .filter(
+      (block): block is { _type: string; children?: { text?: string }[] } =>
+        typeof block === "object" &&
+        block !== null &&
+        "_type" in block &&
+        block._type === "block"
+    )
+    .map((block) =>
+      block.children?.map((child) => child.text || "").join("") || ""
+    )
+    .join(" ")
+    .trim();
+}
+
 export function FaqAccordion({
   eyebrow,
   title,
@@ -24,10 +46,41 @@ export function FaqAccordion({
   faqs,
   link,
 }: FaqAccordionProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+    threshold: 0.1,
+  });
+
+  // Generate JSON-LD FAQ schema for SEO
+  const faqSchema = useMemo(() => {
+    if (!faqs?.length) return null;
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs
+        .filter((faq) => faq?.title && faq?.richText)
+        .map((faq) => ({
+          "@type": "Question",
+          name: faq.title,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: portableTextToPlainText(faq.richText),
+          },
+        })),
+    };
+
+    return JSON.stringify(schema);
+  }, [faqs]);
 
   return (
-    <section ref={ref} id="faq" className="py-12 md:py-20">
+    <section ref={ref} id="faq" className="">
+      {/* JSON-LD FAQ Schema for SEO */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: faqSchema }}
+        />
+      )}
       <div className="container mx-auto px-4 md:px-6">
         <div
           className={`flex w-full flex-col items-center transition-all duration-700 ${
@@ -36,7 +89,10 @@ export function FaqAccordion({
         >
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
             {eyebrow && (
-              <Badge variant="secondary" className="px-4 py-1.5 text-sm font-medium">
+              <Badge
+                variant="secondary"
+                className="px-4 py-1.5 text-sm font-medium"
+              >
                 {eyebrow}
               </Badge>
             )}

@@ -2,6 +2,31 @@ import { defineField } from "sanity";
 
 import { GROUP } from "../utils/constant";
 
+/**
+ * Creates a standard image field with alt text support for SEO and accessibility.
+ * Use this helper for consistent image fields across all schemas.
+ */
+export const createImageField = (
+  name: string,
+  title: string,
+  description: string
+) =>
+  defineField({
+    name,
+    title,
+    type: "image",
+    description,
+    options: { hotspot: true },
+    fields: [
+      defineField({
+        name: "alt",
+        title: "Alt Text",
+        type: "string",
+        description: "Describe this image for screen readers and SEO",
+      }),
+    ],
+  });
+
 export const richTextField = defineField({
   name: "richText",
   type: "richText",

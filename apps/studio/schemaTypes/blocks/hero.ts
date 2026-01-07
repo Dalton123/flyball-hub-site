@@ -33,6 +33,14 @@ export const hero = defineType({
       options: {
         hotspot: true,
       },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "Describe this image for screen readers and SEO",
+        }),
+      ],
     }),
     buttonsField,
     defineField({
@@ -80,6 +88,7 @@ export const hero = defineType({
       description: "Choose the visual style for this hero section",
       options: {
         list: [
+          { title: "Globe (Interactive world map)", value: "globe" },
           { title: "Dynamic (Bold, energetic design)", value: "dynamic" },
           { title: "Classic (Original design)", value: "classic" },
         ],

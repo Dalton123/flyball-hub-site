@@ -30,7 +30,7 @@ function LogoItem({ logo, isVisible }: LogoItemProps) {
           <SanityImage
             className="image-contain"
             image={logoImage}
-            alt={name || "Logo"}
+            alt={logoImage?.alt || name || "Logo"}
           />
         )}
       </div>

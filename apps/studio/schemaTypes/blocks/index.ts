@@ -5,12 +5,16 @@ import { featureCardsIcon } from "./feature-cards-icon";
 import { featureCardsScreenshot } from "./feature-cards-screenshot";
 import { hero } from "./hero";
 import { imageLinkCards } from "./image-link-cards";
+import { latestPosts } from "./latest-posts";
 import { logoCloud } from "./logo-cloud";
 import { macbookScroll } from "./macbook-scroll";
 import { statsSection } from "./stats-section";
 import { subscribeNewsletter } from "./subscribe-newsletter";
+import { teamFinder } from "./team-finder";
+import { teamFinderTeaser } from "./team-finder-teaser";
 import { testimonials } from "./testimonials";
 import { textBlock } from "./text-block";
+import { videoSection } from "./video-section";
 
 export const pageBuilderBlocks = [
   hero,
@@ -26,4 +30,8 @@ export const pageBuilderBlocks = [
   logoCloud,
   statsSection,
   macbookScroll,
+  videoSection,
+  latestPosts,
+  teamFinder,
+  teamFinderTeaser,
 ];
