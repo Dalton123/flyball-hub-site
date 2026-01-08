@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader2, MapPin, Search } from "lucide-react";
 
@@ -35,7 +35,52 @@ interface ApiTeam {
 
 type SearchState = "idle" | "searching" | "error";
 
-export function TeamFinder({
+export function TeamFinder(props: TeamFinderProps) {
+  return (
+    <Suspense fallback={<TeamFinderSkeleton {...props} />}>
+      <TeamFinderContent {...props} />
+    </Suspense>
+  );
+}
+
+function TeamFinderSkeleton({
+  eyebrow,
+  title,
+  description,
+}: TeamFinderProps) {
+  return (
+    <section className="py-12 md:py-20">
+      <div className="mb-10 text-center">
+        {eyebrow && (
+          <Badge variant="secondary" className="mb-4">
+            {eyebrow}
+          </Badge>
+        )}
+        {title && (
+          <h1 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
+            {title}
+          </h1>
+        )}
+        {description && (
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+            {description}
+          </p>
+        )}
+      </div>
+      <div className="mx-auto mb-10 flex max-w-xl flex-col gap-3 sm:flex-row">
+        <div className="h-12 flex-1 animate-pulse rounded-xl bg-muted" />
+        <div className="h-12 w-28 animate-pulse rounded-xl bg-muted" />
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <TeamCardSkeleton key={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TeamFinderContent({
   eyebrow,
   title,
   description,
