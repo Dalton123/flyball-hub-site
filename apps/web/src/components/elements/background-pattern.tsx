@@ -54,7 +54,7 @@ function TennisBallsPattern() {
 }
 
 function PawPrintsPattern() {
-  // Diagonal paw print pattern
+  // a Diagonal paw print pattern
   return (
     <svg
       className="absolute inset-0 w-full h-full"
@@ -129,7 +129,7 @@ export function BackgroundPattern({
     <div
       className={cn(
         "absolute inset-0 pointer-events-none text-primary overflow-hidden",
-        className
+        className,
       )}
       style={{ opacity }}
       aria-hidden="true"
