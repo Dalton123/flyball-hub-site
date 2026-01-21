@@ -9,14 +9,9 @@ import {
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-import { parseChildrenToSlug } from "@/utils";
+import { cleanText, parseChildrenToSlug } from "@/utils";
 
 import { SanityImage } from "./sanity-image";
-
-// Strip zero-width characters that Sanity/PortableText can insert
-// These break rendering and show up as HTML entities
-const cleanText = (text: string) =>
-  text?.replace(/[\u200B\u200C\u200D\uFEFF]/g, "") ?? "";
 
 // Helper to parse highlight lines (e.g., "1,3,5-7" -> [1, 3, 5, 6, 7])
 function parseHighlightLines(input?: string): number[] {

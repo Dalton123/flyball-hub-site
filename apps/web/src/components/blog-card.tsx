@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import type { QueryBlogIndexPageDataResult } from "@/lib/sanity/sanity.types";
+import { cleanText } from "@/utils";
 
 import { SanityImage } from "./elements/sanity-image";
 
@@ -56,7 +57,7 @@ export function BlogAuthor({ author }: BlogAuthorProps) {
   return (
     <div className="flex items-center gap-x-2.5 text-sm/6 font-semibold text-gray-900">
       <AuthorImage author={author} />
-      {author.name}
+      {cleanText(author.name)}
     </div>
   );
 }
@@ -102,11 +103,11 @@ function BlogContent({
       <HeadingTag className={headingClasses}>
         <Link href={slug ?? "#"}>
           <span className="absolute inset-0" />
-          {title}
+          {cleanText(title)}
         </Link>
       </HeadingTag>
       <p className="mt-5 text-sm leading-6 text-muted-foreground">
-        {description}
+        {cleanText(description)}
       </p>
     </div>
   );
@@ -122,7 +123,7 @@ function AuthorSection({ authors }: { authors: Blog["authors"] }) {
         <div className="text-sm leading-6">
           <p className="font-semibold">
             <span className="absolute inset-0" />
-            {authors.name}
+            {cleanText(authors.name)}
           </p>
         </div>
       </div>

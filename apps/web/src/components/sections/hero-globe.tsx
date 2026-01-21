@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import * as THREE from "three";
 import { Button } from "@workspace/ui/components/button";
 import type { PagebuilderType } from "@/types";
+import { cleanText } from "@/utils";
 import { RichText } from "../elements/rich-text";
 
 // Feature toggles - flip these to enable/disable globe interactions
@@ -232,13 +233,13 @@ export function HeroGlobe({
             {badge && (
               <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white backdrop-blur-sm">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-green-300" />
-                {badge}
+                {cleanText(badge)}
               </span>
             )}
 
             {title && (
               <h1 className="font-hero text-4xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
-                {title}
+                {cleanText(title)}
               </h1>
             )}
 
@@ -267,7 +268,7 @@ export function HeroGlobe({
                     }
                     onClick={() => router.push(button.href || "/")}
                   >
-                    {button.text}
+                    {cleanText(button.text)}
                   </Button>
                 ))}
               </div>
@@ -279,9 +280,9 @@ export function HeroGlobe({
                 {stats.map((stat, index) => (
                   <div key={index}>
                     <span className="block text-2xl font-bold text-white">
-                      {stat.value}
+                      {cleanText(stat.value)}
                     </span>
-                    <span className="text-sm">{stat.label}</span>
+                    <span className="text-sm">{cleanText(stat.label)}</span>
                   </div>
                 ))}
               </div>

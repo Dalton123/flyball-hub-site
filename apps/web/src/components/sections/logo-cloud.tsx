@@ -6,6 +6,7 @@ import {
   useScrollAnimation,
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 import { SanityImage } from "../elements/sanity-image";
 import { RichText } from "../elements/rich-text";
 
@@ -80,12 +81,12 @@ export function LogoCloud({ eyebrow, title, richText, logos }: LogoCloudProps) {
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium"
               >
-                {eyebrow}
+                {cleanText(eyebrow)}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-                {title}
+                {cleanText(title)}
               </h2>
             )}
             <RichText

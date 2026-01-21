@@ -4,6 +4,7 @@ import { Badge } from "@workspace/ui/components/badge";
 
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 import { SanityIcon } from "../elements/sanity-icon";
@@ -28,7 +29,7 @@ function FeatureCard({ card, isVisible }: FeatureCardProps) {
       </span>
 
       <div>
-        <h3 className="text-lg font-semibold md:text-xl mb-3">{title}</h3>
+        <h3 className="text-lg font-semibold md:text-xl mb-3">{cleanText(title)}</h3>
         <RichText
           richText={richText}
           className="font-normal text-sm md:text-base text-muted-foreground leading-relaxed"
@@ -60,12 +61,12 @@ export function FeatureCardsWithIcon({
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
             {eyebrow && (
               <Badge variant="secondary" className="px-4 py-1.5 text-sm font-medium">
-                {eyebrow}
+                {cleanText(eyebrow)}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-                {title}
+                {cleanText(title)}
               </h2>
             )}
             <RichText

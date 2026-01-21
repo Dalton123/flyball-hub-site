@@ -4,6 +4,7 @@ import { Badge } from "@workspace/ui/components/badge";
 
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
@@ -52,12 +53,12 @@ export function HeroBlock(props: HeroBlockProps) {
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium"
               >
-                {badge}
+                {cleanText(badge)}
               </Badge>
             )}
             <div className="grid gap-4 lg:gap-6">
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-balance leading-tight">
-                {title}
+                {cleanText(title)}
               </h1>
               <RichText
                 richText={richText}

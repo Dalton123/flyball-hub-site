@@ -4,6 +4,7 @@ import { Badge } from "@workspace/ui/components/badge";
 
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
@@ -39,11 +40,11 @@ export function CTABlock({ richText, title, eyebrow, buttons }: CTABlockProps) {
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium bg-primary-foreground/90 text-primary"
               >
-                {eyebrow}
+                {cleanText(eyebrow)}
               </Badge>
             )}
             <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl text-balance text-primary-foreground">
-              {title}
+              {cleanText(title)}
             </h2>
             <div className="text-base md:text-lg text-primary-foreground max-w-2xl mx-auto">
               <RichText

@@ -10,6 +10,7 @@ import { Input } from "@workspace/ui/components/input";
 
 import type { PagebuilderType } from "@/types";
 import { calculateDistance, geocodeLocation } from "@/lib/geo";
+import { cleanText } from "@/utils";
 
 import {
   TeamCard,
@@ -53,17 +54,17 @@ function TeamFinderSkeleton({
       <div className="mb-10 text-center">
         {eyebrow && (
           <Badge variant="secondary" className="mb-4">
-            {eyebrow}
+            {cleanText(eyebrow)}
           </Badge>
         )}
         {title && (
           <h1 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-            {title}
+            {cleanText(title)}
           </h1>
         )}
         {description && (
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            {description}
+            {cleanText(description)}
           </p>
         )}
       </div>
@@ -213,17 +214,17 @@ function TeamFinderContent({
       <div className="mb-10 text-center">
         {eyebrow && (
           <Badge variant="secondary" className="mb-4">
-            {eyebrow}
+            {cleanText(eyebrow)}
           </Badge>
         )}
         {title && (
           <h1 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-            {title}
+            {cleanText(title)}
           </h1>
         )}
         {description && (
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            {description}
+            {cleanText(description)}
           </p>
         )}
       </div>

@@ -3,6 +3,7 @@
 import { Badge } from "@workspace/ui/components/badge";
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 import { RichText } from "../elements/rich-text";
 import { BackgroundPattern } from "../elements/background-pattern";
 
@@ -29,14 +30,14 @@ function StatItem({ stat, isVisible, variant = "default" }: StatItemProps) {
           isAccent ? "text-primary-foreground" : "text-primary"
         }`}
       >
-        {value}
+        {cleanText(value)}
       </div>
       <div
         className={`text-lg md:text-xl font-semibold mb-2 ${
           isAccent ? "text-primary-foreground" : "text-foreground"
         }`}
       >
-        {label}
+        {cleanText(label)}
       </div>
       {description && (
         <div
@@ -44,7 +45,7 @@ function StatItem({ stat, isVisible, variant = "default" }: StatItemProps) {
             isAccent ? "text-primary-foreground/70" : "text-muted-foreground"
           }`}
         >
-          {description}
+          {cleanText(description)}
         </div>
       )}
     </div>
@@ -95,7 +96,7 @@ export function StatsSection({
                     : ""
                 }`}
               >
-                {eyebrow}
+                {cleanText(eyebrow)}
               </Badge>
             )}
             {title && (
@@ -104,7 +105,7 @@ export function StatsSection({
                   isAccent ? "text-primary-foreground" : ""
                 }`}
               >
-                {title}
+                {cleanText(title)}
               </h2>
             )}
             <RichText

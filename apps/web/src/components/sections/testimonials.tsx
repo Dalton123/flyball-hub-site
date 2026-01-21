@@ -4,6 +4,7 @@ import { Badge } from "@workspace/ui/components/badge";
 import { Star } from "lucide-react";
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 import { SanityImage } from "../elements/sanity-image";
 import { RichText } from "../elements/rich-text";
 
@@ -41,7 +42,7 @@ function TestimonialCard({ testimonial, isVisible }: TestimonialCardProps) {
 
       {/* Quote */}
       <blockquote className="text-base md:text-lg text-foreground mb-6 flex-grow">
-        "{quote}"
+        "{cleanText(quote)}"
       </blockquote>
 
       {/* Author info */}
@@ -52,9 +53,9 @@ function TestimonialCard({ testimonial, isVisible }: TestimonialCardProps) {
           </div>
         )}
         <div>
-          <div className="font-semibold text-foreground">{authorName}</div>
+          <div className="font-semibold text-foreground">{cleanText(authorName)}</div>
           {authorRole && (
-            <div className="text-sm text-muted-foreground">{authorRole}</div>
+            <div className="text-sm text-muted-foreground">{cleanText(authorRole)}</div>
           )}
         </div>
       </div>
@@ -85,12 +86,12 @@ export function Testimonials({
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6">
             {eyebrow && (
               <Badge variant="secondary" className="px-4 py-1.5 text-sm font-medium">
-                {eyebrow}
+                {cleanText(eyebrow)}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-                {title}
+                {cleanText(title)}
               </h2>
             )}
             <RichText

@@ -74,3 +74,10 @@ export function parseChildrenToSlug(children: PortableTextBlock["children"]) {
   if (!children) return "";
   return convertToSlug(children.map((child) => child.text).join(""));
 }
+
+/**
+ * Strip zero-width characters that can come from Sanity/PortableText
+ * These break rendering and show up as HTML entities like &ZeroWidthSpace;
+ */
+export const cleanText = (text: string | undefined | null): string =>
+  text?.replace(/[\u200B\u200C\u200D\uFEFF\u2060\u180E]/g, "") ?? "";

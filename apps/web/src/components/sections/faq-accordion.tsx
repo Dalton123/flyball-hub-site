@@ -13,6 +13,7 @@ import Link from "next/link";
 
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 
@@ -61,7 +62,7 @@ export function FaqAccordion({
         .filter((faq) => faq?.title && faq?.richText)
         .map((faq) => ({
           "@type": "Question",
-          name: faq.title,
+          name: cleanText(faq.title),
           acceptedAnswer: {
             "@type": "Answer",
             text: portableTextToPlainText(faq.richText),
@@ -93,17 +94,17 @@ export function FaqAccordion({
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium"
               >
-                {eyebrow}
+                {cleanText(eyebrow)}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-                {title}
+                {cleanText(title)}
               </h2>
             )}
             {subtitle && (
               <p className="text-base md:text-lg font-normal text-muted-foreground text-balance max-w-2xl">
-                {subtitle}
+                {cleanText(subtitle)}
               </p>
             )}
           </div>
@@ -126,7 +127,7 @@ export function FaqAccordion({
                 className="border border-border/60 rounded-xl px-5 py-1 bg-card/50 hover:bg-card transition-colors data-[state=open]:bg-card data-[state=open]:shadow-sm"
               >
                 <AccordionTrigger className="py-4 text-base font-medium leading-6 hover:no-underline group text-left">
-                  {faq?.title}
+                  {cleanText(faq?.title)}
                 </AccordionTrigger>
                 <AccordionContent className="pb-4 text-muted-foreground">
                   <RichText
@@ -141,7 +142,7 @@ export function FaqAccordion({
           {link?.href && (
             <div className="w-full pt-8 mt-4 border-t border-border/40">
               <p className="mb-2 text-xs text-muted-foreground uppercase tracking-wide">
-                {link?.title}
+                {cleanText(link?.title)}
               </p>
               <Link
                 href={link.href ?? "#"}
@@ -149,7 +150,7 @@ export function FaqAccordion({
                 className="inline-flex items-center gap-2 group/link text-foreground hover:text-primary transition-colors"
               >
                 <span className="text-base font-medium leading-6">
-                  {link?.description}
+                  {cleanText(link?.description)}
                 </span>
                 <span className="rounded-full border border-border group-hover/link:border-primary group-hover/link:bg-primary p-1.5 transition-colors">
                   <ArrowUpRight

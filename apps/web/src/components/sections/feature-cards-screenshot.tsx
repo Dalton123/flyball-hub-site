@@ -11,6 +11,7 @@ import {
   useScrollAnimation,
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 import { SanityImage } from "../elements/sanity-image";
@@ -194,12 +195,12 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
           <div className="relative">
             {title && (
               <h3 className="mb-2 text-lg font-semibold text-primary-foreground md:text-xl">
-                {title}
+                {cleanText(title)}
               </h3>
             )}
             {description && (
               <p className="text-sm leading-relaxed text-primary-foreground md:text-base">
-                {description}
+                {cleanText(description)}
               </p>
             )}
           </div>
@@ -265,12 +266,12 @@ export function FeatureCardsScreenshot({
               variant="secondary"
               className="mb-4 px-4 py-1.5 text-sm font-medium"
             >
-              {eyebrow}
+              {cleanText(eyebrow)}
             </Badge>
           )}
           {title && (
             <h2 className="max-w-3xl text-3xl font-semibold md:text-4xl lg:text-5xl">
-              {title}
+              {cleanText(title)}
             </h2>
           )}
           {richText && (
