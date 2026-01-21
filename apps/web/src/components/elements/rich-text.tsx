@@ -13,6 +13,11 @@ import { parseChildrenToSlug } from "@/utils";
 
 import { SanityImage } from "./sanity-image";
 
+// Strip zero-width characters that Sanity/PortableText can insert
+// These break rendering and show up as HTML entities
+const cleanText = (text: string) =>
+  text?.replace(/[\u200B\u200C\u200D\uFEFF]/g, "") ?? "";
+
 // Helper to parse highlight lines (e.g., "1,3,5-7" -> [1, 3, 5, 6, 7])
 function parseHighlightLines(input?: string): number[] {
   if (!input) return [];
@@ -112,6 +117,24 @@ const components: Partial<PortableTextReactComponents> = {
     "strike-through": ({ children }) => (
       <del className="line-through">{children}</del>
     ),
+    link: ({ children, value }) => {
+      if (!value?.href || value.href === "#") {
+        return <span>{children}</span>;
+      }
+      const isExternal =
+        value.href.startsWith("http") && !value.href.includes("flyballhub.com");
+      return (
+        <Link
+          className="underline decoration-dotted underline-offset-2"
+          href={value.href}
+          prefetch={false}
+          target={isExternal ? "_blank" : "_self"}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+        >
+          {children}
+        </Link>
+      );
+    },
     customLink: ({ children, value }) => {
       if (!value.href || value.href === "#") {
         console.warn("🚀 link is not set", value);
@@ -286,6 +309,26 @@ const components: Partial<PortableTextReactComponents> = {
 
 type TextAlignment = "left" | "center" | "right";
 
+// Recursively clean zero-width characters from all text in portable text blocks
+function cleanPortableText(blocks: PortableTextBlock[]): PortableTextBlock[] {
+  if (!Array.isArray(blocks)) return blocks;
+
+  return blocks.map((block) => {
+    if (block._type === "block" && Array.isArray(block.children)) {
+      return {
+        ...block,
+        children: block.children.map((child) => {
+          if (child._type === "span" && typeof child.text === "string") {
+            return { ...child, text: cleanText(child.text) };
+          }
+          return child;
+        }),
+      };
+    }
+    return block;
+  }) as PortableTextBlock[];
+}
+
 export function RichText<T>({
   richText,
   className,
@@ -296,6 +339,11 @@ export function RichText<T>({
   alignment?: TextAlignment;
 }) {
   if (!richText) return null;
+
+  // Clean zero-width characters before rendering
+  const cleanedRichText = cleanPortableText(
+    richText as unknown as PortableTextBlock[],
+  );
 
   const alignmentClass = {
     left: "text-left",
@@ -328,7 +376,7 @@ export function RichText<T>({
       )}
     >
       <PortableText
-        value={richText as unknown as PortableTextBlock[]}
+        value={cleanedRichText}
         components={components}
         onMissingComponent={(_, { nodeType, type }) =>
           console.log("missing component", nodeType, type)
