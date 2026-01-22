@@ -299,7 +299,6 @@ export function Navbar({
       revalidateOnFocus: false,
       revalidateOnMount: false,
       revalidateOnReconnect: true,
-      refreshInterval: 30000,
       errorRetryCount: 3,
       errorRetryInterval: 5000,
     },

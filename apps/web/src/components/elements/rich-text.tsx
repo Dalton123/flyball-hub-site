@@ -1,15 +1,44 @@
 "use client";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   PortableText,
   type PortableTextBlock,
   type PortableTextReactComponents,
 } from "next-sanity";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import { cleanText, parseChildrenToSlug } from "@/utils";
+
+// Skeleton for code block loading state
+function CodeBlockSkeleton({ filename }: { filename?: string }) {
+  return (
+    <figure className="my-6 overflow-hidden rounded-lg border border-border">
+      {filename && (
+        <div className="bg-muted px-4 py-2 text-sm text-muted-foreground font-mono border-b border-border">
+          {filename}
+        </div>
+      )}
+      <div className="bg-[#282c34] p-4">
+        <div className="space-y-2">
+          <div className="h-4 w-3/4 animate-pulse rounded bg-white/10" />
+          <div className="h-4 w-1/2 animate-pulse rounded bg-white/10" />
+          <div className="h-4 w-5/6 animate-pulse rounded bg-white/10" />
+          <div className="h-4 w-2/3 animate-pulse rounded bg-white/10" />
+        </div>
+      </div>
+    </figure>
+  );
+}
+
+// Lazy-loaded code block component wrapper
+const LazyCodeBlock = dynamic(
+  () => import("./code-block").then((mod) => mod.CodeBlock),
+  {
+    ssr: false,
+    loading: () => <CodeBlockSkeleton />,
+  }
+);
 
 import { SanityImage } from "./sanity-image";
 
@@ -213,33 +242,12 @@ const components: Partial<PortableTextReactComponents> = {
       const highlightLines = parseHighlightLines(value.highlightLines);
 
       return (
-        <figure className="my-6 overflow-hidden rounded-lg border border-border">
-          {value.filename && (
-            <div className="bg-muted px-4 py-2 text-sm text-muted-foreground font-mono border-b border-border">
-              {value.filename}
-            </div>
-          )}
-          <SyntaxHighlighter
-            language={value.language || "text"}
-            style={oneDark}
-            showLineNumbers
-            wrapLines
-            lineProps={(lineNumber) => ({
-              style: {
-                backgroundColor: highlightLines.includes(lineNumber)
-                  ? "rgba(255, 255, 0, 0.1)"
-                  : undefined,
-              },
-            })}
-            customStyle={{
-              margin: 0,
-              borderRadius: value.filename ? 0 : "0.5rem",
-              fontSize: "0.875rem",
-            }}
-          >
-            {value.code}
-          </SyntaxHighlighter>
-        </figure>
+        <LazyCodeBlock
+          code={value.code}
+          language={value.language || "text"}
+          filename={value.filename}
+          highlightLines={highlightLines}
+        />
       );
     },
     table: ({ value }) => {

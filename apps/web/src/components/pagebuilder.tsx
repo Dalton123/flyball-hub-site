@@ -2,29 +2,87 @@
 
 import { useOptimistic } from "@sanity/visual-editing/react";
 import { createDataAttribute } from "next-sanity";
+import dynamic from "next/dynamic";
 import { useCallback, useMemo } from "react";
 
 import { dataset, projectId, studioUrl } from "@/config";
 import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
 import type { PageBuilderBlockTypes, PagebuilderType } from "@/types";
 
-import { CTABlock } from "./sections/cta";
-import { ContactForm } from "./sections/contact-form";
-import { FaqAccordion } from "./sections/faq-accordion";
-import { FeatureCardsScreenshot } from "./sections/feature-cards-screenshot";
-import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
+// Hero is kept static for above-the-fold LCP optimization
 import { HeroBlock } from "./sections/hero";
-import { ImageLinkCards } from "./sections/image-link-cards";
-import { LatestPosts } from "./sections/latest-posts";
-import { LogoCloud } from "./sections/logo-cloud";
-import { MacbookScroll } from "./sections/macbook-scroll";
-import { StatsSection } from "./sections/stats-section";
-import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
-import { TeamFinder } from "./sections/team-finder";
-import { TeamFinderTeaser } from "./sections/team-finder-teaser";
-import { Testimonials } from "./sections/testimonials";
-import { TextBlock } from "./sections/text-block";
-import { VideoSection } from "./sections/video-section";
+
+// Block loading skeleton
+function BlockSkeleton() {
+  return (
+    <div className="w-full py-12">
+      <div className="container mx-auto px-4">
+        <div className="space-y-4">
+          <div className="h-8 w-1/3 animate-pulse rounded bg-muted" />
+          <div className="h-4 w-2/3 animate-pulse rounded bg-muted" />
+          <div className="h-32 w-full animate-pulse rounded bg-muted" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Dynamic imports for all non-hero blocks to reduce initial bundle size
+const CTABlock = dynamic(() => import("./sections/cta").then((mod) => mod.CTABlock), {
+  loading: () => <BlockSkeleton />,
+});
+const ContactForm = dynamic(() => import("./sections/contact-form").then((mod) => mod.ContactForm), {
+  loading: () => <BlockSkeleton />,
+});
+const FaqAccordion = dynamic(() => import("./sections/faq-accordion").then((mod) => mod.FaqAccordion), {
+  loading: () => <BlockSkeleton />,
+});
+const FeatureCardsScreenshot = dynamic(
+  () => import("./sections/feature-cards-screenshot").then((mod) => mod.FeatureCardsScreenshot),
+  { loading: () => <BlockSkeleton /> }
+);
+const FeatureCardsWithIcon = dynamic(
+  () => import("./sections/feature-cards-with-icon").then((mod) => mod.FeatureCardsWithIcon),
+  { loading: () => <BlockSkeleton /> }
+);
+const ImageLinkCards = dynamic(
+  () => import("./sections/image-link-cards").then((mod) => mod.ImageLinkCards),
+  { loading: () => <BlockSkeleton /> }
+);
+const LatestPosts = dynamic(() => import("./sections/latest-posts").then((mod) => mod.LatestPosts), {
+  loading: () => <BlockSkeleton />,
+});
+const LogoCloud = dynamic(() => import("./sections/logo-cloud").then((mod) => mod.LogoCloud), {
+  loading: () => <BlockSkeleton />,
+});
+const MacbookScroll = dynamic(
+  () => import("./sections/macbook-scroll").then((mod) => mod.MacbookScroll),
+  { ssr: false, loading: () => <BlockSkeleton /> }
+);
+const StatsSection = dynamic(() => import("./sections/stats-section").then((mod) => mod.StatsSection), {
+  loading: () => <BlockSkeleton />,
+});
+const SubscribeNewsletter = dynamic(
+  () => import("./sections/subscribe-newsletter").then((mod) => mod.SubscribeNewsletter),
+  { loading: () => <BlockSkeleton /> }
+);
+const TeamFinder = dynamic(() => import("./sections/team-finder").then((mod) => mod.TeamFinder), {
+  loading: () => <BlockSkeleton />,
+});
+const TeamFinderTeaser = dynamic(
+  () => import("./sections/team-finder-teaser").then((mod) => mod.TeamFinderTeaser),
+  { loading: () => <BlockSkeleton /> }
+);
+const Testimonials = dynamic(() => import("./sections/testimonials").then((mod) => mod.Testimonials), {
+  loading: () => <BlockSkeleton />,
+});
+const TextBlock = dynamic(() => import("./sections/text-block").then((mod) => mod.TextBlock), {
+  loading: () => <BlockSkeleton />,
+});
+const VideoSection = dynamic(() => import("./sections/video-section").then((mod) => mod.VideoSection), {
+  ssr: false,
+  loading: () => <BlockSkeleton />,
+});
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<

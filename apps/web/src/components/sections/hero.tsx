@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
+import dynamic from "next/dynamic";
 
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -10,8 +11,36 @@ import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
 import { SanityButtons } from "../elements/sanity-buttons";
 import { SanityImage } from "../elements/sanity-image";
-import { HeroDynamic } from "./hero-dynamic";
-import { HeroGlobe } from "./hero-globe";
+
+// Hero loading skeleton
+function HeroSkeleton() {
+  return (
+    <section className="relative min-h-[85dvh] overflow-hidden bg-primary/90 pb-8 lg:pb-0">
+      <div className="container mx-auto px-4">
+        <div className="grid min-h-[85dvh] items-center gap-8 lg:grid-cols-2 lg:gap-4">
+          <div className="order-2 space-y-6 text-center lg:order-1 lg:space-y-8 lg:text-left">
+            <div className="h-8 w-32 animate-pulse rounded-full bg-white/15" />
+            <div className="h-16 w-3/4 animate-pulse rounded bg-white/15" />
+            <div className="h-24 w-full animate-pulse rounded bg-white/15" />
+          </div>
+          <div className="order-1 flex h-120 items-center justify-center lg:order-2 lg:h-120">
+            <div className="h-96 w-96 animate-pulse rounded-full bg-white/10" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Dynamic import hero variants - only loads when needed
+const HeroGlobe = dynamic(() => import("./hero-globe").then((mod) => mod.HeroGlobe), {
+  ssr: false,
+  loading: () => <HeroSkeleton />,
+});
+
+const HeroDynamic = dynamic(() => import("./hero-dynamic").then((mod) => mod.HeroDynamic), {
+  loading: () => <HeroSkeleton />,
+});
 
 type HeroBlockProps = PagebuilderType<"hero">;
 

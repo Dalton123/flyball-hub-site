@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
     inlineCss: true,
   },
+  // Icon library tree-shaking - prevents importing entire icon libraries
+  modularizeImports: {
+    "@tabler/icons-react": {
+      transform: "@tabler/icons-react/dist/esm/icons/{{member}}",
+    },
+    "lucide-react": {
+      transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
+    },
+  },
   logging: {
     fetches: {},
   },

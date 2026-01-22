@@ -13,8 +13,70 @@ interface UseScrollAnimationReturn<T extends HTMLElement> {
   isVisible: boolean;
 }
 
+// Shared observer registry - reuses observers with the same options
+type ObserverCallback = (entry: IntersectionObserverEntry) => void;
+
+interface ObserverEntry {
+  observer: IntersectionObserver;
+  callbacks: Map<Element, ObserverCallback>;
+}
+
+const observerRegistry = new Map<string, ObserverEntry>();
+
+function getObserverKey(threshold: number, rootMargin: string): string {
+  return `${threshold}-${rootMargin}`;
+}
+
+function getSharedObserver(
+  threshold: number,
+  rootMargin: string,
+  element: Element,
+  callback: ObserverCallback
+): () => void {
+  const key = getObserverKey(threshold, rootMargin);
+
+  let entry = observerRegistry.get(key);
+
+  if (!entry) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const registryEntry = observerRegistry.get(key);
+        if (!registryEntry) return;
+
+        for (const e of entries) {
+          const cb = registryEntry.callbacks.get(e.target);
+          if (cb) cb(e);
+        }
+      },
+      { threshold, rootMargin }
+    );
+
+    entry = { observer, callbacks: new Map() };
+    observerRegistry.set(key, entry);
+  }
+
+  entry.callbacks.set(element, callback);
+  entry.observer.observe(element);
+
+  // Return cleanup function
+  return () => {
+    const registryEntry = observerRegistry.get(key);
+    if (!registryEntry) return;
+
+    registryEntry.callbacks.delete(element);
+    registryEntry.observer.unobserve(element);
+
+    // Clean up observer if no more elements are being observed
+    if (registryEntry.callbacks.size === 0) {
+      registryEntry.observer.disconnect();
+      observerRegistry.delete(key);
+    }
+  };
+}
+
 /**
  * Hook for triggering animations when elements scroll into view.
+ * Uses a shared IntersectionObserver registry to reduce memory usage.
  * Respects prefers-reduced-motion for accessibility.
  */
 export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
@@ -60,23 +122,19 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
       if (triggerOnce) return; // Don't need observer if already visible and triggerOnce
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setIsVisible(true);
-          if (triggerOnce) {
-            observer.unobserve(element);
-          }
-        } else if (!triggerOnce) {
-          setIsVisible(false);
+    // Use shared observer instead of creating a new one
+    const cleanup = getSharedObserver(threshold, rootMargin, element, (entry) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        if (triggerOnce) {
+          cleanup();
         }
-      },
-      { threshold, rootMargin }
-    );
+      } else if (!triggerOnce) {
+        setIsVisible(false);
+      }
+    });
 
-    observer.observe(element);
-
-    return () => observer.disconnect();
+    return cleanup;
   }, [threshold, rootMargin, triggerOnce, prefersReducedMotion]);
 
   return { ref, isVisible };
@@ -84,6 +142,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
 
 /**
  * Hook for staggered animations on multiple children.
+ * Uses shared IntersectionObserver registry to reduce memory usage.
  * Returns refs and visibility states for each child.
  */
 export function useStaggeredAnimation(
@@ -91,6 +150,8 @@ export function useStaggeredAnimation(
   options: UseScrollAnimationOptions & { staggerDelay?: number } = {}
 ) {
   const { staggerDelay = 100, ...scrollOptions } = options;
+  const threshold = scrollOptions.threshold ?? 0.1;
+  const rootMargin = scrollOptions.rootMargin ?? "0px";
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItems, setVisibleItems] = useState<boolean[]>(
     Array(count).fill(false)
@@ -118,29 +179,25 @@ export function useStaggeredAnimation(
     const container = containerRef.current;
     if (!container) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          // Stagger the visibility of each item
-          for (let i = 0; i < count; i++) {
-            setTimeout(() => {
-              setVisibleItems((prev) => {
-                const next = [...prev];
-                next[i] = true;
-                return next;
-              });
-            }, i * staggerDelay);
-          }
-          observer.unobserve(container);
+    // Use shared observer instead of creating a new one
+    const cleanup = getSharedObserver(threshold, rootMargin, container, (entry) => {
+      if (entry.isIntersecting) {
+        // Stagger the visibility of each item
+        for (let i = 0; i < count; i++) {
+          setTimeout(() => {
+            setVisibleItems((prev) => {
+              const next = [...prev];
+              next[i] = true;
+              return next;
+            });
+          }, i * staggerDelay);
         }
-      },
-      { threshold: scrollOptions.threshold ?? 0.1, rootMargin: scrollOptions.rootMargin ?? "0px" }
-    );
+        cleanup();
+      }
+    });
 
-    observer.observe(container);
-
-    return () => observer.disconnect();
-  }, [count, staggerDelay, scrollOptions.threshold, scrollOptions.rootMargin, prefersReducedMotion]);
+    return cleanup;
+  }, [count, staggerDelay, threshold, rootMargin, prefersReducedMotion]);
 
   return { containerRef, visibleItems };
 }

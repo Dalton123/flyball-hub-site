@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import * as THREE from "three";
 import { Button } from "@workspace/ui/components/button";
 import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
@@ -196,8 +195,9 @@ export function HeroGlobe({
     return countries.size;
   }, [teams]);
 
-  // Create white globe material for water
+  // Create white globe material for water - dynamic import to avoid blocking main thread
   const globeMaterial = useMemo(() => {
+    const THREE = require("three");
     return new THREE.MeshPhongMaterial({
       color: new THREE.Color("#c2ffc5"),
       emissive: new THREE.Color("#c2ffc5"),

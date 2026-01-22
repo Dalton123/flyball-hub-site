@@ -32,7 +32,10 @@
       "WebFetch(domain:github.com)",
       "mcp__ide__getDiagnostics",
       "Bash(grep:*)",
-      "WebFetch(domain:publishers.grow.me)"
+      "WebFetch(domain:publishers.grow.me)",
+      "WebFetch(domain:pagespeed.web.dev)",
+      "WebFetch(domain:www.googleapis.com)",
+      "Skill(vercel-react-best-practices)"
     ],
     "deny": [],
     "ask": []
