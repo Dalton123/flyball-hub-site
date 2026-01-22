@@ -418,7 +418,7 @@ export const queryBlogIndexPageData = defineQuery(`
     "featuredBlogsCount" : featuredBlogsCount,
     ${pageBuilderFragment},
     "slug": slug.current,
-    "blogs": *[_type == "blog" && (seoHideFromLists != true)] | order(orderRank asc){
+    "blogs": *[_type == "blog" && (seoHideFromLists != true)] | order(publishedAt desc){
       ${blogCardFragment}
     }
   }

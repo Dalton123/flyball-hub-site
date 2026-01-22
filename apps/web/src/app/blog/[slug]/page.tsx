@@ -73,7 +73,8 @@ export default async function BlogSlugPage({
     client.fetch(querySettingsData),
   ]);
   if (!data) return notFound();
-  const { title, description, image, richText } = data ?? {};
+  const { title, description, image, richText, authors, publishedAt } =
+    data ?? {};
 
   const breadcrumbs = [
     { name: "Home", url: "/" },
@@ -93,6 +94,30 @@ export default async function BlogSlugPage({
           <header className="mb-8">
             <h1 className="mt-2 text-4xl font-bold">{title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">{description}</p>
+            {authors && (
+              <div className="mt-6 flex items-center gap-x-4">
+                <div className="text-sm">
+                  <p className="font-semibold">{stegaClean(authors.name)}</p>
+                  <div className="flex items-center gap-x-2 text-muted-foreground">
+                    {authors.position && (
+                      <>
+                        <span>{stegaClean(authors.position)}</span>
+                        <span aria-hidden="true">·</span>
+                      </>
+                    )}
+                    {publishedAt && (
+                      <time dateTime={publishedAt}>
+                        {new Date(publishedAt).toLocaleDateString("en-GB", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </time>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </header>
           {image && (
             <div className="mb-12">
