@@ -4,6 +4,11 @@ import { client } from "@/lib/sanity/client";
 import { querySitemapData } from "@/lib/sanity/query";
 import { getBaseUrl } from "@/utils";
 
+interface SitemapPage {
+  slug: string;
+  lastModified: string | null;
+}
+
 const baseUrl = getBaseUrl();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -15,13 +20,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 1,
     },
-    ...slugPages.map((page) => ({
+    ...(slugPages as SitemapPage[]).map((page) => ({
       url: `${baseUrl}${page.slug}`,
       lastModified: new Date(page.lastModified ?? new Date()),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),
-    ...blogPages.map((page) => ({
+    ...(blogPages as SitemapPage[]).map((page) => ({
       url: `${baseUrl}${page.slug}`,
       lastModified: new Date(page.lastModified ?? new Date()),
       changeFrequency: "weekly" as const,

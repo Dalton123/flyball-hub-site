@@ -319,7 +319,7 @@ const latestPostsBlock = /* groq */ `
     description,
     postsCount,
     showViewAll,
-    "posts": *[_type == "blog" && seoHideFromLists != true] | order(publishedAt desc)[0..6]{
+    "posts": *[_type == "blog" && seoHideFromLists != true && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc)[0..6]{
       ${blogCardFragment}
     }
   }
@@ -418,14 +418,14 @@ export const queryBlogIndexPageData = defineQuery(`
     "featuredBlogsCount" : featuredBlogsCount,
     ${pageBuilderFragment},
     "slug": slug.current,
-    "blogs": *[_type == "blog" && (seoHideFromLists != true)] | order(publishedAt desc){
+    "blogs": *[_type == "blog" && seoHideFromLists != true && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc){
       ${blogCardFragment}
     }
   }
 `);
 
 export const queryBlogSlugPageData = defineQuery(`
-  *[_type == "blog" && slug.current == $slug][0]{
+  *[_type == "blog" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0]{
     ...,
     "slug": slug.current,
     ${blogAuthorFragment},
@@ -436,7 +436,7 @@ export const queryBlogSlugPageData = defineQuery(`
 `);
 
 export const queryBlogPaths = defineQuery(`
-  *[_type == "blog" && defined(slug.current)].slug.current
+  *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()].slug.current
 `);
 
 const ogFieldsFragment = /* groq */ `
@@ -546,7 +546,7 @@ export const querySitemapData = defineQuery(`{
     "slug": slug.current,
     "lastModified": _updatedAt
   },
-  "blogPages": *[_type == "blog" && defined(slug.current)]{
+  "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{
     "slug": slug.current,
     "lastModified": _updatedAt
   }
