@@ -72,6 +72,18 @@ export default async function RootLayout({
             gtag('config', 'G-TJ9VYF25SX');
           `}
         </Script>
+        <Script id="grow-me" strategy="afterInteractive">
+          {`
+            window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));
+            var e=document.createElement("script");
+            e.type="text/javascript";
+            e.src="https://faves.grow.me/main.js";
+            e.defer=true;
+            e.setAttribute("data-grow-faves-site-id","U2l0ZTplMWNhOTk1NS1hMWMwLTQ5MTktYjkwZi0wZGZjMzI2YTRhOWQ=");
+            var t=document.getElementsByTagName("script")[0];
+            t.parentNode.insertBefore(e,t);
+          `}
+        </Script>
         <Providers>
           <Navbar navbarData={nav.navbarData} settingsData={nav.settingsData} />
           {children}
