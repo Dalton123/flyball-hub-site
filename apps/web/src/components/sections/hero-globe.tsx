@@ -3,24 +3,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { MeshPhongMaterial, Color } from "three";
 import { Button } from "@workspace/ui/components/button";
 import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 import { RichText } from "../elements/rich-text";
+import { StaticGlobe } from "../elements/static-globe";
 
 // Feature toggles - flip these to enable/disable globe interactions
 const ENABLE_ZOOM = false;
 const ENABLE_PIN_HOVER = false;
 const ENABLE_PIN_CLICK = false;
 
-// Dynamic import to avoid SSR issues with WebGL
+// Dynamic import to avoid SSR issues with WebGL - no loading spinner needed since we use StaticGlobe
 const Globe = dynamic(() => import("react-globe.gl"), {
   ssr: false,
-  loading: () => (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="h-16 w-16 animate-spin rounded-full border-4 border-white/20 border-t-white" />
-    </div>
-  ),
 });
 
 interface TeamLocation {
@@ -55,14 +52,17 @@ export function HeroGlobe({
   const [countries, setCountries] = useState<any[]>([]);
   const [hoveredTeam, setHoveredTeam] = useState<GlobePoint | null>(null);
   const [globeReady, setGlobeReady] = useState(false);
-  const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
+  const [globeVisible, setGlobeVisible] = useState(false);
+  const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: 600, height: 600 });
+  const test = false;
 
   // Handle resize
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        const size = Math.min(rect.width, rect.height, 750);
+        const size = Math.min(rect.width, rect.height, 900);
         setDimensions({ width: size, height: size });
       }
     };
@@ -72,13 +72,32 @@ export function HeroGlobe({
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Fetch countries GeoJSON for polygon rendering
+  // Start loading globe when component becomes visible
   useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          setShouldLoadGlobe(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "100px" }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Fetch countries GeoJSON for polygon rendering (local cached version)
+  useEffect(() => {
+    if (!shouldLoadGlobe) return;
+
     async function fetchCountries() {
       try {
-        const res = await fetch(
-          "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
-        );
+        const res = await fetch("/data/countries.json");
         const data = await res.json();
         setCountries(data.features);
       } catch (err) {
@@ -86,10 +105,12 @@ export function HeroGlobe({
       }
     }
     fetchCountries();
-  }, []);
+  }, [shouldLoadGlobe]);
 
-  // Fetch teams from API
+  // Fetch teams from API (only when globe should load)
   useEffect(() => {
+    if (!shouldLoadGlobe) return;
+
     async function fetchTeams() {
       try {
         const res = await fetch(
@@ -97,9 +118,6 @@ export function HeroGlobe({
         );
         const json = await res.json();
         const teamsData = json.data || [];
-
-        console.log("API response:", json);
-        console.log("Teams from API:", teamsData.length);
 
         // Filter teams with valid coordinates and map to globe format
         const validTeams: GlobePoint[] = teamsData
@@ -114,8 +132,6 @@ export function HeroGlobe({
             lat: team.location_latitude,
             lng: team.location_longitude,
           }));
-
-        console.log("Teams with coordinates:", validTeams.length, validTeams);
 
         setTeams(validTeams);
       } catch (err) {
@@ -161,9 +177,9 @@ export function HeroGlobe({
       }
     }
     fetchTeams();
-  }, []);
+  }, [shouldLoadGlobe]);
 
-  // Configure globe on ready
+  // Configure globe on ready and trigger crossfade
   useEffect(() => {
     if (globeRef.current && globeReady) {
       const controls = globeRef.current.controls();
@@ -175,6 +191,10 @@ export function HeroGlobe({
       controls.maxDistance = 500;
       // Point camera at UK initially
       globeRef.current.pointOfView({ lat: 54, lng: -2, altitude: 1.8 });
+
+      // Small delay to ensure globe has rendered, then crossfade
+      const timer = setTimeout(() => setGlobeVisible(true), 100);
+      return () => clearTimeout(timer);
     }
   }, [globeReady]);
 
@@ -189,24 +209,17 @@ export function HeroGlobe({
     [router],
   );
 
-  // Count unique countries
-  const countryCount = useMemo(() => {
-    const countries = new Set(teams.map((t) => t.country).filter(Boolean));
-    return countries.size;
-  }, [teams]);
-
-  // Create white globe material for water - dynamic import to avoid blocking main thread
+  // Create globe material for water using tree-shakeable ES imports
   const globeMaterial = useMemo(() => {
-    const THREE = require("three");
-    return new THREE.MeshPhongMaterial({
-      color: new THREE.Color("#c2ffc5"),
-      emissive: new THREE.Color("#c2ffc5"),
+    return new MeshPhongMaterial({
+      color: new Color("#c2ffc5"),
+      emissive: new Color("#c2ffc5"),
       emissiveIntensity: 0.15,
     });
   }, []);
 
   return (
-    <section className="relative min-h-[85dvh] overflow-hidden bg-linear-to-br from-primary via-primary to-primary/90 pb-8 lg:pb-0">
+    <section className="relative lg:min-h-[85dvh] overflow-hidden bg-linear-to-br from-primary via-primary to-primary/90 pb-8 lg:pb-0">
       {/* SVG noise texture overlay */}
       <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-30">
         <defs>
@@ -224,10 +237,10 @@ export function HeroGlobe({
       </svg>
 
       {/* Soft glow behind globe */}
-      <div className="pointer-events-none absolute right-0 top-1/2 h-[700px] w-[700px] -translate-y-1/2 translate-x-1/4 rounded-full bg-white/10 blur-[100px] lg:translate-x-0" />
+      <div className="pointer-events-none absolute right-0 top-1/2 size-175 -translate-y-1/2 translate-x-1/4 rounded-full bg-white/10 blur-[100px] lg:translate-x-0" />
 
       <div className="container relative z-10 mx-auto px-4">
-        <div className="grid min-h-[85dvh] items-center gap-8  lg:grid-cols-2 lg:gap-4">
+        <div className="grid lg:min-h-[85dvh] items-center gap-4 lg:grid-cols-2 ">
           {/* Content Side */}
           <div className="order-2 space-y-6 text-center lg:order-1 lg:space-y-8 lg:text-left">
             {badge && (
@@ -292,52 +305,70 @@ export function HeroGlobe({
           {/* Globe Side */}
           <div
             ref={containerRef}
-            className="relative order-1 flex h-120 items-center justify-center lg:order-2 lg:h-120"
+            className="relative order-1 flex h-70 items-center justify-center lg:order-2 lg:h-150"
           >
-            <Globe
-              ref={globeRef}
-              width={dimensions.width}
-              height={dimensions.height}
-              backgroundColor="rgba(0,0,0,0)"
-              globeImageUrl=""
-              globeMaterial={globeMaterial}
-              showGlobe={true}
-              showAtmosphere={true}
-              atmosphereColor="rgba(134, 239, 172, 0.5)"
-              atmosphereAltitude={0.12}
-              // Country polygons - green land
-              polygonsData={countries}
-              polygonCapColor={() => "rgba(34, 197, 94, 0.95)"}
-              polygonSideColor={() => "rgba(22, 163, 74, 0.4)"}
-              polygonStrokeColor={() => "rgba(255, 255, 255, 0.3)"}
-              polygonAltitude={0.006}
-              // Team location markers
-              labelsData={teams}
-              labelLat={(d) => (d as GlobePoint).lat}
-              labelLng={(d) => (d as GlobePoint).lng}
-              labelText={() => ""}
-              labelSize={0}
-              labelDotRadius={0.4}
-              labelColor={() => "#ffffff"}
-              labelResolution={2}
-              labelAltitude={0.01}
-              onLabelHover={(label) =>
-                ENABLE_PIN_HOVER && setHoveredTeam(label as GlobePoint | null)
-              }
-              onLabelClick={(label) =>
-                ENABLE_PIN_CLICK && handlePointClick(label as GlobePoint)
-              }
-              onGlobeReady={() => setGlobeReady(true)}
-              // Pulse rings around team locations - white
-              ringsData={teams}
-              ringLat={(d) => (d as GlobePoint).lat}
-              ringLng={(d) => (d as GlobePoint).lng}
-              ringColor={() => "rgba(255, 255, 255, 0.6)"}
-              ringMaxRadius={2}
-              ringPropagationSpeed={2}
-              ringRepeatPeriod={3200}
-              ringAltitude={0.015}
-            />
+            {/* Static placeholder - shown immediately, fades out when interactive globe is ready */}
+            <div
+              className={`lg:absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
+                shouldLoadGlobe ? "opacity-0 pointer-events-none absolute" : "opacity-100"
+              }`}
+            >
+              <StaticGlobe width={dimensions.width} height={dimensions.height} />
+            </div>
+
+            {/* Interactive globe - loads in background, fades in when ready */}
+            {shouldLoadGlobe && (
+              <div
+                className={`lg:absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
+                  globeVisible ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <Globe
+                  ref={globeRef}
+                  width={dimensions.width}
+                  height={dimensions.height}
+                  backgroundColor="rgba(0,0,0,0)"
+                  globeImageUrl=""
+                  globeMaterial={globeMaterial}
+                  showGlobe={true}
+                  showAtmosphere={true}
+                  atmosphereColor="rgba(134, 239, 172, 0.5)"
+                  atmosphereAltitude={0.12}
+                  // Country polygons - green land
+                  polygonsData={countries}
+                  polygonCapColor={() => "rgba(34, 197, 94, 0.95)"}
+                  polygonSideColor={() => "rgba(22, 163, 74, 0.4)"}
+                  polygonStrokeColor={() => "rgba(255, 255, 255, 0.3)"}
+                  polygonAltitude={0.006}
+                  // Team location markers
+                  labelsData={teams}
+                  labelLat={(d) => (d as GlobePoint).lat}
+                  labelLng={(d) => (d as GlobePoint).lng}
+                  labelText={() => ""}
+                  labelSize={0}
+                  labelDotRadius={0.4}
+                  labelColor={() => "#ffffff"}
+                  labelResolution={2}
+                  labelAltitude={0.01}
+                  onLabelHover={(label) =>
+                    ENABLE_PIN_HOVER && setHoveredTeam(label as GlobePoint | null)
+                  }
+                  onLabelClick={(label) =>
+                    ENABLE_PIN_CLICK && handlePointClick(label as GlobePoint)
+                  }
+                  onGlobeReady={() => setGlobeReady(true)}
+                  // Pulse rings around team locations - white
+                  ringsData={teams}
+                  ringLat={(d) => (d as GlobePoint).lat}
+                  ringLng={(d) => (d as GlobePoint).lng}
+                  ringColor={() => "rgba(255, 255, 255, 0.6)"}
+                  ringMaxRadius={2}
+                  ringPropagationSpeed={2}
+                  ringRepeatPeriod={3200}
+                  ringAltitude={0.015}
+                />
+              </div>
+            )}
 
             {/* Hover tooltip */}
             {ENABLE_PIN_HOVER && hoveredTeam && (

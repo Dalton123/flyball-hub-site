@@ -29,9 +29,8 @@ export function CTACard({ card, className }: CTACardProps) {
           <SanityImage
             image={image}
             alt={image?.alt || title || "Card image"}
-            loading="eager"
-            width={1920}
-            height={1080}
+            width={800}
+            height={450}
             className="object-cover grayscale pointer-events-none group-hover:opacity-100 group-hover:transition-opacity duration-1000 opacity-40"
           />
         </div>

@@ -118,12 +118,12 @@ export function FaqAccordion({
             type="single"
             collapsible
             className="w-full space-y-3"
-            defaultValue={faqs?.[0]?._id}
+            defaultValue={faqs?.[0]?._id ?? "faq-0"}
           >
             {faqs?.map((faq, index) => (
               <AccordionItem
-                value={faq?._id}
-                key={`AccordionItem-${faq?._id}-${index}`}
+                value={faq?._id ?? `faq-${index}`}
+                key={faq?._id ?? `faq-${index}`}
                 className="border border-border/60 rounded-xl px-5 py-1 bg-card/50 hover:bg-card transition-colors data-[state=open]:bg-card data-[state=open]:shadow-sm"
               >
                 <AccordionTrigger className="py-4 text-base font-medium leading-6 hover:no-underline group text-left">

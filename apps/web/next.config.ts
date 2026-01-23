@@ -1,6 +1,11 @@
+import bundleAnalyzer from "@next/bundle-analyzer";
 import { client } from "@/lib/sanity/client";
 import { queryRedirects } from "@/lib/sanity/query";
 import type { NextConfig } from "next";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@workspace/ui"],
@@ -9,12 +14,10 @@ const nextConfig: NextConfig = {
     inlineCss: true,
   },
   // Icon library tree-shaking - prevents importing entire icon libraries
+  // Note: lucide-react removed as it handles tree-shaking natively
   modularizeImports: {
     "@tabler/icons-react": {
       transform: "@tabler/icons-react/dist/esm/icons/{{member}}",
-    },
-    "lucide-react": {
-      transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
     },
   },
   logging: {
@@ -53,4 +56,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

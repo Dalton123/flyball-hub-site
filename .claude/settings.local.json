@@ -35,7 +35,15 @@
       "WebFetch(domain:publishers.grow.me)",
       "WebFetch(domain:pagespeed.web.dev)",
       "WebFetch(domain:www.googleapis.com)",
-      "Skill(vercel-react-best-practices)"
+      "Skill(vercel-react-best-practices)",
+      "Bash(wc:*)",
+      "Bash(node:*)",
+      "Bash(ANALYZE=true pnpm build:*)",
+      "Bash(open:*)",
+      "Bash(pkill:*)",
+      "Bash(ls:*)",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs"
     ],
     "deny": [],
     "ask": []

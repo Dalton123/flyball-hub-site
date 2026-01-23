@@ -11,8 +11,9 @@ import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
 import { SanityButtons } from "../elements/sanity-buttons";
 import { SanityImage } from "../elements/sanity-image";
+import { HeroGlobe } from "./hero-globe";
 
-// Hero loading skeleton
+// Hero loading skeleton for HeroDynamic
 function HeroSkeleton() {
   return (
     <section className="relative min-h-[85dvh] overflow-hidden bg-primary/90 pb-8 lg:pb-0">
@@ -31,12 +32,6 @@ function HeroSkeleton() {
     </section>
   );
 }
-
-// Dynamic import hero variants - only loads when needed
-const HeroGlobe = dynamic(() => import("./hero-globe").then((mod) => mod.HeroGlobe), {
-  ssr: false,
-  loading: () => <HeroSkeleton />,
-});
 
 const HeroDynamic = dynamic(() => import("./hero-dynamic").then((mod) => mod.HeroDynamic), {
   loading: () => <HeroSkeleton />,

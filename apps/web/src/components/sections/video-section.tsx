@@ -99,6 +99,7 @@ export function VideoSection({
             >
               <SanityImage
                 image={posterImage}
+                alt={posterImage?.alt || title || "Video poster"}
                 className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 !rounded-none"
                 width={1280}
                 height={720}
