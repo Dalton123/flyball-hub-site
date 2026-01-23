@@ -72,24 +72,41 @@ export function HeroGlobe({
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Start loading globe when component becomes visible
+  // Track if globe is currently loading (triggered but not ready)
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Trigger globe loading on user interaction (hover or click)
+  const handleInteraction = useCallback(() => {
+    if (!shouldLoadGlobe) {
+      setIsLoading(true);
+      setShouldLoadGlobe(true);
+    }
+  }, [shouldLoadGlobe]);
+
+  // Optional: prefetch globe on idle after page load
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (shouldLoadGlobe) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry?.isIntersecting) {
-          setShouldLoadGlobe(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "100px" }
-    );
+    const prefetchOnIdle = () => {
+      if ("requestIdleCallback" in window) {
+        const idleCallbackId = window.requestIdleCallback(
+          () => {
+            // Only prefetch if user hasn't already interacted
+            if (!shouldLoadGlobe) {
+              setIsLoading(true);
+              setShouldLoadGlobe(true);
+            }
+          },
+          { timeout: 5000 }, // 5 second timeout
+        );
+        return () => window.cancelIdleCallback(idleCallbackId);
+      }
+    };
 
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
+    // Delay prefetch check to ensure page is fully loaded
+    const timer = setTimeout(prefetchOnIdle, 3000);
+    return () => clearTimeout(timer);
+  }, [shouldLoadGlobe]);
 
   // Fetch countries GeoJSON for polygon rendering (local cached version)
   useEffect(() => {
@@ -193,7 +210,10 @@ export function HeroGlobe({
       globeRef.current.pointOfView({ lat: 54, lng: -2, altitude: 1.8 });
 
       // Small delay to ensure globe has rendered, then crossfade
-      const timer = setTimeout(() => setGlobeVisible(true), 100);
+      const timer = setTimeout(() => {
+        setGlobeVisible(true);
+        setIsLoading(false);
+      }, 100);
       return () => clearTimeout(timer);
     }
   }, [globeReady]);
@@ -305,15 +325,30 @@ export function HeroGlobe({
           {/* Globe Side */}
           <div
             ref={containerRef}
-            className="relative order-1 flex h-70 items-center justify-center lg:order-2 lg:h-150"
+            onMouseEnter={handleInteraction}
+            onClick={handleInteraction}
+            className="relative order-1 flex h-70 cursor-pointer items-center justify-center lg:order-2 lg:h-150"
           >
             {/* Static placeholder - shown immediately, fades out when interactive globe is ready */}
             <div
               className={`lg:absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
-                shouldLoadGlobe ? "opacity-0 pointer-events-none absolute" : "opacity-100"
+                globeVisible
+                  ? "pointer-events-none absolute opacity-0"
+                  : "opacity-100"
               }`}
             >
-              <StaticGlobe width={dimensions.width} height={dimensions.height} />
+              <div className="relative">
+                <StaticGlobe
+                  width={dimensions.width}
+                  height={dimensions.height}
+                />
+                {/* Loading indicator - subtle pulse overlay when loading */}
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="h-16 w-16 animate-spin rounded-full border-4 border-white/20 border-t-white/60" />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Interactive globe - loads in background, fades in when ready */}
