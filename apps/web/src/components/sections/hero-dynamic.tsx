@@ -5,6 +5,7 @@ import { Button } from "@workspace/ui/components/button";
 import { ArrowRight } from "lucide-react";
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
@@ -62,7 +63,7 @@ export function HeroDynamic({
                   variant="secondary"
                   className="px-4 py-1.5 text-sm font-medium"
                 >
-                  {badge}
+                  {cleanText(badge)}
                 </Badge>
               </div>
             )}
@@ -79,7 +80,7 @@ export function HeroDynamic({
                 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
               `}
             >
-              {title}
+              {cleanText(title)}
             </h1>
 
             {/* Description */}

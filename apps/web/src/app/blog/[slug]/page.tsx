@@ -2,6 +2,7 @@ import { stegaClean } from "next-sanity";
 import { notFound } from "next/navigation";
 
 import { RichText } from "@/components/elements/rich-text";
+import { cleanText } from "@/utils";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { TableOfContent } from "@/components/elements/table-of-content";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
@@ -92,8 +93,8 @@ export default async function BlogSlugPage({
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
         <main>
           <header className="mb-8">
-            <h1 className="mt-2 text-4xl font-bold">{title}</h1>
-            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
+            <h1 className="mt-2 text-4xl font-bold">{cleanText(title)}</h1>
+            <p className="mt-4 text-lg text-muted-foreground">{cleanText(description)}</p>
             {authors && (
               <div className="mt-6 flex items-center gap-x-4">
                 <div className="text-sm">

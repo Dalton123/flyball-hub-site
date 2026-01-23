@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ComponentProps } from "react";
 
 import type { SanityButtonProps } from "@/types";
+import { cleanText } from "@/utils";
 
 type SanityButtonsProps = {
   buttons: SanityButtonProps[] | null;
@@ -35,10 +36,10 @@ function SanityButton({
       <Link
         href={href || "#"}
         target={openInNewTab ? "_blank" : "_self"}
-        aria-label={`Navigate to ${text}`}
-        title={`Click to visit ${text}`}
+        aria-label={`Navigate to ${cleanText(text)}`}
+        title={`Click to visit ${cleanText(text)}`}
       >
-        {text}
+        {cleanText(text)}
       </Link>
     </Button>
   );

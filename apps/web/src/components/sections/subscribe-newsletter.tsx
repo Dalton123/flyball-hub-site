@@ -7,6 +7,7 @@ import { useFormStatus } from "react-dom";
 
 import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
@@ -63,7 +64,7 @@ export function SubscribeNewsletter({
           }`}
         >
           <h2 className="mb-4 text-2xl font-semibold text-foreground sm:text-3xl md:text-4xl lg:text-5xl text-balance">
-            {title}
+            {cleanText(title)}
           </h2>
           {subTitle && (
             <RichText
