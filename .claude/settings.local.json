@@ -44,7 +44,8 @@
       "Bash(ls:*)",
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_context7_context7__query-docs",
-      "Bash(pnpm lint:*)"
+      "Bash(pnpm lint:*)",
+      "WebFetch(domain:docs.ezoic.com)"
     ],
     "deny": [],
     "ask": []

@@ -54,6 +54,14 @@ const nextConfig: NextConfig = {
       permanent: redirect.permanent ?? false,
     }));
   },
+  async rewrites() {
+    return [
+      {
+        source: "/ads.txt",
+        destination: "https://srv.adstxtmanager.com/19390/flyballhub.com",
+      },
+    ];
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);
