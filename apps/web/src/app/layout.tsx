@@ -61,7 +61,7 @@ export default async function RootLayout({
   const nav = await getNavigationData();
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <head suppressHydrationWarning>
         {/* Ezoic Privacy/Consent Scripts - must load first */}
         <Script
           src="https://cmp.gatekeeperconsent.com/min.js"

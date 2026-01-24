@@ -46,7 +46,9 @@
       "mcp__plugin_context7_context7__query-docs",
       "Bash(pnpm lint:*)",
       "WebFetch(domain:docs.ezoic.com)",
-      "WebFetch(domain:flyballhub.com)"
+      "WebFetch(domain:flyballhub.com)",
+      "WebFetch(domain:srv.adstxtmanager.com)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []

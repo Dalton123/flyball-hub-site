@@ -585,8 +585,20 @@ export const querySettingsData = defineQuery(`
 
 export const queryRedirects = defineQuery(`
   *[_type == "redirect"]{
-    "source":source.current, 
-    "destination":destination.current, 
+    "source":source.current,
+    "destination":destination.current,
     permanent
   }
 `);
+
+export const queryHtmlSitemapData = defineQuery(`{
+  "pages": *[_type == "page" && defined(slug.current)] | order(title asc) {
+    title,
+    "slug": slug.current
+  },
+  "blogs": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {
+    title,
+    "slug": slug.current,
+    publishedAt
+  }
+}`);
