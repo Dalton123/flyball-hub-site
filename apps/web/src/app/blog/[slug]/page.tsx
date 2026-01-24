@@ -84,7 +84,7 @@ export default async function BlogSlugPage({
   ];
 
   return (
-    <div className="container my-16 mx-auto px-4 md:px-6">
+    <div className="container my-16 mx-auto px-4 md:px-6 ">
       <ArticleJsonLd
         article={stegaClean(data)}
         settings={stegaClean(settings)}
