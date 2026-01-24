@@ -3,6 +3,12 @@ import { client } from "@/lib/sanity/client";
 import { queryRedirects } from "@/lib/sanity/query";
 import type { NextConfig } from "next";
 
+interface SanityRedirect {
+  source: string;
+  destination: string;
+  permanent: boolean | null;
+}
+
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
@@ -48,7 +54,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     const redirects = await client.fetch(queryRedirects);
-    return redirects.map((redirect) => ({
+    return redirects.map((redirect: SanityRedirect) => ({
       source: redirect.source,
       destination: redirect.destination,
       permanent: redirect.permanent ?? false,
