@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.flyballhub.app",
+      "sha256_cert_fingerprints": [
+        "6B:29:BA:C8:A7:08:7A:17:7B:3C:FE:81:EB:70:EC:45:39:6A:27:AC:8A:29:75:B3:D4:5D:59:44:7D:CB:96:7E"
+      ]
+    }
+  }
+]

@@ -102,7 +102,7 @@ function DesktopColumnDropdown({
               <MenuLink
                 key={link._key}
                 name={link.name || ""}
-                href={link.href || ""}
+                href={link.href || "#"}
                 description={link.description || ""}
                 icon={link.icon}
               />
@@ -201,7 +201,7 @@ function MobileMenu({ navbarData, settingsData }: NavigationData) {
                               <MenuLink
                                 key={link._key}
                                 name={link.name || ""}
-                                href={link.href || ""}
+                                href={link.href || "#"}
                                 description={link.description || ""}
                                 icon={link.icon}
                                 onClick={closeMenu}

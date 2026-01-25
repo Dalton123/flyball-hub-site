@@ -50,7 +50,9 @@
       "WebFetch(domain:srv.adstxtmanager.com)",
       "Bash(tree:*)",
       "Bash(npx eslint:*)",
-      "Bash(pnpm lint:fix:*)"
+      "Bash(pnpm lint:fix:*)",
+      "Bash(dig:*)",
+      "Bash(nslookup:*)"
     ],
     "deny": [],
     "ask": []
