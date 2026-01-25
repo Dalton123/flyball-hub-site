@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Play } from "lucide-react";
 import { Badge } from "@workspace/ui/components/badge";
+import { Play } from "lucide-react";
+import { useState } from "react";
 
 import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
+
 import { SanityImage } from "../elements/sanity-image";
 
 export type VideoSectionProps = PagebuilderType<"videoSection">;

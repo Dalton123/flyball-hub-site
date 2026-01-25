@@ -1,7 +1,8 @@
 "use client";
 
-import { memo } from "react";
 import Image, { type ImageProps } from "next/image";
+import { memo } from "react";
+
 import { dataset, projectId } from "@/config";
 import type { SanityImageProps as SanityImageData } from "@/types";
 
@@ -105,7 +106,12 @@ function processImageData(image: SanityImageData): ProcessedImageData | null {
 }
 
 // Parse Sanity image ID to get dimensions and format
-function parseImageId(id: string): { baseId: string; width: number; height: number; format: string } {
+function parseImageId(id: string): {
+  baseId: string;
+  width: number;
+  height: number;
+  format: string;
+} {
   // Format: image-{hash}-{width}x{height}-{format}
   const match = id.match(/^image-([a-zA-Z0-9]+)-(\d+)x(\d+)-(\w+)$/);
   if (match && match[1] && match[2] && match[3] && match[4]) {
@@ -117,7 +123,12 @@ function parseImageId(id: string): { baseId: string; width: number; height: numb
     };
   }
   // Fallback for non-standard IDs
-  return { baseId: id.replace(/^image-/, ""), width: 800, height: 600, format: "jpg" };
+  return {
+    baseId: id.replace(/^image-/, ""),
+    width: 800,
+    height: 600,
+    format: "jpg",
+  };
 }
 
 // Build Sanity CDN URL with transformations
@@ -125,9 +136,14 @@ function buildSanityUrl(
   id: string,
   width: number,
   crop?: ImageCrop,
-  hotspot?: ImageHotspot
+  hotspot?: ImageHotspot,
 ): string {
-  const { baseId, width: originalWidth, height: originalHeight, format } = parseImageId(id);
+  const {
+    baseId,
+    width: originalWidth,
+    height: originalHeight,
+    format,
+  } = parseImageId(id);
   const params = new URLSearchParams();
 
   params.set("w", width.toString());
@@ -196,7 +212,9 @@ function SanityImageComponent({
         alt={alt}
         className={className}
         style={objectPosition ? { ...style, objectPosition } : style}
-        sizes={sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+        sizes={
+          sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        }
         unoptimized
         priority={priority}
         loading={loading}
@@ -215,7 +233,9 @@ function SanityImageComponent({
       alt={alt}
       className={className}
       style={objectPosition ? { ...style, objectPosition } : style}
-      sizes={sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+      sizes={
+        sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      }
       unoptimized
       priority={priority}
       loading={loading}

@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-
 import { Badge } from "@workspace/ui/components/badge";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
+
 import { BlogCard } from "../blog-card";
 
 export type LatestPostsProps = PagebuilderType<"latestPosts">;

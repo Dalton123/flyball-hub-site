@@ -37,12 +37,12 @@ export async function FooterServer() {
   ]);
 
   if (!response?.data || !settingsResponse?.data) return <FooterSkeleton />;
-  
+
   // Check if footer should be shown
   if (settingsResponse.data.showFooter === false) {
     return null;
   }
-  
+
   return <Footer data={response.data} settingsData={settingsResponse.data} />;
 }
 
@@ -242,7 +242,6 @@ function Footer({ data, settingsData }: FooterProps) {
                   <Link href="/cookie-policy">Cookie Policy</Link>
                 </li>
               </ul>
-              
             </div>
           </div>
         </div>

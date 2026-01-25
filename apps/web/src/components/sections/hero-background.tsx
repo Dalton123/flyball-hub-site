@@ -11,9 +11,10 @@ export function HeroBackground() {
       <div
         className="absolute inset-0 opacity-40"
         style={{
-          background: 'linear-gradient(45deg, transparent 35%, oklch(0.92 0.08 125) 50%, transparent 65%)',
-          backgroundSize: '200% 200%',
-          animation: 'gradient-shift 8s ease infinite',
+          background:
+            "linear-gradient(45deg, transparent 35%, oklch(0.92 0.08 125) 50%, transparent 65%)",
+          backgroundSize: "200% 200%",
+          animation: "gradient-shift 8s ease infinite",
         }}
       />
     </>

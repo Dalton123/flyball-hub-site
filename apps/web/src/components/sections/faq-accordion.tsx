@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -10,9 +9,10 @@ import {
 import { Badge } from "@workspace/ui/components/badge";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { useMemo } from "react";
 
-import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
@@ -31,10 +31,11 @@ function portableTextToPlainText(blocks: unknown[] | null | undefined): string {
         typeof block === "object" &&
         block !== null &&
         "_type" in block &&
-        block._type === "block"
+        block._type === "block",
     )
-    .map((block) =>
-      block.children?.map((child) => child.text || "").join("") || ""
+    .map(
+      (block) =>
+        block.children?.map((child) => child.text || "").join("") || "",
     )
     .join(" ")
     .trim();

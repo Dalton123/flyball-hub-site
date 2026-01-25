@@ -14,8 +14,8 @@ export function HeroStats({ stats }: HeroStatsProps) {
           key={i}
           className="flex flex-col items-center lg:items-start opacity-0 animate-float-in-up"
           style={{
-            animationDelay: `${700 + (i * 100)}ms`,
-            animationFillMode: 'forwards'
+            animationDelay: `${700 + i * 100}ms`,
+            animationFillMode: "forwards",
           }}
         >
           <div className="text-3xl lg:text-4xl font-bold text-primary font-hero">

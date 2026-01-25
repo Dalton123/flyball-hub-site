@@ -1,4 +1,5 @@
 import { cn } from "@workspace/ui/lib/utils";
+
 import { PawPrint } from "@/components/icons";
 
 type DividerVariant = "wave" | "diagonal" | "paw-trail";
@@ -36,7 +37,7 @@ function WaveDivider({ flip, color }: { flip?: boolean; color: DividerColor }) {
       className={cn(
         "w-full h-auto block",
         colorMap[color],
-        flip && "rotate-180"
+        flip && "rotate-180",
       )}
       preserveAspectRatio="none"
       aria-hidden="true"
@@ -61,7 +62,7 @@ function DiagonalDivider({
       className={cn(
         "w-full h-auto block",
         colorMap[color],
-        flip && "rotate-180"
+        flip && "rotate-180",
       )}
       preserveAspectRatio="none"
       aria-hidden="true"
@@ -79,7 +80,7 @@ function PawTrailDivider({ color }: { color: DividerColor }) {
     <div
       className={cn(
         "w-full flex items-center justify-between px-8 py-4",
-        textColorMap[color]
+        textColorMap[color],
       )}
       aria-hidden="true"
     >
@@ -90,7 +91,7 @@ function PawTrailDivider({ color }: { color: DividerColor }) {
           className={cn(
             "opacity-30",
             // Alternate rotation for natural walking pattern
-            i % 2 === 0 ? "rotate-[-15deg]" : "rotate-[15deg]"
+            i % 2 === 0 ? "rotate-[-15deg]" : "rotate-[15deg]",
           )}
         />
       ))}
@@ -109,7 +110,7 @@ export function SectionDivider({
       className={cn(
         "w-full overflow-hidden leading-none",
         flip ? "-mt-px" : "-mb-px",
-        className
+        className,
       )}
     >
       {variant === "wave" && <WaveDivider flip={flip} color={color} />}

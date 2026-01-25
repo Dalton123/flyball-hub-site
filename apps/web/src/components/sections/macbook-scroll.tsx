@@ -1,32 +1,34 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
-import { cn } from "@workspace/ui/lib/utils";
 import {
   IconBrightnessDown,
   IconBrightnessUp,
+  IconCaretDownFilled,
+  IconCaretLeftFilled,
   IconCaretRightFilled,
   IconCaretUpFilled,
   IconChevronUp,
+  IconCommand,
   IconMicrophone,
   IconMoon,
   IconPlayerSkipForward,
   IconPlayerTrackNext,
   IconPlayerTrackPrev,
+  IconSearch,
   IconTable,
   IconVolume,
   IconVolume2,
   IconVolume3,
-  IconSearch,
   IconWorld,
-  IconCommand,
-  IconCaretLeftFilled,
-  IconCaretDownFilled,
 } from "@tabler/icons-react";
-
 import { Badge } from "@workspace/ui/components/badge";
+import { cn } from "@workspace/ui/lib/utils";
+import type { MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+
 import type { PagebuilderType } from "@/types";
+
 import { SanityImage } from "../elements/sanity-image";
 
 type MacbookScrollProps = PagebuilderType<"macbookScroll">;

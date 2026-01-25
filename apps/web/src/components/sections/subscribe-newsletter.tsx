@@ -5,8 +5,8 @@ import { ChevronRight, LoaderCircle } from "lucide-react";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
-import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
@@ -50,7 +50,9 @@ export function SubscribeNewsletter({
   subTitle,
   helperText,
 }: SubscribeNewsletterProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+    threshold: 0.1,
+  });
 
   return (
     <section ref={ref} id="subscribe" className="px-4 py-8 sm:py-12 md:py-16">

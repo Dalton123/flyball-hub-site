@@ -1,7 +1,7 @@
 "use client";
 
-import { memo } from "react";
 import Image from "next/image";
+import { memo } from "react";
 
 interface StaticGlobeProps {
   width: number;

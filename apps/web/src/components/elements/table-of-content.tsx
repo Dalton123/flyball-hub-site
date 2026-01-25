@@ -405,9 +405,7 @@ const TableOfContentAnchor: FC<AnchorProps> = ({
         <Circle
           className={cn(
             "min-w-1.5 min-h-1.5 size-1.5 transition-colors duration-200",
-            !isChild
-              ? "fill-foreground"
-              : "fill-muted-foreground",
+            !isChild ? "fill-foreground" : "fill-muted-foreground",
           )}
           aria-hidden="true"
         />

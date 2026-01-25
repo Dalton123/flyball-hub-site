@@ -48,7 +48,9 @@
       "WebFetch(domain:docs.ezoic.com)",
       "WebFetch(domain:flyballhub.com)",
       "WebFetch(domain:srv.adstxtmanager.com)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(npx eslint:*)",
+      "Bash(pnpm lint:fix:*)"
     ],
     "deny": [],
     "ask": []

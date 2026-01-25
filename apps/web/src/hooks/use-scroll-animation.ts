@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 
 interface UseScrollAnimationOptions {
   threshold?: number;
@@ -31,7 +31,7 @@ function getSharedObserver(
   threshold: number,
   rootMargin: string,
   element: Element,
-  callback: ObserverCallback
+  callback: ObserverCallback,
 ): () => void {
   const key = getObserverKey(threshold, rootMargin);
 
@@ -48,7 +48,7 @@ function getSharedObserver(
           if (cb) cb(e);
         }
       },
-      { threshold, rootMargin }
+      { threshold, rootMargin },
     );
 
     entry = { observer, callbacks: new Map() };
@@ -80,7 +80,7 @@ function getSharedObserver(
  * Respects prefers-reduced-motion for accessibility.
  */
 export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
-  options: UseScrollAnimationOptions = {}
+  options: UseScrollAnimationOptions = {},
 ): UseScrollAnimationReturn<T> {
   const { threshold = 0.1, rootMargin = "0px", triggerOnce = true } = options;
   const ref = useRef<T>(null);
@@ -123,16 +123,21 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
     }
 
     // Use shared observer instead of creating a new one
-    const cleanup = getSharedObserver(threshold, rootMargin, element, (entry) => {
-      if (entry.isIntersecting) {
-        setIsVisible(true);
-        if (triggerOnce) {
-          cleanup();
+    const cleanup = getSharedObserver(
+      threshold,
+      rootMargin,
+      element,
+      (entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (triggerOnce) {
+            cleanup();
+          }
+        } else if (!triggerOnce) {
+          setIsVisible(false);
         }
-      } else if (!triggerOnce) {
-        setIsVisible(false);
-      }
-    });
+      },
+    );
 
     return cleanup;
   }, [threshold, rootMargin, triggerOnce, prefersReducedMotion]);
@@ -147,14 +152,14 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
  */
 export function useStaggeredAnimation(
   count: number,
-  options: UseScrollAnimationOptions & { staggerDelay?: number } = {}
+  options: UseScrollAnimationOptions & { staggerDelay?: number } = {},
 ) {
   const { staggerDelay = 100, ...scrollOptions } = options;
   const threshold = scrollOptions.threshold ?? 0.1;
   const rootMargin = scrollOptions.rootMargin ?? "0px";
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleItems, setVisibleItems] = useState<boolean[]>(
-    Array(count).fill(false)
+    Array(count).fill(false),
   );
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -180,21 +185,26 @@ export function useStaggeredAnimation(
     if (!container) return;
 
     // Use shared observer instead of creating a new one
-    const cleanup = getSharedObserver(threshold, rootMargin, container, (entry) => {
-      if (entry.isIntersecting) {
-        // Stagger the visibility of each item
-        for (let i = 0; i < count; i++) {
-          setTimeout(() => {
-            setVisibleItems((prev) => {
-              const next = [...prev];
-              next[i] = true;
-              return next;
-            });
-          }, i * staggerDelay);
+    const cleanup = getSharedObserver(
+      threshold,
+      rootMargin,
+      container,
+      (entry) => {
+        if (entry.isIntersecting) {
+          // Stagger the visibility of each item
+          for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+              setVisibleItems((prev) => {
+                const next = [...prev];
+                next[i] = true;
+                return next;
+              });
+            }, i * staggerDelay);
+          }
+          cleanup();
         }
-        cleanup();
-      }
-    });
+      },
+    );
 
     return cleanup;
   }, [count, staggerDelay, threshold, rootMargin, prefersReducedMotion]);

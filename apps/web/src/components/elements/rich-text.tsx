@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@workspace/ui/lib/utils";
-import Link from "next/link";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import {
   PortableText,
   type PortableTextBlock,
@@ -37,7 +37,7 @@ const LazyCodeBlock = dynamic(
   {
     ssr: false,
     loading: () => <CodeBlockSkeleton />,
-  }
+  },
 );
 
 import { SanityImage } from "./sanity-image";

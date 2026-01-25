@@ -1,8 +1,7 @@
 "use client";
 
-import { ExternalLink, Facebook, Globe, MapPin } from "lucide-react";
-
 import { Badge } from "@workspace/ui/components/badge";
+import { ExternalLink, Facebook, Globe, MapPin } from "lucide-react";
 
 import { formatDistance, getCountryFlag } from "@/lib/geo";
 

@@ -1,11 +1,12 @@
 import "@workspace/ui/globals.css";
 
 import type { Metadata } from "next";
-import { VisualEditing } from "next-sanity";
 import { DM_Sans, Geist, Geist_Mono, Outfit } from "next/font/google";
 import { draftMode } from "next/headers";
 import Script from "next/script";
+import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
+import { preconnect } from "react-dom";
 
 import { FooterServer, FooterSkeleton } from "@/components/footer";
 import { CombinedJsonLd } from "@/components/json-ld";
@@ -14,7 +15,6 @@ import { PreviewBar } from "@/components/preview-bar";
 import { Providers } from "@/components/providers";
 import { getNavigationData } from "@/lib/navigation";
 import { SanityLive } from "@/lib/sanity/live";
-import { preconnect } from "react-dom";
 
 const fontSans = Geist({
   subsets: ["latin"],

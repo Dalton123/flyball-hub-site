@@ -1,4 +1,5 @@
 import type {
+  QueryBlogIndexPageDataResult,
   QueryBlogSlugPageDataResult,
   QueryHomePageDataResult,
   QueryImageTypeResult,
@@ -28,3 +29,7 @@ export type SanityRichTextBlock = Extract<
 >;
 
 export type Maybe<T> = T | null | undefined;
+
+export type BlogCardProps = NonNullable<
+  NonNullable<QueryBlogIndexPageDataResult>["blogs"]
+>[number];

@@ -2,6 +2,7 @@
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { cleanText } from "@/utils";
+
 import { RichText } from "../elements/rich-text";
 
 interface TextBlockProps {
@@ -11,7 +12,9 @@ interface TextBlockProps {
 }
 
 export function TextBlock({ title, richText, alignment }: TextBlockProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+    threshold: 0.1,
+  });
 
   const alignmentClass =
     alignment === "center"

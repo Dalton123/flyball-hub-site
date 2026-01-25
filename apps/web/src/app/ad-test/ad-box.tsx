@@ -10,7 +10,8 @@ declare global {
 
 const ADSENSE_CLIENT_ID =
   process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-XXXXXXXXXXXXXXX";
-const ADSENSE_SLOT_ID = process.env.NEXT_PUBLIC_ADSENSE_SLOT_ID || "YOUR_SLOT_ID";
+const ADSENSE_SLOT_ID =
+  process.env.NEXT_PUBLIC_ADSENSE_SLOT_ID || "YOUR_SLOT_ID";
 
 export function AdBox() {
   useEffect(() => {

@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-import { MeshPhongMaterial, Color } from "three";
 import { Button } from "@workspace/ui/components/button";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Color, MeshPhongMaterial } from "three";
+
 import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
+
 import { RichText } from "../elements/rich-text";
 import { StaticGlobe } from "../elements/static-globe";
 
@@ -333,28 +335,22 @@ export function HeroGlobe({
             <div
               className={`lg:absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
                 globeVisible
-                  ? "pointer-events-none absolute opacity-0"
+                  ? "pointer-events-none absolute opacity-0 hidden"
                   : "opacity-100"
               }`}
             >
-              <div className="relative">
+              <div className="relative flex justify-center items-center">
                 <StaticGlobe
                   width={dimensions.width}
                   height={dimensions.height}
                 />
-                {/* Loading indicator - subtle pulse overlay when loading */}
-                {isLoading && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="h-16 w-16 animate-spin rounded-full border-4 border-white/20 border-t-white/60" />
-                  </div>
-                )}
               </div>
             </div>
 
             {/* Interactive globe - loads in background, fades in when ready */}
             {shouldLoadGlobe && (
               <div
-                className={`lg:absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
+                className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
                   globeVisible ? "opacity-100" : "opacity-0"
                 }`}
               >
@@ -386,7 +382,8 @@ export function HeroGlobe({
                   labelResolution={2}
                   labelAltitude={0.01}
                   onLabelHover={(label) =>
-                    ENABLE_PIN_HOVER && setHoveredTeam(label as GlobePoint | null)
+                    ENABLE_PIN_HOVER &&
+                    setHoveredTeam(label as GlobePoint | null)
                   }
                   onLabelClick={(label) =>
                     ENABLE_PIN_CLICK && handlePointClick(label as GlobePoint)

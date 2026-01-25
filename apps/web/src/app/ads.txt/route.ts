@@ -4,7 +4,7 @@ export const revalidate = 86400; // Revalidate once per day
 export async function GET() {
   const response = await fetch(
     "https://srv.adstxtmanager.com/19390/flyballhub.com",
-    { next: { revalidate: 86400 } }
+    { next: { revalidate: 86400 } },
   );
 
   if (!response.ok) {

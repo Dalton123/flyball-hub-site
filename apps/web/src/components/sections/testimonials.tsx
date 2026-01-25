@@ -2,11 +2,16 @@
 
 import { Badge } from "@workspace/ui/components/badge";
 import { Star } from "lucide-react";
+
+import {
+  useScrollAnimation,
+  useStaggeredAnimation,
+} from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
 import { cleanText } from "@/utils";
-import { SanityImage } from "../elements/sanity-image";
+
 import { RichText } from "../elements/rich-text";
+import { SanityImage } from "../elements/sanity-image";
 
 type TestimonialsProps = PagebuilderType<"testimonials">;
 
@@ -16,7 +21,8 @@ type TestimonialCardProps = {
 };
 
 function TestimonialCard({ testimonial, isVisible }: TestimonialCardProps) {
-  const { quote, authorName, authorRole, authorImage, rating } = testimonial ?? {};
+  const { quote, authorName, authorRole, authorImage, rating } =
+    testimonial ?? {};
 
   return (
     <div
@@ -49,13 +55,20 @@ function TestimonialCard({ testimonial, isVisible }: TestimonialCardProps) {
       <div className="flex items-center gap-4">
         {authorImage && (
           <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-            <SanityImage image={authorImage} alt={authorImage?.alt || authorName || "Testimonial author"} />
+            <SanityImage
+              image={authorImage}
+              alt={authorImage?.alt || authorName || "Testimonial author"}
+            />
           </div>
         )}
         <div>
-          <div className="font-semibold text-foreground">{cleanText(authorName)}</div>
+          <div className="font-semibold text-foreground">
+            {cleanText(authorName)}
+          </div>
           {authorRole && (
-            <div className="text-sm text-muted-foreground">{cleanText(authorRole)}</div>
+            <div className="text-sm text-muted-foreground">
+              {cleanText(authorRole)}
+            </div>
           )}
         </div>
       </div>
@@ -69,10 +82,15 @@ export function Testimonials({
   richText,
   testimonials,
 }: TestimonialsProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
-  const { containerRef, visibleItems } = useStaggeredAnimation(testimonials?.length ?? 0, {
-    staggerDelay: 150,
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+    threshold: 0.1,
   });
+  const { containerRef, visibleItems } = useStaggeredAnimation(
+    testimonials?.length ?? 0,
+    {
+      staggerDelay: 150,
+    },
+  );
 
   return (
     <section ref={ref} className="py-12 md:py-20">
@@ -85,7 +103,10 @@ export function Testimonials({
         >
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6">
             {eyebrow && (
-              <Badge variant="secondary" className="px-4 py-1.5 text-sm font-medium">
+              <Badge
+                variant="secondary"
+                className="px-4 py-1.5 text-sm font-medium"
+              >
                 {cleanText(eyebrow)}
               </Badge>
             )}

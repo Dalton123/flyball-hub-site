@@ -1,14 +1,16 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
-import type { PagebuilderType } from "@/types";
+
 import {
   useScrollAnimation,
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
-import { SanityImage } from "../elements/sanity-image";
+
 import { RichText } from "../elements/rich-text";
+import { SanityImage } from "../elements/sanity-image";
 
 type LogoCloudProps = PagebuilderType<"logoCloud">;
 

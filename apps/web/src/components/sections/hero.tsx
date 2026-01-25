@@ -3,8 +3,8 @@
 import { Badge } from "@workspace/ui/components/badge";
 import dynamic from "next/dynamic";
 
-import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
@@ -33,9 +33,12 @@ function HeroSkeleton() {
   );
 }
 
-const HeroDynamic = dynamic(() => import("./hero-dynamic").then((mod) => mod.HeroDynamic), {
-  loading: () => <HeroSkeleton />,
-});
+const HeroDynamic = dynamic(
+  () => import("./hero-dynamic").then((mod) => mod.HeroDynamic),
+  {
+    loading: () => <HeroSkeleton />,
+  },
+);
 
 type HeroBlockProps = PagebuilderType<"hero">;
 
@@ -52,7 +55,9 @@ export function HeroBlock(props: HeroBlockProps) {
 
   // Classic hero variant (default)
   const { title, buttons, badge, image, richText } = props;
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+    threshold: 0.1,
+  });
 
   return (
     <section

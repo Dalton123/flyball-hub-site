@@ -1,8 +1,8 @@
 "use client";
 
 import { useOptimistic } from "@sanity/visual-editing/react";
-import { createDataAttribute } from "next-sanity";
 import dynamic from "next/dynamic";
+import { createDataAttribute } from "next-sanity";
 import { useCallback, useMemo } from "react";
 
 import { dataset, projectId, studioUrl } from "@/config";
@@ -28,61 +28,101 @@ function BlockSkeleton() {
 }
 
 // Dynamic imports for all non-hero blocks to reduce initial bundle size
-const CTABlock = dynamic(() => import("./sections/cta").then((mod) => mod.CTABlock), {
-  loading: () => <BlockSkeleton />,
-});
-const ContactForm = dynamic(() => import("./sections/contact-form").then((mod) => mod.ContactForm), {
-  loading: () => <BlockSkeleton />,
-});
-const FaqAccordion = dynamic(() => import("./sections/faq-accordion").then((mod) => mod.FaqAccordion), {
-  loading: () => <BlockSkeleton />,
-});
+const CTABlock = dynamic(
+  () => import("./sections/cta").then((mod) => mod.CTABlock),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
+const ContactForm = dynamic(
+  () => import("./sections/contact-form").then((mod) => mod.ContactForm),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
+const FaqAccordion = dynamic(
+  () => import("./sections/faq-accordion").then((mod) => mod.FaqAccordion),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
 const FeatureCardsScreenshot = dynamic(
-  () => import("./sections/feature-cards-screenshot").then((mod) => mod.FeatureCardsScreenshot),
-  { loading: () => <BlockSkeleton /> }
+  () =>
+    import("./sections/feature-cards-screenshot").then(
+      (mod) => mod.FeatureCardsScreenshot,
+    ),
+  { loading: () => <BlockSkeleton /> },
 );
 const FeatureCardsWithIcon = dynamic(
-  () => import("./sections/feature-cards-with-icon").then((mod) => mod.FeatureCardsWithIcon),
-  { loading: () => <BlockSkeleton /> }
+  () =>
+    import("./sections/feature-cards-with-icon").then(
+      (mod) => mod.FeatureCardsWithIcon,
+    ),
+  { loading: () => <BlockSkeleton /> },
 );
 const ImageLinkCards = dynamic(
   () => import("./sections/image-link-cards").then((mod) => mod.ImageLinkCards),
-  { loading: () => <BlockSkeleton /> }
+  { loading: () => <BlockSkeleton /> },
 );
-const LatestPosts = dynamic(() => import("./sections/latest-posts").then((mod) => mod.LatestPosts), {
-  loading: () => <BlockSkeleton />,
-});
-const LogoCloud = dynamic(() => import("./sections/logo-cloud").then((mod) => mod.LogoCloud), {
-  loading: () => <BlockSkeleton />,
-});
+const LatestPosts = dynamic(
+  () => import("./sections/latest-posts").then((mod) => mod.LatestPosts),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
+const LogoCloud = dynamic(
+  () => import("./sections/logo-cloud").then((mod) => mod.LogoCloud),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
 const MacbookScroll = dynamic(
   () => import("./sections/macbook-scroll").then((mod) => mod.MacbookScroll),
-  { ssr: false, loading: () => <BlockSkeleton /> }
+  { ssr: false, loading: () => <BlockSkeleton /> },
 );
-const StatsSection = dynamic(() => import("./sections/stats-section").then((mod) => mod.StatsSection), {
-  loading: () => <BlockSkeleton />,
-});
+const StatsSection = dynamic(
+  () => import("./sections/stats-section").then((mod) => mod.StatsSection),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
 const SubscribeNewsletter = dynamic(
-  () => import("./sections/subscribe-newsletter").then((mod) => mod.SubscribeNewsletter),
-  { loading: () => <BlockSkeleton /> }
+  () =>
+    import("./sections/subscribe-newsletter").then(
+      (mod) => mod.SubscribeNewsletter,
+    ),
+  { loading: () => <BlockSkeleton /> },
 );
-const TeamFinder = dynamic(() => import("./sections/team-finder").then((mod) => mod.TeamFinder), {
-  loading: () => <BlockSkeleton />,
-});
+const TeamFinder = dynamic(
+  () => import("./sections/team-finder").then((mod) => mod.TeamFinder),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
 const TeamFinderTeaser = dynamic(
-  () => import("./sections/team-finder-teaser").then((mod) => mod.TeamFinderTeaser),
-  { loading: () => <BlockSkeleton /> }
+  () =>
+    import("./sections/team-finder-teaser").then((mod) => mod.TeamFinderTeaser),
+  { loading: () => <BlockSkeleton /> },
 );
-const Testimonials = dynamic(() => import("./sections/testimonials").then((mod) => mod.Testimonials), {
-  loading: () => <BlockSkeleton />,
-});
-const TextBlock = dynamic(() => import("./sections/text-block").then((mod) => mod.TextBlock), {
-  loading: () => <BlockSkeleton />,
-});
-const VideoSection = dynamic(() => import("./sections/video-section").then((mod) => mod.VideoSection), {
-  ssr: false,
-  loading: () => <BlockSkeleton />,
-});
+const Testimonials = dynamic(
+  () => import("./sections/testimonials").then((mod) => mod.Testimonials),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
+const TextBlock = dynamic(
+  () => import("./sections/text-block").then((mod) => mod.TextBlock),
+  {
+    loading: () => <BlockSkeleton />,
+  },
+);
+const VideoSection = dynamic(
+  () => import("./sections/video-section").then((mod) => mod.VideoSection),
+  {
+    ssr: false,
+    loading: () => <BlockSkeleton />,
+  },
+);
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<

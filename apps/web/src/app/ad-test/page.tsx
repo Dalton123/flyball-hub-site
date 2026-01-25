@@ -1,4 +1,5 @@
 import Script from "next/script";
+
 import { AdBox } from "./ad-box";
 
 export const metadata = {

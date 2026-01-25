@@ -1,22 +1,21 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Loader2, MapPin, Search } from "lucide-react";
-
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
+import { Loader2, MapPin, Search } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
-import type { PagebuilderType } from "@/types";
 import { calculateDistance, geocodeLocation } from "@/lib/geo";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 
 import {
-  TeamCard,
-  TeamCardSkeleton,
   type SocialLinks,
+  TeamCard,
   type TeamCardProps,
+  TeamCardSkeleton,
 } from "../team-card";
 
 export type TeamFinderProps = PagebuilderType<"teamFinder">;
@@ -44,11 +43,7 @@ export function TeamFinder(props: TeamFinderProps) {
   );
 }
 
-function TeamFinderSkeleton({
-  eyebrow,
-  title,
-  description,
-}: TeamFinderProps) {
+function TeamFinderSkeleton({ eyebrow, title, description }: TeamFinderProps) {
   return (
     <section className="py-12 md:py-20">
       <div className="mb-10 text-center">

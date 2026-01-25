@@ -2,8 +2,8 @@
 
 import { Badge } from "@workspace/ui/components/badge";
 
-import type { PagebuilderType } from "@/types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";

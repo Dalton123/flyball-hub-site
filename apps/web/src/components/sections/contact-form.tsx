@@ -10,8 +10,8 @@ import {
   type ContactFormState,
   submitContactForm,
 } from "@/actions/contact-form";
-import type { ContactForm as ContactFormType } from "@/lib/sanity/sanity.types";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import type { ContactForm as ContactFormType } from "@/lib/sanity/sanity.types";
 
 import { RichText } from "../elements/rich-text";
 

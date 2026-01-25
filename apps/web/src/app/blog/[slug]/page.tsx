@@ -1,19 +1,22 @@
-import { stegaClean } from "next-sanity";
 import { notFound } from "next/navigation";
+import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
-import { cleanText } from "@/utils";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { TableOfContent } from "@/components/elements/table-of-content";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { RelatedPosts } from "@/components/related-posts";
 import { client } from "@/lib/sanity/client";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   queryBlogPaths,
   queryBlogSlugPageData,
+  queryRelatedPosts,
   querySettingsData,
 } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
+import type { BlogCardProps } from "@/types";
+import { cleanText } from "@/utils";
 
 async function fetchBlogSlugPageData(slug: string, stega = true) {
   return await sanityFetch({
@@ -63,6 +66,15 @@ export async function generateStaticParams() {
   return await fetchBlogPaths();
 }
 
+function getRandomPosts(
+  posts: BlogCardProps[] | null,
+  count: number,
+): BlogCardProps[] {
+  if (!posts || posts.length === 0) return [];
+  const shuffled = [...posts].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
 export default async function BlogSlugPage({
   params,
 }: {
@@ -74,6 +86,13 @@ export default async function BlogSlugPage({
     client.fetch(querySettingsData),
   ]);
   if (!data) return notFound();
+
+  // Fetch related posts (excluding current post)
+  const { data: allPosts } = await sanityFetch({
+    query: queryRelatedPosts,
+    params: { currentId: data._id },
+  });
+  const relatedPosts = getRandomPosts(allPosts as BlogCardProps[] | null, 2);
   const { title, description, image, richText, authors, publishedAt } =
     data ?? {};
 
@@ -94,7 +113,9 @@ export default async function BlogSlugPage({
         <main>
           <header className="mb-8">
             <h1 className="mt-2 text-4xl font-bold">{cleanText(title)}</h1>
-            <p className="mt-4 text-lg text-muted-foreground">{cleanText(description)}</p>
+            <p className="mt-4 text-lg text-muted-foreground">
+              {cleanText(description)}
+            </p>
             {authors && (
               <div className="mt-6 flex items-center gap-x-4">
                 <div className="text-sm">
@@ -141,6 +162,8 @@ export default async function BlogSlugPage({
           </div>
         </div>
       </div>
+
+      <RelatedPosts posts={relatedPosts} />
     </div>
   );
 }

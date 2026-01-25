@@ -1,11 +1,16 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
+
+import {
+  useScrollAnimation,
+  useStaggeredAnimation,
+} from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { useScrollAnimation, useStaggeredAnimation } from "@/hooks/use-scroll-animation";
 import { cleanText } from "@/utils";
-import { RichText } from "../elements/rich-text";
+
 import { BackgroundPattern } from "../elements/background-pattern";
+import { RichText } from "../elements/rich-text";
 
 type StatsSectionProps = PagebuilderType<"statsSection">;
 
@@ -59,10 +64,15 @@ export function StatsSection({
   stats,
   variant,
 }: StatsSectionProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
-  const { containerRef, visibleItems } = useStaggeredAnimation(stats?.length ?? 0, {
-    staggerDelay: 150,
+  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+    threshold: 0.1,
   });
+  const { containerRef, visibleItems } = useStaggeredAnimation(
+    stats?.length ?? 0,
+    {
+      staggerDelay: 150,
+    },
+  );
 
   const effectiveVariant = variant ?? "default";
   const isAccent = effectiveVariant === "accent";
@@ -75,11 +85,17 @@ export function StatsSection({
       {isAccent && (
         <>
           <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary/80" />
-          <BackgroundPattern pattern="dots" opacity={0.08} className="text-primary-foreground" />
+          <BackgroundPattern
+            pattern="dots"
+            opacity={0.08}
+            className="text-primary-foreground"
+          />
         </>
       )}
 
-      <div className={`container mx-auto px-4 md:px-6 ${isAccent ? "relative z-10" : ""}`}>
+      <div
+        className={`container mx-auto px-4 md:px-6 ${isAccent ? "relative z-10" : ""}`}
+      >
         {/* Header */}
         <div
           className={`flex w-full flex-col items-center transition-all duration-700 ${
@@ -91,9 +107,7 @@ export function StatsSection({
               <Badge
                 variant={isAccent ? "default" : "secondary"}
                 className={`px-4 py-1.5 text-sm font-medium ${
-                  isAccent
-                    ? "bg-primary-foreground/90 text-primary"
-                    : ""
+                  isAccent ? "bg-primary-foreground/90 text-primary" : ""
                 }`}
               >
                 {cleanText(eyebrow)}
@@ -111,7 +125,9 @@ export function StatsSection({
             <RichText
               richText={richText}
               className={`text-base md:text-lg text-balance max-w-3xl ${
-                isAccent ? "text-primary-foreground/80" : "text-muted-foreground"
+                isAccent
+                  ? "text-primary-foreground/80"
+                  : "text-muted-foreground"
               }`}
             />
           </div>

@@ -100,11 +100,14 @@ export default async function SitemapIndexPage() {
                     </Link>
                     {blog.publishedAt && (
                       <span className="text-sm text-muted-foreground">
-                        {new Date(blog.publishedAt).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
+                        {new Date(blog.publishedAt).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          },
+                        )}
                       </span>
                     )}
                   </li>

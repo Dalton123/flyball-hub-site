@@ -439,6 +439,17 @@ export const queryBlogPaths = defineQuery(`
   *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()].slug.current
 `);
 
+export const queryRelatedPosts = defineQuery(`
+  *[_type == "blog"
+    && _id != $currentId
+    && seoHideFromLists != true
+    && defined(publishedAt)
+    && publishedAt <= now()
+  ] | order(publishedAt desc) {
+    ${blogCardFragment}
+  }
+`);
+
 const ogFieldsFragment = /* groq */ `
   _id,
   _type,

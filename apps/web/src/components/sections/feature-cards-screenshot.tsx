@@ -1,16 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { Badge } from "@workspace/ui/components/badge";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRef, useState } from "react";
 
-import { Badge } from "@workspace/ui/components/badge";
-
-import type { PagebuilderType } from "@/types";
 import {
   useScrollAnimation,
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";

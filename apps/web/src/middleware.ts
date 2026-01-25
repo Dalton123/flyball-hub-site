@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   const hostname = request.headers.get("host");
 
-  // Domain-level www redirect (flyballhub.com → www.flyballhub.com) 
+  // Domain-level www redirect (flyballhub.com → www.flyballhub.com)
   // is now handled by Vercel platform configuration (308 redirect)
   // Removed from middleware to prevent double redirect hops
 

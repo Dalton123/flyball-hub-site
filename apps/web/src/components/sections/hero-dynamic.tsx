@@ -3,8 +3,9 @@
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { ArrowRight } from "lucide-react";
-import type { PagebuilderType } from "@/types";
+
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import type { PagebuilderType } from "@/types";
 import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
