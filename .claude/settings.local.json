@@ -52,7 +52,18 @@
       "Bash(npx eslint:*)",
       "Bash(pnpm lint:fix:*)",
       "Bash(dig:*)",
-      "Bash(nslookup:*)"
+      "Bash(nslookup:*)",
+      "WebFetch(domain:support.ezoic.com)",
+      "Bash(agent-browser open \"https://svc.ezoic.com/publisher/dashboard/\")",
+      "Bash(agent-browser open:*)",
+      "Bash(agent-browser snapshot:*)",
+      "Bash(agent-browser screenshot:*)",
+      "Bash(agent-browser fill:*)",
+      "Bash(agent-browser click:*)",
+      "Bash(agent-browser wait:*)",
+      "Bash(agent-browser press:*)",
+      "Bash(agent-browser get:*)",
+      "WebFetch(domain:www.ezoic.com)"
     ],
     "deny": [],
     "ask": []

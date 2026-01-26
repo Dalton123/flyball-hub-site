@@ -82,6 +82,9 @@ export default async function RootLayout({
           {`
             window.ezstandalone = window.ezstandalone || {};
             ezstandalone.cmd = ezstandalone.cmd || [];
+            ezstandalone.cmd.push(function() {
+              ezstandalone.showAds();
+            });
           `}
         </Script>
       </head>
