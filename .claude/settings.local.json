@@ -63,7 +63,8 @@
       "Bash(agent-browser wait:*)",
       "Bash(agent-browser press:*)",
       "Bash(agent-browser get:*)",
-      "WebFetch(domain:www.ezoic.com)"
+      "WebFetch(domain:www.ezoic.com)",
+      "Bash(pnpm eslint:*)"
     ],
     "deny": [],
     "ask": []

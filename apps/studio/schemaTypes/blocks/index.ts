@@ -1,3 +1,4 @@
+import { appPromo } from "./app-promo";
 import { contactForm } from "./contact-form";
 import { cta } from "./cta";
 import { faqAccordion } from "./faq-accordion";
@@ -17,6 +18,7 @@ import { textBlock } from "./text-block";
 import { videoSection } from "./video-section";
 
 export const pageBuilderBlocks = [
+  appPromo,
   hero,
   textBlock,
   cta,

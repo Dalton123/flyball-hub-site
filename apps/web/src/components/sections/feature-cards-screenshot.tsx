@@ -252,7 +252,7 @@ export function FeatureCardsScreenshot({
   );
 
   return (
-    <section ref={ref} className="py-4 md:py-8">
+    <section ref={ref} className="py-4 md:py-8 pb-0! md:-mb-8">
       <div className="container mx-auto">
         {/* Header */}
         <div

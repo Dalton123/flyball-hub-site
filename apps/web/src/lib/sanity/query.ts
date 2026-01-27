@@ -350,10 +350,36 @@ const teamFinderBlock = /* groq */ `
   }
 `;
 
+const appPromoBlock = /* groq */ `
+  _type == "appPromo" => {
+    _type,
+    _key,
+    eyebrow,
+    title,
+    highlightedText,
+    description,
+    features[] {
+      _key,
+      title,
+      description,
+      icon
+    },
+    socialProofText,
+    showStarRating,
+    starRating,
+    ${buttonsFragment},
+    platformNote,
+    "phoneScreenshot": phoneScreenshot {
+      ${imageFields}
+    }
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
     _type,
+    ${appPromoBlock},
     ${ctaBlock},
     ${heroBlock},
     ${faqAccordionBlock},

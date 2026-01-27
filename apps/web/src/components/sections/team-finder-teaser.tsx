@@ -78,7 +78,7 @@ export function TeamFinderTeaser({
   };
 
   return (
-    <section ref={ref} className="py-12 md:py-20">
+    <section ref={ref} className="py-8">
       <div className="container mx-auto px-4 md:px-8">
         <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-primary/85 via-primary/95 to-primary/75 px-6 py-16 md:px-12 md:py-30">
           {/* Paw prints background pattern */}

@@ -123,6 +123,10 @@ const VideoSection = dynamic(
     loading: () => <BlockSkeleton />,
   },
 );
+const AppPromoBlock = dynamic(
+  () => import("./sections/app-promo").then((mod) => mod.AppPromoBlock),
+  { loading: () => <BlockSkeleton /> },
+);
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<
@@ -149,6 +153,7 @@ interface SanityDataAttributeConfig {
 
 // Block types that should span full viewport width
 const FULL_WIDTH_BLOCKS = new Set<string>([
+  "appPromo",
   "hero",
   "statsSection",
   "macbookScroll",
@@ -159,6 +164,7 @@ const FULL_WIDTH_BLOCKS = new Set<string>([
 
 // Component mapping for page builder blocks
 const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
+  appPromo: AppPromoBlock,
   cta: CTABlock,
   contactForm: ContactForm,
   faqAccordion: FaqAccordion,
@@ -269,7 +275,7 @@ function useBlockRenderer(id: string, type: string) {
       const isFullWidth = FULL_WIDTH_BLOCKS.has(block._type);
       const wrapperClasses = isFullWidth
         ? "w-full"
-        : "max-w-7xl mx-auto px-4 my-4 md:my-16 first:mt-4";
+        : "max-w-7xl mx-auto px-4 my-4 md:my-12 first:mt-4";
 
       return (
         <div
