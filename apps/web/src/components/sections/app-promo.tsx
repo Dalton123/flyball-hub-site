@@ -417,7 +417,6 @@ export function AppPromoBlock({
       aria-labelledby="app-promo-heading"
     >
       <div className="container mx-auto px-4 md:px-6">
-        {/* Main promo container */}
         <div className="relative overflow-hidden rounded-[2.5rem] md:rounded-[3rem]">
           {/* Multi-layer gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-[#1a3d2a] to-[#0f261a]" />
