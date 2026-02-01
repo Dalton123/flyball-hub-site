@@ -515,6 +515,10 @@ export type AppPromo = {
     alt?: string;
     _type: "image";
   };
+  showAppStoreButtons?: boolean;
+  googlePlayUrl?: string;
+  appStoreUrl?: string;
+  appStoreComingSoon?: boolean;
 };
 
 export type PageBuilder = Array<
@@ -1409,6 +1413,10 @@ export type QueryHomePageDataResult = {
             top: number;
           } | null;
         } | null;
+        showAppStoreButtons?: boolean;
+        googlePlayUrl?: string;
+        appStoreUrl?: string;
+        appStoreComingSoon?: boolean;
       }
     | {
         _key: string;
@@ -2638,6 +2646,10 @@ export type QuerySlugPageDataResult = {
             top: number;
           } | null;
         } | null;
+        showAppStoreButtons?: boolean;
+        googlePlayUrl?: string;
+        appStoreUrl?: string;
+        appStoreComingSoon?: boolean;
       }
     | {
         _key: string;
@@ -3860,6 +3872,10 @@ export type QueryBlogIndexPageDataResult = {
             top: number;
           } | null;
         } | null;
+        showAppStoreButtons?: boolean;
+        googlePlayUrl?: string;
+        appStoreUrl?: string;
+        appStoreComingSoon?: boolean;
       }
     | {
         _key: string;

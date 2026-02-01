@@ -113,6 +113,47 @@ export const appPromo = defineType({
       "Phone Screenshot (Optional)",
       "Upload a custom app screenshot. Leave empty to use the default app preview.",
     ),
+    defineField({
+      name: "showAppStoreButtons",
+      title: "Show App Store Buttons",
+      type: "boolean",
+      description: "Display App Store and Google Play download badges",
+      initialValue: false,
+      group: "appStore",
+    }),
+    defineField({
+      name: "googlePlayUrl",
+      title: "Google Play Store URL",
+      type: "url",
+      description: "Link to the app on Google Play Store",
+      hidden: ({ parent }) => !parent?.showAppStoreButtons,
+      group: "appStore",
+    }),
+    defineField({
+      name: "appStoreUrl",
+      title: "Apple App Store URL",
+      type: "url",
+      description:
+        "Link to the app on Apple App Store. Leave empty if not yet available.",
+      hidden: ({ parent }) => !parent?.showAppStoreButtons,
+      group: "appStore",
+    }),
+    defineField({
+      name: "appStoreComingSoon",
+      title: "iOS Coming Soon",
+      type: "boolean",
+      description:
+        "Show the iOS badge as greyed out with 'Coming Soon' text when the app isn't available yet",
+      initialValue: false,
+      hidden: ({ parent }) => !parent?.showAppStoreButtons || !!parent?.appStoreUrl,
+      group: "appStore",
+    }),
+  ],
+  groups: [
+    {
+      name: "appStore",
+      title: "App Store Badges",
+    },
   ],
   preview: {
     select: { title: "title" },
