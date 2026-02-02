@@ -1,5 +1,7 @@
 # Flyball Hub
 
+(www.flyballhub.com)[www.flyballhub.com]
+
 Manage flyball teams, dogs, training sessions and RSVPs in one simple app. Built for UK teams.
 
 A modern web application built with Next.js App Router, Sanity CMS, Shadcn UI, and TurboRepo.
