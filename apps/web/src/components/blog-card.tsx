@@ -24,7 +24,7 @@ function BlogImage({ image, title }: BlogImageProps) {
       width={800}
       height={400}
       alt={title ?? "Blog post image"}
-      className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+      className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2] transition-transform duration-300 group-hover:scale-105"
     />
   );
 }
@@ -136,7 +136,9 @@ export function FeaturedBlogCard({ blog }: BlogCardProps) {
 
   return (
     <article className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-      <BlogImage image={image} title={title} />
+      <Link href={slug ?? "#"} className="block overflow-hidden rounded-2xl group">
+        <BlogImage image={image} title={title} />
+      </Link>
       <div className="space-y-6">
         <BlogMeta publishedAt={publishedAt} />
         <BlogContent
@@ -169,10 +171,10 @@ export function BlogCard({ blog }: BlogCardProps) {
 
   return (
     <article className="flex flex-col gap-4 w-full">
-      <div className="relative w-full h-auto aspect-[16/9] overflow-hidden rounded-2xl">
+      <Link href={slug ?? "#"} className="relative block w-full h-auto aspect-[16/9] overflow-hidden rounded-2xl group">
         <BlogImage image={image} title={title} />
         <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-      </div>
+      </Link>
       <div className="w-full space-y-4">
         <BlogMeta publishedAt={publishedAt} />
         <BlogContent title={title} slug={slug} description={description} />
