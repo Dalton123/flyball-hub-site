@@ -363,7 +363,7 @@ function FeatureItem({
   );
 }
 
-// App Store Badge Components - Using official badge artwork
+// App Store Badge Components - Using official badge artwork 
 // Sources: https://github.com/steverichey/google-play-badge-svg, https://www.svgrepo.com/svg/303128/download-on-the-app-store-apple-logo
 function GooglePlayBadge({ url }: { url: string }) {
   return (
