@@ -1,8 +1,8 @@
 import { cn } from "@workspace/ui/lib/utils";
-import type { ComponentProps } from "react";
+import type { HTMLAttributes } from "react";
 import { memo } from "react";
 
-interface IconProps extends Omit<ComponentProps<"span">, "src"> {
+interface IconProps extends Omit<HTMLAttributes<HTMLSpanElement>, "dangerouslySetInnerHTML"> {
   icon?:
     | {
         svg?: string | null;

@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 
 import { getBaseUrl } from "@/utils";
 
+export const dynamic = "force-static";
+
 const baseUrl = getBaseUrl();
 
 export default function robots(): MetadataRoute.Robots {

@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 
 import { client } from "@/lib/sanity/client";
+
+export const revalidate = 3600; // 1 hour
 import { querySitemapData } from "@/lib/sanity/query";
 import { getBaseUrl } from "@/utils";
 
