@@ -1,6 +1,8 @@
 import "@workspace/ui/globals.css";
 
 import type { Metadata } from "next";
+
+export const revalidate = 3600; // 1 hour
 import { DM_Sans, Geist, Geist_Mono, Outfit } from "next/font/google";
 import { draftMode } from "next/headers";
 import Script from "next/script";
@@ -112,6 +114,12 @@ export default async function RootLayout({
           data-grow-faves-site-id="U2l0ZTplMWNhOTk1NS1hMWMwLTQ5MTktYjkwZi0wZGZjMzI2YTRhOWQ="
         />
         <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-background focus:text-foreground"
+          >
+            Skip to main content
+          </a>
           <Navbar navbarData={nav.navbarData} settingsData={nav.settingsData} />
           {children}
           <Suspense fallback={<FooterSkeleton />}>

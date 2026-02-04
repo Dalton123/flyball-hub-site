@@ -150,12 +150,7 @@ export function ArticleJsonLd({ article, settings }: ArticleJsonLdProps) {
     publisher: {
       "@type": "Organization",
       name: settings?.siteTitle || "Website",
-      logo: settings?.logo
-        ? ({
-            "@type": "ImageObject",
-            url: settings.logo,
-          } as ImageObject)
-        : undefined,
+      logo: settings?.logo || undefined,
     } as Organization,
     datePublished: new Date(
       article.publishedAt || article._createdAt || new Date().toISOString(),
@@ -226,12 +221,7 @@ export function OrganizationJsonLd({ settings }: OrganizationJsonLdProps) {
     name: settings.siteTitle,
     description: settings.siteDescription || undefined,
     url: baseUrl,
-    logo: settings.logo
-      ? ({
-          "@type": "ImageObject",
-          url: settings.logo,
-        } as ImageObject)
-      : undefined,
+    logo: settings.logo || undefined,
     contactPoint: settings.contactEmail
       ? ({
           "@type": "ContactPoint",

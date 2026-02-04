@@ -175,6 +175,7 @@ const components: Partial<PortableTextReactComponents> = {
           prefetch={false}
           aria-label={`Link to ${value?.href}`}
           target={value.openInNewTab ? "_blank" : "_self"}
+          rel={value.openInNewTab ? "noopener noreferrer" : undefined}
         >
           {children}
         </Link>

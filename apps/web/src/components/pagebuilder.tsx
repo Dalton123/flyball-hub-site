@@ -314,12 +314,13 @@ export function PageBuilder({
   }
 
   return (
-    <section
+    <main
+      id="main-content"
       className="flex flex-col"
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >
       {blocks.map(renderBlock)}
-    </section>
+    </main>
   );
 }

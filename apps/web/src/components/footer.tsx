@@ -90,7 +90,6 @@ function SocialLinks({ data }: SocialLinksProps) {
             aria-label={label}
           >
             <Icon className="fill-muted-foreground hover:fill-primary" />
-            <span className="sr-only">{label}</span>
           </Link>
         </li>
       ))}

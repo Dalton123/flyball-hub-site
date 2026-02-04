@@ -213,9 +213,9 @@ function TeamFinderContent({
           </Badge>
         )}
         {title && (
-          <h1 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
             {cleanText(title)}
-          </h1>
+          </h2>
         )}
         {description && (
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
