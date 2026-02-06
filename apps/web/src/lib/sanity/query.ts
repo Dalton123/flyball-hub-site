@@ -504,6 +504,21 @@ export const queryAllBreeds = defineQuery(`
   }
 `);
 
+export const queryBreedIndexPageData = defineQuery(`
+  *[_type == "breedIndex"][0]{
+    ...,
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current,
+    ${pageBuilderFragment},
+    "breeds": *[_type == "breed" && seoHideFromLists != true] | order(verdictRating desc, name asc){
+      ${breedCardFragment}
+    }
+  }
+`);
+
 export const queryRelatedPosts = defineQuery(`
   *[_type == "blog"
     && _id != $currentId

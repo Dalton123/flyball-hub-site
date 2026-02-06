@@ -33,7 +33,7 @@ export function BreedPage({ breed }: BreedPageProps) {
     breed;
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-16">
+    <div className="container mx-auto px-4 pb-8 md:pb-16">
       {/* Hero Section */}
       <header className="mb-12">
         <div className="grid gap-8 lg:grid-cols-2 lg:items-center">

@@ -29,7 +29,7 @@ export function BreedProsCons({ pros, cons, className }: BreedProsConsProps) {
                 key={index}
                 className="flex items-start gap-2 text-green-900"
               >
-                <span className="mt-1 text-green-600">+</span>
+                <span className="text-green-600">+</span>
                 <span>{cleanText(pro)}</span>
               </li>
             ))}
@@ -45,7 +45,7 @@ export function BreedProsCons({ pros, cons, className }: BreedProsConsProps) {
           <ul className="space-y-2">
             {cons.map((con, index) => (
               <li key={index} className="flex items-start gap-2 text-red-900">
-                <span className="mt-1 text-red-600">-</span>
+                <span className="text-red-600">-</span>
                 <span>{cleanText(con)}</span>
               </li>
             ))}

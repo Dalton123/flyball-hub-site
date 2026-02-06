@@ -139,11 +139,11 @@ export const structure = (
         title: "FAQs",
         icon: MessageCircle,
       }),
-      createList({
+      createIndexListWithOrderableItems({
         S,
-        type: "breed",
-        title: "Dog Breeds",
-        icon: PawPrint,
+        index: { type: "breedIndex", icon: PawPrint },
+        list: { type: "breed", title: "Dog Breeds", icon: PawPrint },
+        context,
       }),
       createList({ S, type: "author", title: "Authors", icon: User }),
       createList({ S, type: "redirect", title: "Redirects", icon: TrendingUpDown }),

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { BreedPage } from "@/components/breed-page";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { client } from "@/lib/sanity/client";
@@ -76,6 +77,7 @@ export default async function BreedSlugPage({
   return (
     <>
       <BreadcrumbJsonLd items={breadcrumbs} />
+      <Breadcrumbs items={breadcrumbs} className="container mx-auto px-4 pt-8" />
       <BreedPage breed={data} />
     </>
   );
