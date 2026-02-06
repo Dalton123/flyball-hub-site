@@ -89,6 +89,12 @@ function getDocumentTypeConfig(
         documentType: "Page",
         requireSlash: true,
       };
+    case "breed":
+      return {
+        documentType: "Breed page",
+        requiredPrefix: "/breeds/",
+        requireSlash: true,
+      };
     default:
       return {
         requireSlash: true,

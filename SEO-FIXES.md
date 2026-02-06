@@ -37,7 +37,7 @@
 
 ### Investigate
 
-- [ ] **11. Sanity token in JS bundle** - Check `.env` for `NEXT_PUBLIC_SANITY_*` variables
+- [x] **11. Sanity token in JS bundle** - False positive. Actual tokens are server-only (no NEXT_PUBLIC_ prefix). Scanner flagged public IDs (Sanity project ID, AdSense) which are intentionally client-side.
 
 ### Lower Priority / Later
 

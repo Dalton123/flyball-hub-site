@@ -465,6 +465,45 @@ export const queryBlogPaths = defineQuery(`
   *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()].slug.current
 `);
 
+// Breed queries
+const breedCardFragment = /* groq */ `
+  _id,
+  _type,
+  name,
+  "slug": slug.current,
+  verdict,
+  verdictRating,
+  ${imageFragment},
+  stats
+`;
+
+export const queryBreedBySlug = defineQuery(`
+  *[_type == "breed" && slug.current == $slug][0]{
+    ...,
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    verdict,
+    verdictRating,
+    ${imageFragment},
+    stats,
+    pros,
+    cons,
+    ${richTextFragment}
+  }
+`);
+
+export const queryBreedPaths = defineQuery(`
+  *[_type == "breed" && defined(slug.current)].slug.current
+`);
+
+export const queryAllBreeds = defineQuery(`
+  *[_type == "breed" && seoHideFromLists != true] | order(verdictRating desc, name asc){
+    ${breedCardFragment}
+  }
+`);
+
 export const queryRelatedPosts = defineQuery(`
   *[_type == "blog"
     && _id != $currentId
@@ -517,6 +556,17 @@ export const queryBlogPageOGData = defineQuery(`
 export const queryGenericPageOGData = defineQuery(`
   *[ defined(slug.current) && _id == $id][0]{
     ${ogFieldsFragment}
+  }
+`);
+
+export const queryBreedPageOGData = defineQuery(`
+  *[_type == "breed" && _id == $id][0]{
+    ${ogFieldsFragment},
+    "title": select(
+      defined(ogTitle) => ogTitle,
+      defined(seoTitle) => seoTitle,
+      name + " - Flyball Breed Guide"
+    )
   }
 `);
 
@@ -584,6 +634,10 @@ export const querySitemapData = defineQuery(`{
     "lastModified": _updatedAt
   },
   "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{
+    "slug": slug.current,
+    "lastModified": _updatedAt
+  },
+  "breedPages": *[_type == "breed" && defined(slug.current)]{
     "slug": slug.current,
     "lastModified": _updatedAt
   }
