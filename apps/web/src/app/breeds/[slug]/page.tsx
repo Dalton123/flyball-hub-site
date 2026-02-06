@@ -44,9 +44,17 @@ export async function generateMetadata({
 
   if (!data) return {};
 
+  // Use seoTitle/seoDescription from Sanity if set, otherwise use sensible defaults
+  const seoData = data as BreedPageData & {
+    seoTitle?: string;
+    seoDescription?: string;
+  };
+
   return getSEOMetadata({
-    title: data.name ? `${data.name} - Flyball Breed Guide` : undefined,
-    description: data.verdict ?? undefined,
+    title:
+      seoData.seoTitle ??
+      (data.name ? `${data.name} - Flyball Breed Guide` : undefined),
+    description: seoData.seoDescription ?? data.verdict ?? undefined,
     slug: data.slug ?? undefined,
     contentId: data._id,
     contentType: data._type ?? undefined,

@@ -1,3 +1,7 @@
+import {
+  orderRankField,
+  orderRankOrdering,
+} from "@sanity/orderable-document-list";
 import { PawPrintIcon } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
@@ -14,9 +18,11 @@ export const breed = defineType({
   type: "document",
   icon: PawPrintIcon,
   groups: GROUPS,
+  orderings: [orderRankOrdering],
   description:
     "A dog breed page for flyball suitability. Includes breed stats, pros/cons, and detailed content.",
   fields: [
+    orderRankField({ type: "breed" }),
     defineField({
       name: "name",
       type: "string",

@@ -5,6 +5,8 @@ import { createRadioListLayout, isValidUrl } from "../../utils/helper";
 const allLinkableTypes = [
   { type: "blog" },
   { type: "blogIndex" },
+  { type: "breed" },
+  { type: "breedIndex" },
   { type: "page" },
 ];
 

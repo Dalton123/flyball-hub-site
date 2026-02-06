@@ -17,8 +17,9 @@ interface SitemapBlog {
 }
 
 export const metadata: Metadata = {
-  title: "Sitemap",
-  description: "Browse all pages and blog posts on Flyball Hub.",
+  title: "Sitemap - All Pages & Posts | Flyball Hub",
+  description:
+    "Browse the complete sitemap for Flyball Hub. Find all breed guides, blog posts, training resources, and pages about flyball for dogs in the UK.",
 };
 
 function normalizeSlug(slug: string | null): string {
