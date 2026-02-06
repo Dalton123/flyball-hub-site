@@ -63,7 +63,7 @@ export default async function BreedsIndexPage() {
   ];
 
   return (
-    <>
+    <main>
       <BreadcrumbJsonLd items={breadcrumbs} />
       <div className="container mx-auto px-4 py-8 md:py-16">
         {/* Hero Section */}
@@ -75,19 +75,22 @@ export default async function BreedsIndexPage() {
         </header>
 
         {/* Breed Grid */}
-        {breeds.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {breeds.map((breed) => (
-              <BreedCard key={breed._id} breed={breed} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              No breed guides available yet. Check back soon!
-            </p>
-          </div>
-        )}
+        <section>
+          <h2 className="sr-only">All Breeds</h2>
+          {breeds.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {breeds.map((breed) => (
+                <BreedCard key={breed._id} breed={breed} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                No breed guides available yet. Check back soon!
+              </p>
+            </div>
+          )}
+        </section>
       </div>
 
       {/* Page Builder Blocks */}
@@ -98,6 +101,6 @@ export default async function BreedsIndexPage() {
           type={data._type}
         />
       )}
-    </>
+    </main>
   );
 }

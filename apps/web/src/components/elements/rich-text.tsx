@@ -68,12 +68,12 @@ const components: Partial<PortableTextReactComponents> = {
     h1: ({ children, value }) => {
       const slug = parseChildrenToSlug(value.children);
       return (
-        <h1
+        <h2
           id={slug}
           className="scroll-m-20 border-b pb-2 text-4xl font-semibold first:mt-0"
         >
           {children}
-        </h1>
+        </h2>
       );
     },
     h2: ({ children, value }) => {
@@ -173,7 +173,6 @@ const components: Partial<PortableTextReactComponents> = {
           className="underline decoration-dotted underline-offset-2"
           href={value.href}
           prefetch={false}
-          aria-label={`Link to ${value?.href}`}
           target={value.openInNewTab ? "_blank" : "_self"}
           rel={value.openInNewTab ? "noopener noreferrer" : undefined}
         >
