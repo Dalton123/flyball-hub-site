@@ -77,7 +77,7 @@ export default async function BreedSlugPage({
   return (
     <>
       <BreadcrumbJsonLd items={breadcrumbs} />
-      <Breadcrumbs items={breadcrumbs} className="container mx-auto px-4 pt-8" />
+      <Breadcrumbs items={breadcrumbs} className="container mx-auto px-4 pt-8 pb-4" />
       <BreedPage breed={data} />
     </>
   );
