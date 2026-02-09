@@ -107,7 +107,7 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
           {screenshot ? (
             <SanityImage
               image={screenshot}
-              alt={screenshot?.alt || title || "Feature screenshot"}
+              alt={screenshot?.alt || cleanText(title) || "Feature screenshot"}
               width={800}
               height={600}
               className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-101 !rounded-none"

@@ -42,7 +42,7 @@ export function BreedPage({ breed }: BreedPageProps) {
             <div className="order-1 lg:order-2">
               <SanityImage
                 image={image}
-                alt={name ?? "Dog breed"}
+                alt={cleanText(name) ?? "Dog breed"}
                 width={800}
                 height={600}
                 loading="eager"

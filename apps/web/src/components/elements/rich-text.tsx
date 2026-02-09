@@ -68,12 +68,12 @@ const components: Partial<PortableTextReactComponents> = {
     h1: ({ children, value }) => {
       const slug = parseChildrenToSlug(value.children);
       return (
-        <h2
+        <h1
           id={slug}
           className="scroll-m-20 border-b pb-2 text-4xl font-semibold first:mt-0"
         >
           {children}
-        </h2>
+        </h1>
       );
     },
     h2: ({ children, value }) => {
