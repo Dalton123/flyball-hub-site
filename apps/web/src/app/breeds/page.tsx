@@ -19,15 +19,16 @@ interface BreedIndexData {
   breeds: BreedCardData[] | null;
 }
 
-async function fetchBreedIndexData() {
+async function fetchBreedIndexData(stega = true) {
   const { data } = await sanityFetch({
     query: queryBreedIndexPageData,
+    stega,
   });
   return data as BreedIndexData | null;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await fetchBreedIndexData();
+  const data = await fetchBreedIndexData(false);
 
   return getSEOMetadata({
     title: data?.title ?? "Dog Breeds for Flyball",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { stegaClean } from "next-sanity";
 
 import type { Maybe } from "@/types";
 import { capitalize, getBaseUrl } from "@/utils";
@@ -108,13 +109,17 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
   const baseUrl = getBaseUrl();
   const pageUrl = buildPageUrl({ baseUrl, slug });
 
-  // Build default metadata values
-  const defaultTitle = extractTitle({
-    pageTitle,
-    slug,
-    siteTitle: siteConfig.title,
-  });
-  const defaultDescription = pageDescription || siteConfig.description;
+  // Build default metadata values (stegaClean strips invisible Sanity encoding chars)
+  const defaultTitle = stegaClean(
+    extractTitle({
+      pageTitle,
+      slug,
+      siteTitle: siteConfig.title,
+    }),
+  );
+  const defaultDescription = stegaClean(
+    pageDescription || siteConfig.description,
+  );
   const allKeywords = [...siteConfig.keywords, ...pageKeywords];
 
   const ogImage = generateOgImageUrl({
@@ -133,9 +138,6 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
     description: defaultDescription,
     creator: siteConfig.title,
     authors: [{ name: siteConfig.title }],
-    icons: {
-      icon: `${baseUrl}/favicon.ico`,
-    },
     keywords: allKeywords,
     robots: seoNoIndex ? "noindex, nofollow" : "index, follow",
     twitter: {
