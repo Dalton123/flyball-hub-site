@@ -5,7 +5,7 @@ import { Calendar, CheckCircle2, LayoutGrid, Users } from "lucide-react";
 import { cn } from "@workspace/ui/lib/utils";
 
 import type { PagebuilderType, SanityImageProps } from "@/types";
-
+import { cleanText } from "@/utils";
 import { BackgroundPattern } from "../elements/background-pattern";
 import { SanityButtons } from "../elements/sanity-buttons";
 import { SanityImage } from "../elements/sanity-image";
@@ -209,7 +209,7 @@ function PhoneMockup({
               <div className="relative aspect-[9/19.5] overflow-hidden">
                 <SanityImage
                   image={screenshot}
-                  alt={screenshot.alt || "Flyball Hub app screenshot"}
+                  alt={cleanText(screenshot.alt) || "Flyball Hub app screenshot"}
                   width={300}
                   height={650}
                   className="w-full h-full object-cover"
@@ -548,8 +548,8 @@ export function AppPromoBlock({
 
   // Parse title with highlighted text
   const renderTitle = () => {
-    const displayTitle = title || "Your Flyball Team, In Your Pocket";
-    const highlight = highlightedText || "In Your Pocket";
+    const displayTitle = cleanText(title) || "Your Flyball Team, In Your Pocket";
+    const highlight = cleanText(highlightedText) || "In Your Pocket";
 
     if (displayTitle.includes(highlight)) {
       const parts = displayTitle.split(highlight);
