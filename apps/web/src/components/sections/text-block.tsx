@@ -1,7 +1,6 @@
 "use client";
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 
@@ -35,7 +34,7 @@ export function TextBlock({ title, richText, alignment }: TextBlockProps) {
             <h1
               className={`text-3xl font-semibold md:text-4xl mb-8 ${alignmentClass}`}
             >
-              {cleanText(title)}
+              {title}
             </h1>
           )}
           <RichText

@@ -7,7 +7,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Color, MeshPhongMaterial } from "three";
 
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 import { StaticGlobe } from "../elements/static-globe";
@@ -268,13 +267,13 @@ export function HeroGlobe({
             {badge && (
               <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white backdrop-blur-sm">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-green-300" />
-                {cleanText(badge)}
+                {badge}
               </span>
             )}
 
             {title && (
               <h1 className="font-hero text-4xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
-                {cleanText(title)}
+                {title}
               </h1>
             )}
 
@@ -303,7 +302,7 @@ export function HeroGlobe({
                     }
                     onClick={() => router.push(button.href || "/")}
                   >
-                    {cleanText(button.text)}
+                    {button.text}
                   </Button>
                 ))}
               </div>
@@ -315,9 +314,9 @@ export function HeroGlobe({
                 {stats.map((stat, index) => (
                   <div key={index}>
                     <span className="block text-2xl font-bold text-white">
-                      {cleanText(stat.value)}
+                      {stat.value}
                     </span>
-                    <span className="text-sm">{cleanText(stat.label)}</span>
+                    <span className="text-sm">{stat.label}</span>
                   </div>
                 ))}
               </div>

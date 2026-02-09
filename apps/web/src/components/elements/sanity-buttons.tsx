@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { ComponentProps } from "react";
 
 import type { SanityButtonProps } from "@/types";
-import { cleanText } from "@/utils";
 
 type SanityButtonsProps = {
   buttons: SanityButtonProps[] | null;
@@ -37,9 +36,9 @@ function SanityButton({
         href={href || "#"}
         target={openInNewTab ? "_blank" : "_self"}
         rel={openInNewTab ? "noopener noreferrer" : undefined}
-        title={cleanText(text)}
+        title={text ?? undefined}
       >
-        {cleanText(text)}
+        {text}
       </Link>
     </Button>
   );

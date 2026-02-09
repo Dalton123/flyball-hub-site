@@ -5,7 +5,6 @@ import { Play } from "lucide-react";
 import { useState } from "react";
 
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
 
 import { SanityImage } from "../elements/sanity-image";
 
@@ -73,17 +72,17 @@ export function VideoSection({
                 variant="secondary"
                 className="mb-4 px-4 py-1.5 text-sm font-medium"
               >
-                {cleanText(eyebrow)}
+                {eyebrow}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl text-balance">
-                {cleanText(title)}
+                {title}
               </h2>
             )}
             {description && (
               <p className="mt-4 text-lg text-muted-foreground text-balance">
-                {cleanText(description)}
+                {description}
               </p>
             )}
           </div>

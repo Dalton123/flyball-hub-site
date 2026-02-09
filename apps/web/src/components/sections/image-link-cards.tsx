@@ -5,7 +5,6 @@ import { cn } from "@workspace/ui/lib/utils";
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 import { CTACard } from "../image-link-card";
@@ -38,12 +37,12 @@ export function ImageLinkCards({
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium"
               >
-                {cleanText(eyebrow)}
+                {eyebrow}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl text-balance">
-                {cleanText(title)}
+                {title}
               </h2>
             )}
             <RichText

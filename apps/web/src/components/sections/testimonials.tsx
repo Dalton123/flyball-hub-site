@@ -8,8 +8,6 @@ import {
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
-
 import { RichText } from "../elements/rich-text";
 import { SanityImage } from "../elements/sanity-image";
 
@@ -48,7 +46,7 @@ function TestimonialCard({ testimonial, isVisible }: TestimonialCardProps) {
 
       {/* Quote */}
       <blockquote className="text-base md:text-lg text-foreground mb-6 flex-grow">
-        "{cleanText(quote)}"
+        "{quote}"
       </blockquote>
 
       {/* Author info */}
@@ -63,11 +61,11 @@ function TestimonialCard({ testimonial, isVisible }: TestimonialCardProps) {
         )}
         <div>
           <div className="font-semibold text-foreground">
-            {cleanText(authorName)}
+            {authorName}
           </div>
           {authorRole && (
             <div className="text-sm text-muted-foreground">
-              {cleanText(authorRole)}
+              {authorRole}
             </div>
           )}
         </div>
@@ -107,12 +105,12 @@ export function Testimonials({
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium"
               >
-                {cleanText(eyebrow)}
+                {eyebrow}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-                {cleanText(title)}
+                {title}
               </h2>
             )}
             <RichText

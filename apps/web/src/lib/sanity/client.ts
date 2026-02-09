@@ -12,10 +12,9 @@ export const client = createClient({
   perspective: "published",
   stega: {
     studioUrl,
-    // Enable in development for local visual editing OR on Vercel preview deployments
-    enabled:
-      process.env.NODE_ENV === "development" ||
-      process.env.NEXT_PUBLIC_VERCEL_ENV === "preview",
+    // Stega disabled — not using Visual Editing. Zero-width chars are
+    // stripped at the fetch layer by deepCleanStrings() instead.
+    enabled: false,
   },
 });
 

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
 import { SanityImage } from "@/components/elements/sanity-image";
@@ -17,7 +16,6 @@ import {
 } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
 import type { BlogCardProps } from "@/types";
-import { cleanText } from "@/utils";
 
 async function fetchBlogSlugPageData(slug: string, stega = true) {
   return await sanityFetch({
@@ -106,26 +104,26 @@ export default async function BlogSlugPage({
   return (
     <div className="container my-16 mx-auto px-4 md:px-6 ">
       <ArticleJsonLd
-        article={stegaClean(data)}
-        settings={stegaClean(settings)}
+        article={data}
+        settings={settings}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
       <Breadcrumbs items={breadcrumbs} className="mb-8" />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
         <main>
           <header className="mb-8">
-            <h1 className="mt-2 text-4xl font-bold">{cleanText(title)}</h1>
+            <h1 className="mt-2 text-4xl font-bold">{title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              {cleanText(description)}
+              {description}
             </p>
             {authors && (
               <div className="mt-6 flex items-center gap-x-4">
                 <div className="text-sm">
-                  <p className="font-semibold">{stegaClean(authors.name)}</p>
+                  <p className="font-semibold">{authors.name}</p>
                   <div className="flex items-center gap-x-2 text-muted-foreground">
                     {authors.position && (
                       <>
-                        <span>{stegaClean(authors.position)}</span>
+                        <span>{authors.position}</span>
                         <span aria-hidden="true">·</span>
                       </>
                     )}

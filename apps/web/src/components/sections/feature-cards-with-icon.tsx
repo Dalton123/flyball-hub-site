@@ -7,7 +7,6 @@ import {
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 import { SanityIcon } from "../elements/sanity-icon";
@@ -33,7 +32,7 @@ function FeatureCard({ card, isVisible }: FeatureCardProps) {
 
       <div>
         <h3 className="text-lg font-semibold md:text-xl mb-3">
-          {cleanText(title)}
+          {title}
         </h3>
         <RichText
           richText={richText}
@@ -74,12 +73,12 @@ export function FeatureCardsWithIcon({
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium"
               >
-                {cleanText(eyebrow)}
+                {eyebrow}
               </Badge>
             )}
             {title && (
               <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
-                {cleanText(title)}
+                {title}
               </h2>
             )}
             <RichText

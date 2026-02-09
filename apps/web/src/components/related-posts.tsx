@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import type { BlogCardProps } from "@/types";
-import { cleanText } from "@/utils";
 
 import { SanityImage } from "./elements/sanity-image";
 
@@ -52,7 +51,7 @@ function RelatedPostCard({
               image={image}
               width={800}
               height={500}
-              alt={cleanText(title) || "Related post"}
+              alt={title || "Related post"}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           )}
@@ -75,7 +74,7 @@ function RelatedPostCard({
               {authors?.name && (
                 <>
                   <span className="text-white/40">•</span>
-                  <span>{cleanText(authors.name)}</span>
+                  <span>{authors.name}</span>
                 </>
               )}
             </div>
@@ -86,7 +85,7 @@ function RelatedPostCard({
                 featured ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
               }`}
             >
-              {cleanText(title)}
+              {title}
             </h3>
           </div>
         </div>

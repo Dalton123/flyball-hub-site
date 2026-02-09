@@ -4,8 +4,6 @@ import { CheckCircle2, XCircle } from "lucide-react";
 
 import { cn } from "@workspace/ui/lib/utils";
 
-import { cleanText } from "@/utils";
-
 interface BreedProsConsProps {
   pros: string[] | null;
   cons: string[] | null;
@@ -30,7 +28,7 @@ export function BreedProsCons({ pros, cons, className }: BreedProsConsProps) {
                 className="flex items-start gap-2 text-green-900"
               >
                 <span className="text-green-600">+</span>
-                <span>{cleanText(pro)}</span>
+                <span>{pro}</span>
               </li>
             ))}
           </ul>
@@ -46,7 +44,7 @@ export function BreedProsCons({ pros, cons, className }: BreedProsConsProps) {
             {cons.map((con, index) => (
               <li key={index} className="flex items-start gap-2 text-red-900">
                 <span className="text-red-600">-</span>
-                <span>{cleanText(con)}</span>
+                <span>{con}</span>
               </li>
             ))}
           </ul>

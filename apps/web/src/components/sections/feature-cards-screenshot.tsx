@@ -10,7 +10,6 @@ import {
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
 
 import { RichText } from "../elements/rich-text";
 import { SanityImage } from "../elements/sanity-image";
@@ -107,7 +106,7 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
           {screenshot ? (
             <SanityImage
               image={screenshot}
-              alt={screenshot?.alt || cleanText(title) || "Feature screenshot"}
+              alt={screenshot?.alt || title || "Feature screenshot"}
               width={800}
               height={600}
               className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-101 !rounded-none"
@@ -194,12 +193,12 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
           <div className="relative">
             {title && (
               <h3 className="mb-2 text-lg font-semibold text-primary-foreground md:text-xl">
-                {cleanText(title)}
+                {title}
               </h3>
             )}
             {description && (
               <p className="text-sm leading-relaxed text-primary-foreground md:text-base">
-                {cleanText(description)}
+                {description}
               </p>
             )}
           </div>
@@ -265,12 +264,12 @@ export function FeatureCardsScreenshot({
               variant="secondary"
               className="mb-4 px-4 py-1.5 text-sm font-medium"
             >
-              {cleanText(eyebrow)}
+              {eyebrow}
             </Badge>
           )}
           {title && (
             <h2 className="max-w-3xl text-3xl font-semibold md:text-4xl lg:text-5xl">
-              {cleanText(title)}
+              {title}
             </h2>
           )}
           {richText && (

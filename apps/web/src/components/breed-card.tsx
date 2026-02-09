@@ -2,7 +2,6 @@
 import Link from "next/link";
 
 import type { BreedCardData } from "@/types";
-import { cleanText } from "@/utils";
 
 import { SanityImage } from "./elements/sanity-image";
 
@@ -42,13 +41,13 @@ export function BreedCard({ breed }: BreedCardProps) {
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-lg font-semibold">
             <Link href={slug ?? "#"} className="hover:underline">
-              {cleanText(name)}
+              {name}
             </Link>
           </h3>
           <StarRating rating={verdictRating} />
         </div>
         <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-          {cleanText(verdict)}
+          {verdict}
         </p>
         {stats && (
           <div className="mt-3 flex flex-wrap gap-2 text-xs">

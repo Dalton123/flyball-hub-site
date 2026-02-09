@@ -8,7 +8,7 @@ import {
   type PortableTextReactComponents,
 } from "next-sanity";
 
-import { cleanText, parseChildrenToSlug } from "@/utils";
+import { parseChildrenToSlug } from "@/utils";
 
 // Skeleton for code block loading state
 function CodeBlockSkeleton({ filename }: { filename?: string }) {
@@ -258,10 +258,6 @@ const components: Partial<PortableTextReactComponents> = {
         cells?: string[];
       };
 
-      // Strip zero-width characters that Sanity inserts (they break whitespace-nowrap)
-      const cleanCell = (cell: string) =>
-        cell?.replace(/[\u200B\u200C\u200D\uFEFF]/g, "").trim() ?? "";
-
       const rows = value.rows as TableRow[];
       const [headerRow, ...bodyRows] = rows;
 
@@ -279,7 +275,7 @@ const components: Partial<PortableTextReactComponents> = {
                       key={`header-${cellIndex}`}
                       className="border border-border p-1! md:p-3! text-left font-semibold whitespace-nowrap"
                     >
-                      {cleanCell(cell)}
+                      {cell}
                     </th>
                   ))}
                 </tr>
@@ -296,7 +292,7 @@ const components: Partial<PortableTextReactComponents> = {
                       key={`cell-${rowIndex}-${cellIndex}`}
                       className="border border-border p-1! md:p-3! text-left whitespace-nowrap"
                     >
-                      {cleanCell(cell)}
+                      {cell}
                     </td>
                   ))}
                 </tr>
@@ -312,26 +308,6 @@ const components: Partial<PortableTextReactComponents> = {
 
 type TextAlignment = "left" | "center" | "right";
 
-// Recursively clean zero-width characters from all text in portable text blocks
-function cleanPortableText(blocks: PortableTextBlock[]): PortableTextBlock[] {
-  if (!Array.isArray(blocks)) return blocks;
-
-  return blocks.map((block) => {
-    if (block._type === "block" && Array.isArray(block.children)) {
-      return {
-        ...block,
-        children: block.children.map((child) => {
-          if (child._type === "span" && typeof child.text === "string") {
-            return { ...child, text: cleanText(child.text) };
-          }
-          return child;
-        }),
-      };
-    }
-    return block;
-  }) as PortableTextBlock[];
-}
-
 export function RichText<T>({
   richText,
   className,
@@ -342,11 +318,6 @@ export function RichText<T>({
   alignment?: TextAlignment;
 }) {
   if (!richText) return null;
-
-  // Clean zero-width characters before rendering
-  const cleanedRichText = cleanPortableText(
-    richText as unknown as PortableTextBlock[],
-  );
 
   const alignmentClass = {
     left: "text-left",
@@ -379,7 +350,7 @@ export function RichText<T>({
       )}
     >
       <PortableText
-        value={cleanedRichText}
+        value={richText as unknown as PortableTextBlock[]}
         components={components}
         onMissingComponent={(_, { nodeType, type }) =>
           console.log("missing component", nodeType, type)

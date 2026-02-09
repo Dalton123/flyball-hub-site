@@ -7,7 +7,6 @@ import {
   useStaggeredAnimation,
 } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
@@ -35,14 +34,14 @@ function StatItem({ stat, isVisible, variant = "default" }: StatItemProps) {
           isAccent ? "text-primary-foreground" : "text-primary"
         }`}
       >
-        {cleanText(value)}
+        {value}
       </div>
       <div
         className={`text-lg md:text-xl font-semibold mb-2 ${
           isAccent ? "text-primary-foreground" : "text-foreground"
         }`}
       >
-        {cleanText(label)}
+        {label}
       </div>
       {description && (
         <div
@@ -50,7 +49,7 @@ function StatItem({ stat, isVisible, variant = "default" }: StatItemProps) {
             isAccent ? "text-primary-foreground/70" : "text-muted-foreground"
           }`}
         >
-          {cleanText(description)}
+          {description}
         </div>
       )}
     </div>
@@ -110,7 +109,7 @@ export function StatsSection({
                   isAccent ? "bg-primary-foreground/90 text-primary" : ""
                 }`}
               >
-                {cleanText(eyebrow)}
+                {eyebrow}
               </Badge>
             )}
             {title && (
@@ -119,7 +118,7 @@ export function StatsSection({
                   isAccent ? "text-primary-foreground" : ""
                 }`}
               >
-                {cleanText(title)}
+                {title}
               </h2>
             )}
             <RichText

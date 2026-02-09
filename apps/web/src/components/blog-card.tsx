@@ -2,7 +2,6 @@
 import Link from "next/link";
 
 import type { QueryBlogIndexPageDataResult } from "@/lib/sanity/sanity.types";
-import { cleanText } from "@/utils";
 
 import { SanityImage } from "./elements/sanity-image";
 
@@ -24,7 +23,7 @@ function BlogImage({ image, title }: BlogImageProps) {
       width={800}
       height={400}
       alt={title ?? "Blog post image"}
-      className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2] transition-transform duration-300 group-hover:scale-105"
+      className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2 transition-transform duration-300 group-hover:scale-105"
     />
   );
 }
@@ -57,7 +56,7 @@ export function BlogAuthor({ author }: BlogAuthorProps) {
   return (
     <div className="flex items-center gap-x-2.5 text-sm/6 font-semibold text-gray-900">
       <AuthorImage author={author} />
-      {cleanText(author.name)}
+      {author.name}
     </div>
   );
 }
@@ -103,11 +102,11 @@ function BlogContent({
       <HeadingTag className={headingClasses}>
         <Link href={slug ?? "#"}>
           <span className="absolute inset-0" />
-          {cleanText(title)}
+          {title}
         </Link>
       </HeadingTag>
       <p className="mt-5 text-sm leading-6 text-muted-foreground">
-        {cleanText(description)}
+        {description}
       </p>
     </div>
   );
@@ -123,7 +122,7 @@ function AuthorSection({ authors }: { authors: Blog["authors"] }) {
         <div className="text-sm leading-6">
           <p className="font-semibold">
             <span className="absolute inset-0" />
-            {cleanText(authors.name)}
+            {authors.name}
           </p>
         </div>
       </div>
@@ -194,9 +193,9 @@ export function BlogHeader({
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
-        <h1 className="text-3xl font-bold sm:text-4xl">{cleanText(title)}</h1>
+        <h1 className="text-3xl font-bold sm:text-4xl">{title}</h1>
         <p className="mt-4 text-lg leading-8 text-muted-foreground">
-          {cleanText(description)}
+          {description}
         </p>
       </div>
     </div>

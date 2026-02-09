@@ -3,8 +3,6 @@ import Link from "next/link";
 
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryHtmlSitemapData } from "@/lib/sanity/query";
-import { cleanText } from "@/utils";
-
 interface SitemapPage {
   title: string | null;
   slug: string | null;
@@ -75,7 +73,7 @@ export default async function SitemapIndexPage() {
                     href={normalizeSlug(page.slug)}
                     className="text-primary hover:underline underline-offset-4"
                   >
-                    {cleanText(page.title ?? page.slug)}
+                    {page.title ?? page.slug}
                   </Link>
                 </li>
               ))}
@@ -97,7 +95,7 @@ export default async function SitemapIndexPage() {
                       href={normalizeSlug(blog.slug)}
                       className="text-primary hover:underline underline-offset-4"
                     >
-                      {cleanText(blog.title ?? blog.slug)}
+                      {blog.title ?? blog.slug}
                     </Link>
                     {blog.publishedAt && (
                       <span className="text-sm text-muted-foreground">

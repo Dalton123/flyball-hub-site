@@ -81,3 +81,26 @@ export function parseChildrenToSlug(children: PortableTextBlock["children"]) {
  */
 export const cleanText = (text: string | undefined | null): string =>
   text?.replace(/[\u200B\u200C\u200D\uFEFF\u2060\u180E]/g, "") ?? "";
+
+const ZERO_WIDTH_RE = /[\u200B\u200C\u200D\uFEFF\u2060\u180E]/g;
+
+/**
+ * Recursively strip zero-width characters from every string in any data structure.
+ * Used at the fetch layer to clean all Sanity data before it reaches components.
+ */
+export function deepCleanStrings<T>(data: T): T {
+  if (typeof data === "string") {
+    return data.replace(ZERO_WIDTH_RE, "") as T;
+  }
+  if (Array.isArray(data)) {
+    return data.map(deepCleanStrings) as T;
+  }
+  if (data !== null && typeof data === "object") {
+    const cleaned: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(data)) {
+      cleaned[key] = deepCleanStrings(value);
+    }
+    return cleaned as T;
+  }
+  return data;
+}

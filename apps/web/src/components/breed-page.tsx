@@ -1,7 +1,6 @@
 "use client";
 
 import type { BreedPageData } from "@/types";
-import { cleanText } from "@/utils";
 
 import { RichText } from "./elements/rich-text";
 import { SanityImage } from "./elements/sanity-image";
@@ -42,7 +41,7 @@ export function BreedPage({ breed }: BreedPageProps) {
             <div className="order-1 lg:order-2">
               <SanityImage
                 image={image}
-                alt={cleanText(name) ?? "Dog breed"}
+                alt={name ?? "Dog breed"}
                 width={800}
                 height={600}
                 loading="eager"
@@ -54,10 +53,10 @@ export function BreedPage({ breed }: BreedPageProps) {
           {/* Content */}
           <div className="order-2 lg:order-1">
             <h1 className="text-4xl font-bold md:text-5xl mb-4">
-              {cleanText(name)}
+              {name}
             </h1>
             <p className="text-xl text-muted-foreground mb-4">
-              {cleanText(verdict)}
+              {verdict}
             </p>
             <StarRating rating={verdictRating} />
           </div>

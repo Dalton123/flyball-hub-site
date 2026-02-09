@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
-import { cleanText } from "@/utils";
 
 import { BackgroundPattern } from "../elements/background-pattern";
 import { RichText } from "../elements/rich-text";
@@ -82,12 +81,12 @@ export function HeroBlock(props: HeroBlockProps) {
                 variant="secondary"
                 className="px-4 py-1.5 text-sm font-medium"
               >
-                {cleanText(badge)}
+                {badge}
               </Badge>
             )}
             <div className="grid gap-4 lg:gap-6">
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-balance leading-tight">
-                {cleanText(title)}
+                {title}
               </h1>
               <RichText
                 richText={richText}
