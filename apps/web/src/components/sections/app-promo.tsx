@@ -373,6 +373,7 @@ function GooglePlayBadge({ url }: { url: string }) {
       className="inline-block transition-transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-900 rounded-lg"
       aria-label="Get it on Google Play"
     >
+      <span className="sr-only">Get it on Google Play</span>
       <svg
         width="135"
         height="40"

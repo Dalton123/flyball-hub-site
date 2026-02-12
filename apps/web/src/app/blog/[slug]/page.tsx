@@ -119,7 +119,7 @@ export default async function BlogSlugPage({
             {authors && (
               <div className="mt-6 flex items-center gap-x-4">
                 <div className="text-sm">
-                  <p className="font-semibold">{authors.name}</p>
+                  <p className="font-semibold">By {authors.name}</p>
                   <div className="flex items-center gap-x-2 text-muted-foreground">
                     {authors.position && (
                       <>

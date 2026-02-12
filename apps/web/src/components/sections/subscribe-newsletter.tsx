@@ -78,7 +78,11 @@ export function SubscribeNewsletter({
             action={() => {}}
           >
             <div className="flex bg-background items-center border border-border/50 rounded-xl p-2 shadow-lg md:w-[28rem] justify-between pl-4 transition-shadow hover:shadow-xl focus-within:ring-2 focus-within:ring-primary/20">
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address
+              </label>
               <input
+                id="newsletter-email"
                 type="email"
                 name="email"
                 required
