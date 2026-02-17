@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 
-import { BreedCard } from "@/components/breed-card";
+import { Badge } from "@workspace/ui/components/badge";
+
+import { BreedGrid } from "@/components/breed-grid";
+import { BreedTraits } from "@/components/breed-traits";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { PageBuilder } from "@/components/pagebuilder";
+import { BackgroundPattern } from "@/components/elements/background-pattern";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryBreedIndexPageData } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
@@ -64,35 +68,48 @@ export default async function BreedsIndexPage() {
   ];
 
   return (
-    <main>
+    <main className="bg-background">
       <BreadcrumbJsonLd items={breadcrumbs} />
-      <div className="container mx-auto px-4 py-8 md:py-16">
-        {/* Hero Section */}
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold md:text-5xl mb-4">{title}</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {description}
-          </p>
-        </header>
 
-        {/* Breed Grid */}
-        <section>
-          <h2 className="sr-only">All Breeds</h2>
-          {breeds.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {breeds.map((breed) => (
-                <BreedCard key={breed._id} breed={breed} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">
-                No breed guides available yet. Check back soon!
-              </p>
-            </div>
-          )}
+      {/* Hero Section */}
+      <section className="relative overflow-hidden py-12 md:py-20">
+        <BackgroundPattern pattern="tennis-balls" opacity={0.03} />
+        <div className="container relative mx-auto px-4 md:px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <Badge
+              variant="secondary"
+              className="relative mb-6 overflow-hidden px-4 py-1.5 text-sm font-medium"
+            >
+              <span className="relative z-10">Breed Guides</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full animate-shine" />
+            </Badge>
+            <h1 className="text-4xl font-semibold md:text-5xl lg:text-6xl text-balance leading-tight mb-6">
+              {title}
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground text-balance max-w-2xl mx-auto">
+              {description}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* All Breeds Grid with Filters */}
+      {breeds.length > 0 && (
+        <section className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+          <div className="flex items-center gap-3 mb-8">
+            <h2 className="text-2xl font-semibold md:text-3xl">
+              Browse Breed Guides
+            </h2>
+            <Badge variant="secondary" className="text-xs">
+              {breeds.length} breeds
+            </Badge>
+          </div>
+          <BreedGrid breeds={breeds} />
         </section>
-      </div>
+      )}
+
+      {/* What Makes a Good Flyball Dog */}
+      <BreedTraits />
 
       {/* Page Builder Blocks */}
       {data?.pageBuilder && data.pageBuilder.length > 0 && (
