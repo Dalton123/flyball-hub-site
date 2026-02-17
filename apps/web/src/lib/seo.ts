@@ -122,7 +122,8 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
   });
 
   const fullTitle =
-    defaultTitle === siteConfig.title
+    defaultTitle === siteConfig.title ||
+    defaultTitle.includes(`| ${siteConfig.title}`)
       ? defaultTitle
       : `${defaultTitle} | ${siteConfig.title}`;
 
