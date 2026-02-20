@@ -48,7 +48,7 @@ export function CTABlock({ richText, title, eyebrow, buttons }: CTABlockProps) {
             <div className="text-base md:text-lg text-primary-foreground max-w-2xl mx-auto">
               <RichText
                 richText={richText}
-                className="text-primary-foreground [&_a]:text-primary-foreground! text-center "
+                className="text-primary-foreground [&_a]:text-secondary! [&_a]:decoration-secondary/60! [&_a]:underline! [&_a]:underline-offset-2! [&_a]:transition-colors! [&_a:hover]:decoration-secondary! text-center"
               />
             </div>
             <div className="flex justify-center pt-2">

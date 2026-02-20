@@ -412,8 +412,8 @@ const TableOfContentAnchor: FC<AnchorProps> = ({
         <Link
           href={href}
           className={cn(
-            "hover:text-blue-500 hover:underline line-clamp-1",
-            "transition-colors duration-200 focus:outline-none",
+            "text-muted-foreground hover:text-primary line-clamp-1",
+            "transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
             "rounded-sm px-1 py-0.5",
           )}
           aria-describedby={`${id}-level`}

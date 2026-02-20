@@ -149,7 +149,7 @@ const components: Partial<PortableTextReactComponents> = {
         value.href.startsWith("http") && !value.href.includes("flyballhub.com");
       return (
         <Link
-          className="underline decoration-dotted underline-offset-2"
+          className="text-primary underline decoration-primary/40 decoration-2 underline-offset-2 transition-all duration-200 hover:decoration-primary hover:decoration-[3px]"
           href={value.href}
           prefetch={false}
           target={isExternal ? "_blank" : "_self"}
@@ -163,14 +163,14 @@ const components: Partial<PortableTextReactComponents> = {
       if (!value.href || value.href === "#") {
         console.warn("🚀 link is not set", value);
         return (
-          <span className="underline decoration-dotted underline-offset-2">
+          <span className="text-muted-foreground underline decoration-dotted underline-offset-2">
             Link Broken
           </span>
         );
       }
       return (
         <Link
-          className="underline decoration-dotted underline-offset-2"
+          className="text-primary underline decoration-primary/40 decoration-2 underline-offset-2 transition-all duration-200 hover:decoration-primary hover:decoration-[3px]"
           href={value.href}
           prefetch={false}
           target={value.openInNewTab ? "_blank" : "_self"}
@@ -336,7 +336,7 @@ export function RichText<T>({
         "prose-headings:scroll-m-24 prose-headings:font-semibold",
         "prose-h2:border-b prose-h2:pb-2 prose-h2:first:mt-0",
         // Link styles
-        "prose-a:decoration-dotted prose-a:underline-offset-2 prose-a:transition-colors",
+        "prose-a:text-primary prose-a:decoration-primary/40 prose-a:decoration-2 prose-a:underline-offset-2 prose-a:transition-all hover:prose-a:decoration-primary hover:prose-a:decoration-[3px]",
         // List styles
         "prose-li:leading-7",
         // Code styles
