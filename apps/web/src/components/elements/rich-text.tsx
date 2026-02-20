@@ -31,7 +31,7 @@ function CodeBlockSkeleton({ filename }: { filename?: string }) {
   );
 }
 
-// Lazy-loaded code block component wrapper
+// Lazy-loaded code block component wrapper 
 const LazyCodeBlock = dynamic(
   () => import("./code-block").then((mod) => mod.CodeBlock),
   {
