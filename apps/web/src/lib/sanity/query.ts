@@ -371,7 +371,11 @@ const appPromoBlock = /* groq */ `
     platformNote,
     "phoneScreenshot": phoneScreenshot {
       ${imageFields}
-    }
+    },
+    showAppStoreButtons,
+    googlePlayUrl,
+    appStoreUrl,
+    appStoreComingSoon
   }
 `;
 
