@@ -1,7 +1,9 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
-import { ExternalLink, Facebook, Globe, MapPin } from "lucide-react";
+import { Globe, MapPin } from "lucide-react";
+
+import { FacebookIcon, InstagramIcon } from "@/components/social-icons";
 
 import { formatDistance, getCountryFlag } from "@/lib/geo";
 
@@ -78,6 +80,18 @@ function TeamLogo({
   );
 }
 
+function normalizeSocialUrl(
+  value: string,
+  baseUrl: string,
+): string {
+  const trimmed = value.trim();
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+  const handle = trimmed.replace(/^@/, "");
+  return `${baseUrl}/${handle}`;
+}
+
 function SocialLinkIcon({
   type,
   url,
@@ -87,8 +101,8 @@ function SocialLinkIcon({
 }) {
   const icons = {
     website: Globe,
-    facebook: Facebook,
-    instagram: ExternalLink, // Could use Instagram icon if available
+    facebook: FacebookIcon,
+    instagram: InstagramIcon,
   };
 
   const labels = {
@@ -183,10 +197,16 @@ export function TeamCard({
                 <SocialLinkIcon type="website" url={socialLinks.website} />
               )}
               {socialLinks?.facebook && (
-                <SocialLinkIcon type="facebook" url={socialLinks.facebook} />
+                <SocialLinkIcon
+                  type="facebook"
+                  url={normalizeSocialUrl(socialLinks.facebook, "https://www.facebook.com")}
+                />
               )}
               {socialLinks?.instagram && (
-                <SocialLinkIcon type="instagram" url={socialLinks.instagram} />
+                <SocialLinkIcon
+                  type="instagram"
+                  url={normalizeSocialUrl(socialLinks.instagram, "https://www.instagram.com")}
+                />
               )}
             </div>
           )}
