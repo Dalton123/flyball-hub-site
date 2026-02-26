@@ -257,7 +257,7 @@ export function ContactForm({
               >
                 {isPending ? (
                   <>
-                    <LoaderCircle
+                    <LoaderCircle 
                       className="mr-2 animate-spin"
                       size={18}
                       aria-hidden="true"
