@@ -64,7 +64,9 @@
       "Bash(agent-browser press:*)",
       "Bash(agent-browser get:*)",
       "WebFetch(domain:www.ezoic.com)",
-      "Bash(pnpm eslint:*)"
+      "Bash(pnpm eslint:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
