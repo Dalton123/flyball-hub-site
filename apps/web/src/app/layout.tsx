@@ -64,31 +64,13 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head suppressHydrationWarning>
-        {/* Ezoic Privacy/Consent Scripts - must load first */}
+        {/* Google AdSense Auto Ads */}
         <Script
-          src="https://cmp.gatekeeperconsent.com/min.js"
-          strategy="beforeInteractive"
-          data-cfasync="false"
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-7614147681863452"}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
-        <Script
-          src="https://the.gatekeeperconsent.com/cmp.min.js"
-          strategy="beforeInteractive"
-          data-cfasync="false"
-        />
-        {/* Ezoic Header Script */}
-        <Script
-          src="//www.ezojs.com/ezoic/sa.min.js"
-          strategy="beforeInteractive"
-        />
-        <Script id="ezoic-init" strategy="beforeInteractive">
-          {`
-            window.ezstandalone = window.ezstandalone || {};
-            ezstandalone.cmd = ezstandalone.cmd || [];
-            ezstandalone.cmd.push(function() {
-              ezstandalone.showAds();
-            });
-          `}
-        </Script>
       </head>
       <body
         className={`${fontSans.variable} ${fontMono.variable} ${fontDisplay.variable} ${fontHero.variable} font-sans antialiased`}
