@@ -74,6 +74,8 @@ function getRandomPosts(
   return shuffled.slice(0, count);
 }
 
+export const revalidate = 300; // Revalidate blog posts every 5 minutes
+
 export default async function BlogSlugPage({
   params,
 }: {

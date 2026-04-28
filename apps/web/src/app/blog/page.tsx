@@ -12,6 +12,8 @@ async function fetchBlogPosts() {
   return await handleErrors(sanityFetch({ query: queryBlogIndexPageData }));
 }
 
+export const revalidate = 300; // Revalidate blog index every 5 minutes
+
 export async function generateMetadata() {
   const { data: result } = await sanityFetch({
     query: queryBlogIndexPageData,
