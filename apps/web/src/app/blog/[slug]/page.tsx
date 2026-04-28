@@ -17,16 +17,17 @@ import {
 import { getSEOMetadata } from "@/lib/seo";
 import type { BlogCardProps } from "@/types";
 
-async function fetchBlogSlugPageData(slug: string, stega = true) {
-  return await sanityFetch({
-    query: queryBlogSlugPageData,
-    params: { slug: `/blog/${slug}` },
-    stega,
-  });
+async function fetchBlogSlugPageData(slug: string) {
+  const data = await client.fetch(
+    queryBlogSlugPageData,
+    { slug: `/blog/${slug}` },
+    { next: { revalidate: 300, tags: ["blog"] } }
+  );
+  return { data };
 }
 
 async function fetchBlogPaths() {
-  const slugs = await client.fetch(queryBlogPaths);
+  const slugs = await client.fetch(queryBlogPaths, {}, { next: { revalidate: 300 } });
   const paths: { slug: string }[] = [];
   for (const slug of slugs) {
     if (!slug) continue;
@@ -42,7 +43,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { data } = await fetchBlogSlugPageData(slug, false);
+  const data = await client.fetch(
+    queryBlogSlugPageData,
+    { slug: `/blog/${slug}` },
+    { next: { revalidate: 300 } }
+  );
   return getSEOMetadata(
     data
       ? {
@@ -84,7 +89,7 @@ export default async function BlogSlugPage({
   const { slug } = await params;
   const [{ data }, settings] = await Promise.all([
     fetchBlogSlugPageData(slug),
-    client.fetch(querySettingsData),
+    client.fetch(querySettingsData, {}, { next: { revalidate: 300 } }),
   ]);
   if (!data) return notFound();
 

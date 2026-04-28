@@ -2,23 +2,19 @@ import { notFound } from "next/navigation";
 
 import { BlogCard, BlogHeader, FeaturedBlogCard } from "@/components/blog-card";
 import { PageBuilder } from "@/components/pagebuilder";
-import { sanityFetch } from "@/lib/sanity/live";
+import { client } from "@/lib/sanity/client";
 import { queryBlogIndexPageData } from "@/lib/sanity/query";
 import type { QueryBlogIndexPageDataResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
-import { handleErrors } from "@/utils";
-
-async function fetchBlogPosts() {
-  return await handleErrors(sanityFetch({ query: queryBlogIndexPageData }));
-}
 
 export const revalidate = 300; // Revalidate blog index every 5 minutes
 
 export async function generateMetadata() {
-  const { data: result } = await sanityFetch({
-    query: queryBlogIndexPageData,
-    stega: false,
-  });
+  const result = await client.fetch(
+    queryBlogIndexPageData,
+    {},
+    { next: { revalidate: 300, tags: ["blogIndex"] } }
+  );
   return getSEOMetadata(
     result
       ? {
@@ -33,8 +29,13 @@ export async function generateMetadata() {
 }
 
 export default async function BlogIndexPage() {
-  const [res, err] = await fetchBlogPosts();
-  if (err || !res?.data) notFound();
+  const result = await client.fetch(
+    queryBlogIndexPageData,
+    {},
+    { next: { revalidate: 300, tags: ["blog", "blogIndex"] } }
+  );
+
+  if (!result) notFound();
 
   const {
     blogs = [],
@@ -45,7 +46,7 @@ export default async function BlogIndexPage() {
     _type,
     displayFeaturedBlogs,
     featuredBlogsCount,
-  } = res.data;
+  } = result;
 
   const validFeaturedBlogsCount = featuredBlogsCount
     ? Number.parseInt(featuredBlogsCount)
