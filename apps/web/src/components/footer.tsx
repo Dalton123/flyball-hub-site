@@ -232,6 +232,9 @@ function Footer({ data, settingsData }: FooterProps) {
               </div>
               <ul className="flex flex-wrap justify-center gap-4 lg:justify-start">
                 <li className="hover:text-primary">
+                  <Link href="/faqs">FAQs</Link>
+                </li>
+                <li className="hover:text-primary">
                   <Link href="/terms">Terms and Conditions</Link>
                 </li>
                 <li className="hover:text-primary">
