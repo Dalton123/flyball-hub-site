@@ -231,6 +231,7 @@ function Footer({ data, settingsData }: FooterProps) {
                 />
               </div>
               <ul className="flex flex-wrap justify-center gap-4 lg:justify-start">
+                {/* Footer nav links — keep in sync with sitemap */}
                 <li className="hover:text-primary">
                   <Link href="/faqs">FAQs</Link>
                 </li>
