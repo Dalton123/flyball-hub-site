@@ -180,6 +180,23 @@ const components: Partial<PortableTextReactComponents> = {
         </Link>
       );
     },
+    internalLink: ({ children, value }) => {
+      // Legacy mark no longer in schema — href may be unresolved
+      const href = value?.href;
+      if (!href || href === "#") {
+        console.warn("⚠️ Legacy internalLink mark missing href (stale data):", value);
+        return <span>{children}</span>;
+      }
+      return (
+        <Link
+          className="text-primary underline decoration-primary/40 decoration-2 underline-offset-2 transition-all duration-200 hover:decoration-primary hover:decoration-[3px]"
+          href={href}
+          prefetch={false}
+        >
+          {children}
+        </Link>
+      );
+    },
   },
   types: {
     image: ({ value }) => {
@@ -253,10 +270,39 @@ const components: Partial<PortableTextReactComponents> = {
     table: ({ value }) => {
       if (!value?.rows?.length) return null;
 
+      type TableCell =
+        | string
+        | {
+            _key?: string;
+            _type?: string;
+            children?: Array<{ _type?: string; text?: string; marks?: string[] } & Record<string, unknown>>;
+          };
+
       type TableRow = {
         _key?: string;
-        cells?: string[];
+        cells?: TableCell[];
       };
+
+      function extractCellText(cell: TableCell): string {
+        if (typeof cell === "string") return cell;
+        if (
+          cell &&
+          typeof cell === "object" &&
+          "children" in cell &&
+          Array.isArray(cell.children)
+        ) {
+          return cell.children
+            .filter(
+              (c) => Boolean(c && typeof c === "object" && c._type === "span"),
+            )
+            .map((c) => {
+              const span = c as { text?: string };
+              return span.text ?? "";
+            })
+            .join("");
+        }
+        return "";
+      }
 
       const rows = value.rows as TableRow[];
       const [headerRow, ...bodyRows] = rows;
@@ -275,7 +321,7 @@ const components: Partial<PortableTextReactComponents> = {
                       key={`header-${cellIndex}`}
                       className="border border-border p-1! md:p-3! text-left font-semibold whitespace-nowrap"
                     >
-                      {cell}
+                      {extractCellText(cell)}
                     </th>
                   ))}
                 </tr>
@@ -292,7 +338,7 @@ const components: Partial<PortableTextReactComponents> = {
                       key={`cell-${rowIndex}-${cellIndex}`}
                       className="border border-border p-1! md:p-3! text-left whitespace-nowrap"
                     >
-                      {cell}
+                      {extractCellText(cell)}
                     </td>
                   ))}
                 </tr>
