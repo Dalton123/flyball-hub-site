@@ -31,11 +31,11 @@ export function TextBlock({ title, richText, alignment }: TextBlockProps) {
           }`}
         >
           {title && (
-            <h1
+            <h2
               className={`text-3xl font-semibold md:text-4xl mb-8 ${alignmentClass}`}
             >
               {title}
-            </h1>
+            </h2>
           )}
           <RichText
             richText={richText}
