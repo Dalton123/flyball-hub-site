@@ -5,6 +5,7 @@ import type {
   ContactPoint,
   FAQPage,
   ImageObject,
+  ItemList,
   ListItem,
   Organization,
   Person,
@@ -198,6 +199,34 @@ export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
   };
 
   return <JsonLdScript data={breadcrumbJsonLd} id="breadcrumb-json-ld" />;
+}
+
+// ItemList JSON-LD Component
+interface ItemListProduct {
+  name: string;
+  position: number;
+  url: string;
+}
+
+interface ItemListJsonLdProps {
+  products?: ItemListProduct[];
+}
+
+export function ItemListJsonLd({ products }: ItemListJsonLdProps) {
+  if (!products?.length) return null;
+
+  const itemListJsonLd: WithContext<ItemList> = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: products.map((product) => ({
+      "@type": "ListItem",
+      position: product.position,
+      name: product.name,
+      url: product.url,
+    })),
+  };
+
+  return <JsonLdScript data={itemListJsonLd} id="itemlist-json-ld" />;
 }
 
 // Organization JSON-LD Component

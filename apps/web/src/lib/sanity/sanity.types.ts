@@ -5248,6 +5248,11 @@ export type QueryBlogSlugPageDataResult = {
   seoHideFromLists?: boolean;
   ogTitle?: string;
   ogDescription?: string;
+  productList?: Array<{
+    name: string;
+    position: number;
+    url: string;
+  }>;
   pageBuilder: null;
 } | null;
 // Variable: queryBlogPaths

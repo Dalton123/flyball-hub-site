@@ -142,6 +142,57 @@ export const blog = defineType({
         "The main content of your blog post with text, images, and formatting",
       group: GROUP.MAIN_CONTENT,
     }),
+    defineField({
+      name: "productList",
+      type: "array",
+      title: "Product List",
+      description:
+        "Add products to this list for structured data on round-up posts. Used for ItemList schema (recommended for product round-ups).",
+      group: GROUP.MAIN_CONTENT,
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "productListItem",
+          title: "Product",
+          fields: [
+            defineField({
+              name: "name",
+              type: "string",
+              title: "Product Name",
+              validation: (Rule) => Rule.required().error("Product name is required"),
+            }),
+            defineField({
+              name: "position",
+              type: "number",
+              title: "Position",
+              description: "The ranking position of this product in the list (1, 2, 3, etc.)",
+              initialValue: () => 1,
+              validation: (Rule) => Rule.required().integer().positive(),
+            }),
+            defineField({
+              name: "url",
+              type: "url",
+              title: "Product URL",
+              description:
+                "The external link to the product page",
+              validation: (Rule) => Rule.required().error("Product URL is required"),
+            }),
+          ],
+          preview: {
+            select: {
+              name: "name",
+              position: "position",
+            },
+            prepare({ name, position }) {
+              return {
+                title: name || "Untitled product",
+                subtitle: position ? `Position: ${position}` : "",
+              };
+            },
+          },
+        }),
+      ],
+    }),
     ...seoFields,
     ...ogFields,
   ],

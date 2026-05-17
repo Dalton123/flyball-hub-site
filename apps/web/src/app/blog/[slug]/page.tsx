@@ -4,7 +4,11 @@ import { RichText } from "@/components/elements/rich-text";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { TableOfContent } from "@/components/elements/table-of-content";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import {
+  ArticleJsonLd,
+  BreadcrumbJsonLd,
+  ItemListJsonLd,
+} from "@/components/json-ld";
 import { RelatedPosts } from "@/components/related-posts";
 import { client } from "@/lib/sanity/client";
 import { sanityFetch } from "@/lib/sanity/live";
@@ -115,6 +119,9 @@ export default async function BlogSlugPage({
         settings={settings}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
+      {data?.productList && data.productList.length > 0 && (
+        <ItemListJsonLd products={data.productList} />
+      )}
       <Breadcrumbs items={breadcrumbs} className="mb-8" />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
         <main>

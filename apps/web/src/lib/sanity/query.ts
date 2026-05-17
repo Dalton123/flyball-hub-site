@@ -458,6 +458,11 @@ export const queryBlogSlugPageData = defineQuery(`
   *[_type == "blog" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0]{
     ...,
     "slug": slug.current,
+    "productList": productList[]{
+      name,
+      position,
+      "url": url
+    },
     ${blogAuthorFragment},
     ${imageFragment},
     ${richTextFragment},
