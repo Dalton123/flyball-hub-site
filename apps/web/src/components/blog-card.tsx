@@ -12,9 +12,10 @@ type Blog = NonNullable<
 interface BlogImageProps {
   image: Blog["image"];
   title?: string | null;
+  eager?: boolean;
 }
 
-function BlogImage({ image, title }: BlogImageProps) {
+function BlogImage({ image, title, eager }: BlogImageProps) {
   if (!image?.id) return null;
 
   return (
@@ -23,6 +24,8 @@ function BlogImage({ image, title }: BlogImageProps) {
       width={800}
       height={400}
       alt={title ?? "Blog post image"}
+      loading={eager ? "eager" : undefined}
+      fetchPriority={eager ? "high" : undefined}
       className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2 transition-transform duration-300 group-hover:scale-105"
     />
   );
@@ -136,7 +139,7 @@ export function FeaturedBlogCard({ blog }: BlogCardProps) {
   return (
     <article className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
       <Link href={slug ?? "#"} className="block overflow-hidden rounded-2xl group">
-        <BlogImage image={image} title={title} />
+        <BlogImage image={image} title={title} eager />
       </Link>
       <div className="space-y-6">
         <BlogMeta publishedAt={publishedAt} />
