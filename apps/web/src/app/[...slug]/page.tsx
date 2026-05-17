@@ -64,6 +64,7 @@ export default async function SlugPage({
   }
 
   const { title, pageBuilder, _id, _type } = pageData ?? {};
+  const hasHeroBlock = Array.isArray(pageBuilder) && pageBuilder.some((block: { _type: string }) => block._type === "hero");
 
   return !Array.isArray(pageBuilder) || pageBuilder?.length === 0 ? (
     <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-4">
@@ -73,6 +74,11 @@ export default async function SlugPage({
       </p>
     </div>
   ) : (
-    <PageBuilder pageBuilder={pageBuilder} id={_id} type={_type} />
+    <>
+      {!hasHeroBlock && title && (
+        <h1 className="sr-only">{title}</h1>
+      )}
+      <PageBuilder pageBuilder={pageBuilder} id={_id} type={_type} />
+    </>
   );
 }
