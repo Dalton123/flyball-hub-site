@@ -4,6 +4,8 @@ import type {
   BreadcrumbList,
   ContactPoint,
   FAQPage,
+  HowTo,
+  HowToStep,
   ImageObject,
   ItemList,
   ListItem,
@@ -229,6 +231,52 @@ export function ItemListJsonLd({ products }: ItemListJsonLdProps) {
   return <JsonLdScript data={itemListJsonLd} id="itemlist-json-ld" />;
 }
 
+// HowTo JSON-LD Component
+interface HowToStepInput {
+  name: string;
+  text: string;
+  url?: string | null;
+}
+
+interface HowToJsonLdProps {
+  title?: string | null;
+  description?: string | null;
+  slug?: string | null;
+  steps?: HowToStepInput[];
+}
+
+export function HowToJsonLd({
+  title,
+  description,
+  slug,
+  steps,
+}: HowToJsonLdProps) {
+  const validSteps = steps?.filter((step) => step?.name && step?.text) ?? [];
+  if (!validSteps.length || !title) return null;
+
+  const baseUrl = getBaseUrl();
+  const pageUrl = slug ? `${baseUrl}${slug}` : baseUrl;
+
+  const howToJsonLd: WithContext<HowTo> = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: title,
+    description: description || undefined,
+    mainEntityOfPage: pageUrl,
+    step: validSteps.map(
+      (step, index): HowToStep => ({
+        "@type": "HowToStep",
+        position: index + 1,
+        name: step.name,
+        text: step.text,
+        url: step.url || `${pageUrl}#step-${index + 1}`,
+      }),
+    ),
+  };
+
+  return <JsonLdScript data={howToJsonLd} id="howto-json-ld" />;
+}
+
 // Organization JSON-LD Component
 interface OrganizationJsonLdProps {
   settings: QuerySettingsDataResult;
@@ -305,12 +353,8 @@ export async function CombinedJsonLd({
 
   return (
     <>
-      {includeWebsite && res && (
-        <WebSiteJsonLd settings={res} />
-      )}
-      {includeOrganization && res && (
-        <OrganizationJsonLd settings={res} />
-      )}
+      {includeWebsite && res && <WebSiteJsonLd settings={res} />}
+      {includeOrganization && res && <OrganizationJsonLd settings={res} />}
     </>
   );
 }

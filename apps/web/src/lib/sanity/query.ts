@@ -463,6 +463,11 @@ export const queryBlogSlugPageData = defineQuery(`
       position,
       "url": url
     },
+    "howToSteps": howToSteps[]{
+      name,
+      text,
+      "url": url
+    },
     ${blogAuthorFragment},
     ${imageFragment},
     ${richTextFragment},

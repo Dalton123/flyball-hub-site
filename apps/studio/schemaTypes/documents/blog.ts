@@ -159,13 +159,15 @@ export const blog = defineType({
               name: "name",
               type: "string",
               title: "Product Name",
-              validation: (Rule) => Rule.required().error("Product name is required"),
+              validation: (Rule) =>
+                Rule.required().error("Product name is required"),
             }),
             defineField({
               name: "position",
               type: "number",
               title: "Position",
-              description: "The ranking position of this product in the list (1, 2, 3, etc.)",
+              description:
+                "The ranking position of this product in the list (1, 2, 3, etc.)",
               initialValue: () => 1,
               validation: (Rule) => Rule.required().integer().positive(),
             }),
@@ -173,9 +175,9 @@ export const blog = defineType({
               name: "url",
               type: "url",
               title: "Product URL",
-              description:
-                "The external link to the product page",
-              validation: (Rule) => Rule.required().error("Product URL is required"),
+              description: "The external link to the product page",
+              validation: (Rule) =>
+                Rule.required().error("Product URL is required"),
             }),
           ],
           preview: {
@@ -187,6 +189,59 @@ export const blog = defineType({
               return {
                 title: name || "Untitled product",
                 subtitle: position ? `Position: ${position}` : "",
+              };
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: "howToSteps",
+      type: "array",
+      title: "How-to Steps",
+      description:
+        "Add step-by-step instructions for training and guide posts. Used for HowTo structured data only when steps are provided.",
+      group: GROUP.MAIN_CONTENT,
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "howToStep",
+          title: "Step",
+          fields: [
+            defineField({
+              name: "name",
+              type: "string",
+              title: "Step Name",
+              description: "Short step heading, such as Set up the jump lane.",
+              validation: (Rule) =>
+                Rule.required().error("Step name is required"),
+            }),
+            defineField({
+              name: "text",
+              type: "text",
+              rows: 3,
+              title: "Step Instructions",
+              description: "The instruction text for this step.",
+              validation: (Rule) =>
+                Rule.required().error("Step instructions are required"),
+            }),
+            defineField({
+              name: "url",
+              type: "url",
+              title: "Optional Step URL",
+              description:
+                "Optional link to the exact section for this step. Leave blank unless the post has anchor links.",
+            }),
+          ],
+          preview: {
+            select: {
+              name: "name",
+              text: "text",
+            },
+            prepare({ name, text }) {
+              return {
+                title: name || "Untitled step",
+                subtitle: text,
               };
             },
           },
