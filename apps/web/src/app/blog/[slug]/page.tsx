@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
+  HowToJsonLd,
   ItemListJsonLd,
 } from "@/components/json-ld";
 import { RelatedPosts } from "@/components/related-posts";
@@ -25,13 +26,17 @@ async function fetchBlogSlugPageData(slug: string) {
   const data = await client.fetch(
     queryBlogSlugPageData,
     { slug: `/blog/${slug}` },
-    { next: { revalidate: 300, tags: ["blog"] } }
+    { next: { revalidate: 300, tags: ["blog"] } },
   );
   return { data };
 }
 
 async function fetchBlogPaths() {
-  const slugs = await client.fetch(queryBlogPaths, {}, { next: { revalidate: 300 } });
+  const slugs = await client.fetch(
+    queryBlogPaths,
+    {},
+    { next: { revalidate: 300 } },
+  );
   const paths: { slug: string }[] = [];
   for (const slug of slugs) {
     if (!slug) continue;
@@ -50,7 +55,7 @@ export async function generateMetadata({
   const data = await client.fetch(
     queryBlogSlugPageData,
     { slug: `/blog/${slug}` },
-    { next: { revalidate: 300 } }
+    { next: { revalidate: 300 } },
   );
   return getSEOMetadata(
     data
@@ -114,22 +119,25 @@ export default async function BlogSlugPage({
 
   return (
     <div className="container my-16 mx-auto px-4 md:px-6 ">
-      <ArticleJsonLd
-        article={data}
-        settings={settings}
-      />
+      <ArticleJsonLd article={data} settings={settings} />
       <BreadcrumbJsonLd items={breadcrumbs} />
       {data?.productList && data.productList.length > 0 && (
         <ItemListJsonLd products={data.productList} />
+      )}
+      {data?.howToSteps && data.howToSteps.length > 0 && (
+        <HowToJsonLd
+          title={data.title}
+          description={data.description}
+          slug={data.slug}
+          steps={data.howToSteps}
+        />
       )}
       <Breadcrumbs items={breadcrumbs} className="mb-8" />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
         <main>
           <header className="mb-8">
             <h1 className="mt-2 text-4xl font-bold">{title}</h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              {description}
-            </p>
+            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
             {authors && (
               <div className="mt-6 flex items-center gap-x-4">
                 <div className="text-sm">
