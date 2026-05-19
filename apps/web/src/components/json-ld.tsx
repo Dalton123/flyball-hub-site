@@ -22,7 +22,9 @@ import { querySettingsData } from "@/lib/sanity/query";
 import type {
   QueryBlogSlugPageDataResult,
   QuerySettingsDataResult,
+  QuerySlugPageDataResult,
 } from "@/lib/sanity/sanity.types";
+import { buildPageJsonLd } from "@/lib/structured-data/page-schema";
 import { getBaseUrl, handleErrors } from "@/utils";
 
 interface RichTextChild {
@@ -334,6 +336,23 @@ export function WebSiteJsonLd({ settings }: WebSiteJsonLdProps) {
   };
 
   return <JsonLdScript data={websiteJsonLd} id="website-json-ld" />;
+}
+
+// Page JSON-LD Component
+interface PageJsonLdProps {
+  page: QuerySlugPageDataResult;
+  settings?: QuerySettingsDataResult;
+}
+
+export function PageJsonLd({ page, settings }: PageJsonLdProps) {
+  if (!page) return null;
+
+  const pageJsonLd = buildPageJsonLd(page, {
+    baseUrl: getBaseUrl(),
+    siteTitle: settings?.siteTitle || "Flyball Hub",
+  });
+
+  return <JsonLdScript data={pageJsonLd} id={`page-json-ld-${page.slug}`} />;
 }
 
 // Combined JSON-LD Component for pages with multiple structured data

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { PageJsonLd } from "@/components/json-ld";
 import { PageBuilder } from "@/components/pagebuilder";
 import { client } from "@/lib/sanity/client";
 import { sanityFetch } from "@/lib/sanity/live";
@@ -64,7 +65,9 @@ export default async function SlugPage({
   }
 
   const { title, pageBuilder, _id, _type } = pageData ?? {};
-  const hasHeroBlock = Array.isArray(pageBuilder) && pageBuilder.some((block: { _type: string }) => block._type === "hero");
+  const hasHeroBlock =
+    Array.isArray(pageBuilder) &&
+    pageBuilder.some((block: { _type: string }) => block._type === "hero");
 
   return !Array.isArray(pageBuilder) || pageBuilder?.length === 0 ? (
     <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-4">
@@ -75,9 +78,8 @@ export default async function SlugPage({
     </div>
   ) : (
     <>
-      {!hasHeroBlock && title && (
-        <h1 className="sr-only">{title}</h1>
-      )}
+      <PageJsonLd page={pageData} />
+      {!hasHeroBlock && title && <h1 className="sr-only">{title}</h1>}
       <PageBuilder pageBuilder={pageBuilder} id={_id} type={_type} />
     </>
   );
