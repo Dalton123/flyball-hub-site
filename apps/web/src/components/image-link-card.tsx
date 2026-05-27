@@ -12,9 +12,10 @@ type ImageLinkCard = NonNullable<
 export type CTACardProps = {
   card: ImageLinkCard;
   className?: string;
+  eager?: boolean;
 };
 
-export function CTACard({ card, className }: CTACardProps) {
+export function CTACard({ card, className, eager }: CTACardProps) {
   const { image, description, title, href } = card ?? {};
   return (
     <Link
@@ -27,12 +28,14 @@ export function CTACard({ card, className }: CTACardProps) {
       {image?.id && (
         <div className="absolute inset-0 z-[1] mix-blend-multiply">
           <SanityImage
-            image={image}
-            alt={image?.alt || title || "Card image"}
-            width={800}
-            height={450}
-            className="object-cover grayscale pointer-events-none group-hover:opacity-100 group-hover:transition-opacity duration-1000 opacity-40"
-          />
+          image={image}
+          alt={image?.alt || title || "Card image"}
+          width={800}
+          height={450}
+          loading={eager ? "eager" : undefined}
+          fetchPriority={eager ? "high" : undefined}
+          className="object-cover grayscale pointer-events-none group-hover:opacity-100 group-hover:transition-opacity duration-1000 opacity-40"
+        />
         </div>
       )}
       <div className="z-[2] pt-64 flex flex-col space-y-2 mb-4 duration-500 xl:absolute xl:top-24 group-hover:top-8 xl:inset-x-8">

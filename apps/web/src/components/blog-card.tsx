@@ -66,6 +66,7 @@ export function BlogAuthor({ author }: BlogAuthorProps) {
 
 interface BlogCardProps {
   blog: Blog;
+  eager?: boolean;
 }
 
 function BlogMeta({ publishedAt }: { publishedAt: string | null }) {
@@ -155,7 +156,7 @@ export function FeaturedBlogCard({ blog }: BlogCardProps) {
   );
 }
 
-export function BlogCard({ blog }: BlogCardProps) {
+export function BlogCard({ blog, eager }: BlogCardProps) {
   if (!blog) {
     return (
       <article className="grid grid-cols-1 gap-4 w-full">
@@ -174,7 +175,7 @@ export function BlogCard({ blog }: BlogCardProps) {
   return (
     <article className="flex flex-col gap-4 w-full">
       <Link href={slug ?? "#"} className="relative block w-full h-auto aspect-[16/9] overflow-hidden rounded-2xl group">
-        <BlogImage image={image} title={title} />
+        <BlogImage image={image} title={title} eager={eager} />
         <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
       </Link>
       <div className="w-full space-y-4">

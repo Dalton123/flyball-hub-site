@@ -80,6 +80,7 @@ export function BreedGrid({ breeds }: BreedGridProps) {
               <BreedCard
                 breed={breed}
                 showTopRated={(breed.verdictRating ?? 0) >= TOP_RATED_THRESHOLD}
+                eager={index < 4}
               />
             </div>
           ))}

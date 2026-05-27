@@ -8,6 +8,7 @@ import { SanityImage } from "./elements/sanity-image";
 interface BreedCardProps {
   breed: BreedCardData;
   showTopRated?: boolean;
+  eager?: boolean;
 }
 
 function StarRating({ rating }: { rating: number | null }) {
@@ -20,7 +21,7 @@ function StarRating({ rating }: { rating: number | null }) {
   );
 }
 
-export function BreedCard({ breed, showTopRated }: BreedCardProps) {
+export function BreedCard({ breed, showTopRated, eager }: BreedCardProps) {
   if (!breed) return null;
 
   const { name, slug, verdict, verdictRating, image, stats } = breed;
@@ -30,11 +31,13 @@ export function BreedCard({ breed, showTopRated }: BreedCardProps) {
       <Link href={slug ?? "#"} className="relative block aspect-[4/3] overflow-hidden">
         {image?.id && (
           <SanityImage
-            image={image}
-            width={400}
-            height={300}
-            alt={name ?? "Dog breed"}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          image={image}
+          width={400}
+          height={300}
+          alt={name ?? "Dog breed"}
+          loading={eager ? "eager" : undefined}
+          fetchPriority={eager ? "high" : undefined}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         )}
         {showTopRated && (

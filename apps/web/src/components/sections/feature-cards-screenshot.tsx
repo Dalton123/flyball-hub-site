@@ -20,9 +20,10 @@ type FeatureCardProps = {
   card: NonNullable<FeatureCardsScreenshotProps["cards"]>[number];
   isVisible: boolean;
   index: number;
+  eager?: boolean;
 };
 
-function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
+function FeatureCard({ card, isVisible, index, eager }: FeatureCardProps) {
   const { screenshot, title, description, href, openInNewTab } = card ?? {};
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = useState(0);
@@ -109,6 +110,8 @@ function FeatureCard({ card, isVisible, index }: FeatureCardProps) {
               alt={screenshot?.alt || title || "Feature screenshot"}
               width={800}
               height={600}
+              loading={eager ? "eager" : undefined}
+              fetchPriority={eager ? "high" : undefined}
               className="!h-full w-full object-cover transition-transform duration-500 group-hover:scale-101 !rounded-none"
             />
           ) : (
@@ -291,6 +294,7 @@ export function FeatureCardsScreenshot({
               card={card}
               isVisible={visibleItems[index] ?? false}
               index={index}
+              eager={index < 2}
             />
           ))}
         </div>

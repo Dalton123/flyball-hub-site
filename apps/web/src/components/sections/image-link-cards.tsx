@@ -71,6 +71,7 @@ export function ImageLinkCards({
                       "lg:rounded-r-3xl lg:rounded-l-none",
                     idx !== 0 && idx !== cards.length - 1 && "lg:rounded-none",
                   )}
+                  eager={idx === 0}
                 />
               ))}
             </div>
