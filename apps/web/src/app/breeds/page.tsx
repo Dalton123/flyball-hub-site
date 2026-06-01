@@ -53,6 +53,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
+export const revalidate = 300; // Revalidate breed index every 5 minutes
+
 export default async function BreedsIndexPage() {
   const data = await fetchBreedIndexData();
 

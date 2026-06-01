@@ -11,6 +11,8 @@ async function fetchHomePageData(stega = true) {
   });
 }
 
+export const revalidate = 300; // Revalidate homepage every 5 minutes
+
 export async function generateMetadata() {
   const { data: homePageData } = await fetchHomePageData(false);
   return getSEOMetadata(

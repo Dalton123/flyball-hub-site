@@ -50,6 +50,8 @@ export async function generateStaticParams() {
   return await fetchSlugPagePaths();
 }
 
+export const revalidate = 300; // Revalidate slug pages every 5 minutes
+
 export default async function SlugPage({
   params,
 }: {

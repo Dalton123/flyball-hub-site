@@ -66,6 +66,8 @@ export async function generateStaticParams() {
   return await fetchBreedPaths();
 }
 
+export const revalidate = 300; // Revalidate breed pages every 5 minutes
+
 export default async function BreedSlugPage({
   params,
 }: {
