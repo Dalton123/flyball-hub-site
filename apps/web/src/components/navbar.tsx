@@ -51,7 +51,7 @@ function MenuLink({ name, href, description, icon, onClick }: MenuLinkProps) {
     <Link
       href={href || "#"}
       onClick={onClick}
-      className="group flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-accent"
+      className="group flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-accent/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
     >
       {icon && (
         <SanityIcon
@@ -85,7 +85,7 @@ function DesktopColumnDropdown({
       <button
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
-        className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        className="flex items-center gap-1 rounded-full px-3 py-2 text-sm font-bold text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
       >
         {column.title}
         <ChevronDown className="size-3 transition-transform group-hover:rotate-180" />
@@ -95,7 +95,7 @@ function DesktopColumnDropdown({
         <div
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
-          className="absolute left-0 top-full z-50 min-w-[280px] rounded-lg border bg-popover p-2 shadow-lg animate-in fade-in-0 zoom-in-95"
+          className="absolute left-0 top-full z-50 min-w-[280px] rounded-2xl border border-primary/10 bg-popover/95 p-2 shadow-xl backdrop-blur animate-in fade-in-0 zoom-in-95"
         >
           <div className="grid gap-1">
             {column.links?.map((link: ColumnLink) => (
@@ -122,7 +122,7 @@ function DesktopColumnLink({
   return (
     <Link
       href={column.href || "#"}
-      className="px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+      className="rounded-full px-3 py-2 text-sm font-bold text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
     >
       {column.name}
     </Link>
@@ -319,7 +319,7 @@ export function Navbar({
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full border-b  backdrop-blur-sm ${isScrolled ? "bg-accent/60" : "bg-background/80"} transition-colors duration-300`}
+      className={`sticky top-0 z-40 w-full border-b border-primary/10 backdrop-blur-md ${isScrolled ? "bg-background/95 shadow-sm" : "bg-background/85"} transition-all duration-300`}
     >
       <div className="container mx-auto py-2 md:py-4 px-4">
         <div className="flex items-center justify-between">

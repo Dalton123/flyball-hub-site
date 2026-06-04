@@ -207,8 +207,8 @@ export function HeroGlobe({
       // Limit zoom range
       controls.minDistance = 200;
       controls.maxDistance = 500;
-      // Point camera at UK initially
-      globeRef.current.pointOfView({ lat: 54, lng: -2, altitude: 1.8 });
+      // Keep the first view globally framed for the homepage.
+      globeRef.current.pointOfView({ lat: 18, lng: 0, altitude: 1.9 });
 
       // Small delay to ensure globe has rendered, then crossfade
       const timer = setTimeout(() => {
@@ -240,7 +240,7 @@ export function HeroGlobe({
   }, []);
 
   return (
-    <section className="relative lg:min-h-[85dvh] overflow-hidden bg-linear-to-br from-primary via-primary to-primary/90 pb-8 lg:pb-0">
+    <section className="sport-panel relative overflow-hidden pb-10 lg:min-h-[86dvh] lg:pb-0">
       {/* SVG noise texture overlay */}
       <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-30">
         <defs>
@@ -258,29 +258,29 @@ export function HeroGlobe({
       </svg>
 
       {/* Soft glow behind globe */}
-      <div className="pointer-events-none absolute right-0 top-1/2 size-175 -translate-y-1/2 translate-x-1/4 rounded-full bg-white/10 blur-[100px] lg:translate-x-0" />
+      <div className="pointer-events-none absolute right-0 top-1/2 size-175 -translate-y-1/2 translate-x-1/4 rounded-full bg-secondary/15 blur-[100px] lg:translate-x-0" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-black/20 to-transparent" />
 
       <div className="container relative z-10 mx-auto px-4">
-        <div className="grid lg:min-h-[85dvh] items-center gap-4 lg:grid-cols-2 ">
+        <div className="grid items-center gap-8 py-10 lg:min-h-[86dvh] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10 lg:py-0">
           {/* Content Side */}
           <div className="order-2 space-y-6 text-center lg:order-1 lg:space-y-8 lg:text-left">
             {badge && (
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white backdrop-blur-sm">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-green-300" />
+              <span className="section-kicker-dark">
                 {badge}
               </span>
             )}
 
             {title && (
-              <h1 className="font-hero text-4xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
+              <h1 className="font-hero text-5xl font-black leading-[0.9] tracking-[-0.055em] text-white text-balance sm:text-6xl lg:text-7xl xl:text-8xl">
                 {title}
               </h1>
             )}
 
             {richText && richText.length > 0 && (
-              <div className="mx-auto max-w-xl text-lg leading-relaxed text-white/80 lg:mx-0 lg:text-xl">
+              <div className="mx-auto max-w-xl text-lg leading-8 text-white/85 lg:mx-0 lg:text-xl">
                 <RichText
-                  className="text-center lg:text-left text-white/80"
+                  className="text-center lg:text-left text-white/85"
                   richText={richText}
                 />
               </div>
@@ -297,8 +297,8 @@ export function HeroGlobe({
                     }
                     className={
                       button.variant === "outline"
-                        ? "border-white bg-transparent px-8 py-6 text-lg text-white hover:bg-white hover:text-primary"
-                        : "bg-white px-8 py-6 text-lg text-primary shadow-lg transition-all hover:border-white border border-transparent hover:bg-transparent hover:text-white"
+                        ? "border-white/60 bg-white/5 px-8 py-6 text-lg text-white hover:bg-white hover:text-primary focus-visible:ring-secondary"
+                        : "border border-secondary bg-secondary px-8 py-6 text-lg font-black text-secondary-foreground shadow-lg shadow-secondary/20 transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-primary focus-visible:ring-secondary"
                     }
                     onClick={() => router.push(button.href || "/")}
                   >
@@ -310,13 +310,18 @@ export function HeroGlobe({
 
             {/* Stats */}
             {stats && stats.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-8 pt-4 text-white/70 lg:justify-start">
+              <div className="flex flex-wrap justify-center gap-3 pt-2 text-white/70 lg:justify-start">
                 {stats.map((stat, index) => (
-                  <div key={index}>
-                    <span className="block text-2xl font-bold text-white">
+                  <div
+                    key={index}
+                    className="rounded-2xl border border-white/10 bg-white/[0.07] px-4 py-3 backdrop-blur-sm"
+                  >
+                    <span className="block text-2xl font-black tracking-tight text-white">
                       {stat.value}
                     </span>
-                    <span className="text-sm">{stat.label}</span>
+                    <span className="text-xs font-semibold uppercase tracking-[0.12em] text-white/60">
+                      {stat.label}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -328,8 +333,11 @@ export function HeroGlobe({
             ref={containerRef}
             onMouseEnter={handleInteraction}
             onClick={handleInteraction}
-            className="relative order-1 flex h-70 cursor-pointer items-center justify-center lg:order-2 lg:h-150"
+            className="relative order-1 flex h-78 cursor-pointer items-center justify-center rounded-[2rem] border border-white/10 bg-white/[0.035] shadow-2xl shadow-black/20 backdrop-blur-sm lg:order-2 lg:h-150 lg:rounded-[3rem]"
           >
+            <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-full border border-white/12 bg-black/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-white/70 backdrop-blur-sm">
+              Global team map
+            </div>
             {/* Static placeholder - shown immediately, fades out when interactive globe is ready */}
             <div
               className={`lg:absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${

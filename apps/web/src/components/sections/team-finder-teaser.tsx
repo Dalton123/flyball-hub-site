@@ -1,11 +1,10 @@
 "use client";
 
-import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { MapPin, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
@@ -29,7 +28,7 @@ export function TeamFinderTeaser({
   showStats,
 }: TeamFinderTeaserProps) {
   const router = useRouter();
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+  const { ref } = useScrollAnimation<HTMLElement>({
     threshold: 0.1,
   });
   const [searchQuery, setSearchQuery] = useState("");
@@ -78,9 +77,9 @@ export function TeamFinderTeaser({
   };
 
   return (
-    <section ref={ref} className="py-8">
+    <section ref={ref} className="bg-background py-10 md:py-16">
       <div className="container mx-auto px-4 md:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-primary/85 via-primary/95 to-primary/75 px-6 py-16 md:px-12 md:py-30">
+        <div className="sport-panel relative overflow-hidden rounded-[2rem] px-6 py-16 md:rounded-[3rem] md:px-12 md:py-24 lg:px-16">
           {/* Paw prints background pattern */}
           <BackgroundPattern
             pattern="paw-prints"
@@ -130,85 +129,67 @@ export function TeamFinderTeaser({
           />
 
           {/* Content */}
-          <div
-            className={`relative z-10 mx-auto max-w-2xl text-center transition-all duration-700 ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-8 opacity-0"
-            }`}
-          >
-            {eyebrow && (
-              <Badge
-                variant="outline"
-                className="mb-4 border-secondary-foreground/30 bg-white/80 px-4 py-1.5 text-sm font-medium text-secondary-foreground"
-              >
-                {eyebrow}
-              </Badge>
-            )}
+          <div className="relative z-10 mx-auto grid max-w-5xl gap-8 text-center opacity-100 transition-all duration-700 lg:grid-cols-[0.82fr_1fr] lg:items-center lg:text-left">
+            <div className="space-y-5">
+              {eyebrow && <span className="section-kicker-dark">{eyebrow}</span>}
 
-            {title && (
-              <h2 className="mb-4 text-3xl font-semibold text-primary-foreground md:text-4xl lg:text-5xl">
-                {title}
-              </h2>
-            )}
+              {title && <h2 className="section-heading text-white">{title}</h2>}
 
-            {description && (
-              <p className="mb-8 text-lg text-primary-foreground/80">
-                {description}
-              </p>
-            )}
+              {description && (
+                <p className="text-lg leading-8 text-primary-foreground/80 md:text-xl">
+                  {description}
+                </p>
+              )}
+            </div>
 
             {/* Search form */}
-            <form
-              onSubmit={handleSearch}
-              className="mx-auto mb-8 flex max-w-md flex-col gap-3 sm:flex-row"
-            >
-              <div className="relative flex-1">
-                <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-foreground" />
-                <Input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={searchPlaceholder || "Enter city or country..."}
-                  className="h-12 rounded-xl border-primary-foreground/60  pl-12 text-base shadow-sm transition-shadow  text-primary-foreground focus:shadow-md focus:ring-2 focus:ring-primary-foreground/20 placeholder:text-primary-foreground bg-primary/90!"
-                />
-              </div>
-              <Button
-                type="submit"
-                size="lg"
-                className="h-12 gap-2 rounded-xl px-6 shadow-md transition-all hover:shadow-lg"
+            <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.08] p-4 shadow-2xl shadow-black/20 backdrop-blur-sm md:p-5">
+              <form
+                onSubmit={handleSearch}
+                className="mx-auto flex max-w-xl flex-col gap-3 sm:flex-row lg:mx-0"
               >
-                <Search className="h-4 w-4" />
-                {ctaText || "Search"}
-              </Button>
-            </form>
+                <div className="relative flex-1">
+                  <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-secondary" />
+                  <Input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={searchPlaceholder || "Enter city or country..."}
+                    className="h-14 rounded-2xl border-white/20 bg-white/[0.12]! pl-12 text-base text-primary-foreground shadow-sm transition-shadow placeholder:text-primary-foreground/50 focus:shadow-md focus:ring-2 focus:ring-secondary/45"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="h-14 gap-2 rounded-2xl bg-secondary px-7 font-black text-secondary-foreground shadow-md shadow-secondary/20 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-primary hover:shadow-lg"
+                >
+                  <Search className="h-4 w-4" />
+                  {ctaText || "Search"}
+                </Button>
+              </form>
 
-            {/* Live stats */}
-            {showStats && stats && (
-              <div
-                className={`flex items-center justify-center gap-6 text-secondary-foreground/70 transition-all delay-300 duration-700 ${
-                  isVisible
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-4 opacity-0"
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-primary-foreground">
-                    {stats.teamCount}+
-                  </span>
-                  <span className="text-sm text-primary-foreground">Teams</span>
+              {/* Live stats */}
+              {showStats && stats && (
+                <div className="mt-5 grid grid-cols-2 gap-3 text-left text-secondary-foreground/70 opacity-100 transition-all delay-300 duration-700">
+                  <div className="rounded-2xl border border-white/10 bg-black/10 px-4 py-3">
+                    <span className="block text-3xl font-black tracking-tight text-primary-foreground">
+                      {stats.teamCount}+
+                    </span>
+                    <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground/60">
+                      Teams
+                    </span>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-black/10 px-4 py-3">
+                    <span className="block text-3xl font-black tracking-tight text-primary-foreground">
+                      {stats.countryCount}
+                    </span>
+                    <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground/60">
+                      Countries
+                    </span>
+                  </div>
                 </div>
-                <div className="h-6 w-px bg-primary-foreground/20" />
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-primary-foreground">
-                    {stats.countryCount}
-                  </span>
-                  <span className="text-sm text-primary-foreground">
-                    Countries
-                  </span>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

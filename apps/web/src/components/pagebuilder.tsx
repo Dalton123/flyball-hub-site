@@ -155,9 +155,12 @@ interface SanityDataAttributeConfig {
 const FULL_WIDTH_BLOCKS = new Set<string>([
   "appPromo",
   "hero",
+  "imageLinkCards",
+  "latestPosts",
   "statsSection",
   "macbookScroll",
   "cta",
+  "textBlock",
   "videoSection",
   "teamFinderTeaser",
 ]);
@@ -275,7 +278,7 @@ function useBlockRenderer(id: string, type: string) {
       const isFullWidth = FULL_WIDTH_BLOCKS.has(block._type);
       const wrapperClasses = isFullWidth
         ? "w-full"
-        : "max-w-7xl mx-auto px-4 my-4 md:my-12 first:mt-4";
+        : "max-w-7xl mx-auto px-4 md:px-6 my-6 md:my-14 first:mt-6";
 
       return (
         <div
@@ -316,7 +319,7 @@ export function PageBuilder({
   return (
     <main
       id="main-content"
-      className="flex flex-col"
+      className="flex flex-col bg-background"
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >

@@ -76,11 +76,11 @@ function SocialLinks({ data }: SocialLinksProps) {
   ].filter((link) => link.url);
 
   return (
-    <ul className="flex items-center space-x-6 text-muted-foreground">
+    <ul className="flex items-center space-x-4 text-primary-foreground/70">
       {socialLinks.map(({ url, Icon, label }, index) => (
         <li
           key={`social-link-${url}-${index.toString()}`}
-          className="font-medium hover:text-primary"
+          className="rounded-full border border-white/10 bg-white/[0.06] p-2 font-medium transition-colors hover:bg-secondary hover:text-secondary-foreground"
         >
           <Link
             href={url ?? "#"}
@@ -89,7 +89,7 @@ function SocialLinks({ data }: SocialLinksProps) {
             rel="noopener noreferrer"
             aria-label={label}
           >
-            <Icon className="fill-muted-foreground hover:fill-primary" />
+            <Icon className="fill-current" />
           </Link>
         </li>
       ))}
@@ -154,7 +154,7 @@ function Footer({ data, settingsData }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 pb-8">
+    <footer className="sport-panel mt-0 pb-8 pt-16 text-primary-foreground md:pt-20">
       <section className="container mx-auto">
         <div className="h-[500px] lg:h-auto">
           <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left mx-auto max-w-7xl px-4 md:px-6">
@@ -164,7 +164,7 @@ function Footer({ data, settingsData }: FooterProps) {
                   <Logo alt={siteTitle} priority image={logo} />
                 </span>
                 {subtitle && (
-                  <p className="mt-6 text-sm text-muted-foreground">
+                  <p className="mt-6 text-sm leading-6 text-primary-foreground/70">
                     {subtitle}
                   </p>
                 )}
@@ -175,13 +175,15 @@ function Footer({ data, settingsData }: FooterProps) {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-28 lg:mr-20">
                 {columns.map((column, index) => (
                   <div key={`column-${column?._key}-${index}`}>
-                    <h3 className="mb-6 font-semibold">{column?.title}</h3>
+                    <h3 className="mb-6 text-xs font-black uppercase tracking-[0.14em] text-secondary">
+                      {column?.title}
+                    </h3>
                     {column?.links && column?.links?.length > 0 && (
-                      <ul className="space-y-4 text-sm text-muted-foreground">
+                      <ul className="space-y-4 text-sm text-primary-foreground/70">
                         {column?.links?.map((link, index) => (
                           <li
                             key={`${link?._key}-${index}-column-${column?._key}`}
-                            className="font-medium hover:text-primary"
+                            className="font-medium transition-colors hover:text-secondary"
                           >
                             <Link
                               href={link.href ?? "#"}
@@ -203,8 +205,8 @@ function Footer({ data, settingsData }: FooterProps) {
               </div>
             )}
           </div>
-          <div className="mt-20 border-t pt-8">
-            <div className="flex flex-col justify-between gap-4  text-center text-sm font-normal text-muted-foreground lg:flex-row lg:items-center lg:text-left mx-auto max-w-7xl px-4 md:px-6">
+          <div className="mt-20 border-t border-white/10 pt-8">
+            <div className="flex flex-col justify-between gap-4  text-center text-sm font-normal text-primary-foreground/60 lg:flex-row lg:items-center lg:text-left mx-auto max-w-7xl px-4 md:px-6">
               <div className="flex flex-col items-center gap-4 md:gap-2 lg:items-start">
                 <p>
                   © {year} {siteTitle}. All rights reserved.
@@ -232,16 +234,16 @@ function Footer({ data, settingsData }: FooterProps) {
               </div>
               <ul className="flex flex-wrap justify-center gap-4 lg:justify-start">
                 {/* Footer nav links — keep in sync with sitemap */}
-                <li className="hover:text-primary">
+                <li className="hover:text-secondary">
                   <Link href="/faqs">FAQs</Link>
                 </li>
-                <li className="hover:text-primary">
+                <li className="hover:text-secondary">
                   <Link href="/terms">Terms and Conditions</Link>
                 </li>
-                <li className="hover:text-primary">
+                <li className="hover:text-secondary">
                   <Link href="/privacy-policy">Privacy Policy</Link>
                 </li>
-                <li className="hover:text-primary">
+                <li className="hover:text-secondary">
                   <Link href="/cookie-policy">Cookie Policy</Link>
                 </li>
               </ul>

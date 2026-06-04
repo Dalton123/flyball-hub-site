@@ -47,7 +47,7 @@ export function FaqAccordion({
   faqs,
   link,
 }: FaqAccordionProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+  const { ref } = useScrollAnimation<HTMLElement>({
     threshold: 0.1,
   });
 
@@ -74,7 +74,7 @@ export function FaqAccordion({
   }, [faqs]);
 
   return (
-    <section ref={ref} id="faq" className="">
+    <section ref={ref} id="faq" className="field-light-section py-16 md:py-24">
       {/* JSON-LD FAQ Schema for SEO */}
       {faqSchema && (
         <script
@@ -83,11 +83,7 @@ export function FaqAccordion({
         />
       )}
       <div className="container mx-auto px-4 md:px-6">
-        <div
-          className={`flex w-full flex-col items-center transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <div className="flex w-full flex-col items-center opacity-100 transition-all duration-700">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
             {eyebrow && (
               <Badge
@@ -109,11 +105,7 @@ export function FaqAccordion({
             )}
           </div>
         </div>
-        <div
-          className={`mt-10 lg:mt-16 max-w-2xl mx-auto transition-all duration-700 delay-200 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <div className="mx-auto mt-10 max-w-2xl opacity-100 transition-all delay-200 duration-700 lg:mt-16">
           <Accordion
             type="single"
             collapsible

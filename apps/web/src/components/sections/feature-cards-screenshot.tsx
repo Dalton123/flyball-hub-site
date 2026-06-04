@@ -1,14 +1,10 @@
 "use client";
 
-import { Badge } from "@workspace/ui/components/badge";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRef, useState } from "react";
 
-import {
-  useScrollAnimation,
-  useStaggeredAnimation,
-} from "@/hooks/use-scroll-animation";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
@@ -243,56 +239,36 @@ export function FeatureCardsScreenshot({
   richText,
   cards,
 }: FeatureCardsScreenshotProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+  const { ref } = useScrollAnimation<HTMLElement>({
     threshold: 0.1,
   });
-  const { containerRef, visibleItems } = useStaggeredAnimation(
-    cards?.length ?? 0,
-    {
-      staggerDelay: 150,
-    },
-  );
 
   return (
-    <section ref={ref} className="py-4 md:py-8 pb-0! md:-mb-8">
-      <div className="container mx-auto">
+    <section ref={ref} className="bg-background py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
-        <div
-          className={`mb-12 flex flex-col items-center text-center transition-all duration-700 px-4 lg:mb-16 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          {eyebrow && (
-            <Badge
-              variant="secondary"
-              className="mb-4 px-4 py-1.5 text-sm font-medium"
-            >
-              {eyebrow}
-            </Badge>
-          )}
-          {title && (
-            <h2 className="max-w-3xl text-3xl font-semibold md:text-4xl lg:text-5xl">
-              {title}
-            </h2>
-          )}
+        <div className="mb-10 grid gap-6 opacity-100 transition-all duration-700 md:mb-14 md:grid-cols-[0.82fr_1.18fr] md:items-end">
+          <div className="space-y-4">
+            {eyebrow && <span className="section-kicker">{eyebrow}</span>}
+            {title && <h2 className="section-heading-compact">{title}</h2>}
+          </div>
           {richText && (
             <RichText
               richText={richText}
-              className="mt-4 max-w-3xl text-base text-muted-foreground md:text-lg text-center text-pretty"
+              className="editorial-copy max-w-2xl md:justify-self-end"
             />
           )}
         </div>
 
         {/* Cards grid */}
         <div
-          ref={containerRef}
-          className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 lg:gap-4 xl:gap-6 px-6"
+          className="mx-auto grid max-w-7xl gap-5 sm:grid-cols-2 xl:grid-cols-4"
         >
           {cards?.map((card, index) => (
             <FeatureCard
               key={card?._key || index}
               card={card}
-              isVisible={visibleItems[index] ?? false}
+              isVisible={true}
               index={index}
               eager={index < 2}
             />

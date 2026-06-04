@@ -11,7 +11,7 @@ interface TextBlockProps {
 }
 
 export function TextBlock({ title, richText, alignment }: TextBlockProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+  const { ref } = useScrollAnimation<HTMLElement>({
     threshold: 0.1,
   });
 
@@ -23,24 +23,22 @@ export function TextBlock({ title, richText, alignment }: TextBlockProps) {
         : "text-left";
 
   return (
-    <section ref={ref} className="py-12 md:py-16">
+    <section ref={ref} className="field-light-section py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
-        <div
-          className={`max-w-4xl mx-auto transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <div className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-primary/10 bg-white/35 p-6 opacity-100 shadow-sm backdrop-blur-sm transition-all duration-700 md:grid-cols-[0.8fr_1.2fr] md:p-10 lg:p-12">
           {title && (
             <h2
-              className={`text-3xl font-semibold md:text-4xl mb-8 ${alignmentClass}`}
+              className={`section-heading-compact ${alignmentClass}`}
             >
               {title}
             </h2>
           )}
-          <RichText
-            richText={richText}
-            alignment={alignment as "left" | "center" | "right"}
-          />
+          <div className="editorial-copy max-w-3xl">
+            <RichText
+              richText={richText}
+              alignment={alignment as "left" | "center" | "right"}
+            />
+          </div>
         </div>
       </div>
     </section>

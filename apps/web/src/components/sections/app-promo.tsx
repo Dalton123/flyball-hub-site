@@ -114,7 +114,7 @@ const burstRayStyles = [
 // Scroll animation hook with reduced motion support
 function useScrollAnimation(threshold = 0.15) {
   const ref = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {

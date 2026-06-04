@@ -26,7 +26,7 @@ function BlogImage({ image, title, eager }: BlogImageProps) {
       alt={title ?? "Blog post image"}
       loading={eager ? "eager" : undefined}
       fetchPriority={eager ? "high" : undefined}
-      className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2 transition-transform duration-300 group-hover:scale-105"
+      className="aspect-video w-full rounded-[1.35rem] bg-muted object-cover transition-transform duration-500 group-hover:scale-105 sm:aspect-2/1 lg:aspect-3/2"
     />
   );
 }
@@ -71,8 +71,8 @@ interface BlogCardProps {
 
 function BlogMeta({ publishedAt }: { publishedAt: string | null }) {
   return (
-    <div className="flex items-center gap-x-4 text-xs my-4">
-      <time dateTime={publishedAt ?? ""} className="text-muted-foreground">
+    <div className="my-4 flex items-center gap-x-4 text-xs font-black uppercase tracking-[0.14em]">
+      <time dateTime={publishedAt ?? ""} className="text-primary/70">
         {publishedAt
           ? new Date(publishedAt).toLocaleDateString("en-US", {
               year: "numeric",
@@ -98,8 +98,8 @@ function BlogContent({
 }) {
   const HeadingTag = isFeatured ? "h2" : "h3";
   const headingClasses = isFeatured
-    ? "mt-3 text-3xl font-semibold leading-tight"
-    : "mt-3 text-lg font-semibold leading-6";
+    ? "mt-3 text-3xl font-black leading-tight tracking-[-0.03em]"
+    : "mt-3 text-xl font-black leading-tight tracking-[-0.02em] transition-colors group-hover:text-primary";
 
   return (
     <div className="group relative">
@@ -109,7 +109,7 @@ function BlogContent({
           {title}
         </Link>
       </HeadingTag>
-      <p className="mt-5 text-sm leading-6 text-muted-foreground">
+      <p className="mt-4 text-sm leading-6 text-muted-foreground">
         {description}
       </p>
     </div>
@@ -173,12 +173,15 @@ export function BlogCard({ blog, eager }: BlogCardProps) {
   const { title, publishedAt, slug, authors, description, image } = blog;
 
   return (
-    <article className="flex flex-col gap-4 w-full">
-      <Link href={slug ?? "#"} className="relative block w-full h-auto aspect-[16/9] overflow-hidden rounded-2xl group">
+    <article className="editorial-card group flex w-full flex-col gap-4 overflow-hidden rounded-[1.75rem] p-3 hover:-translate-y-1">
+      <Link
+        href={slug ?? "#"}
+        className="relative block h-auto w-full aspect-[16/9] overflow-hidden rounded-[1.35rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+      >
         <BlogImage image={image} title={title} eager={eager} />
-        <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+        <div className="absolute inset-0 rounded-[1.35rem] ring-1 ring-inset ring-primary/10" />
       </Link>
-      <div className="w-full space-y-4">
+      <div className="w-full space-y-3 px-2 pb-3">
         <BlogMeta publishedAt={publishedAt} />
         <BlogContent title={title} slug={slug} description={description} />
         {/* <AuthorSection authors={authors} /> */}

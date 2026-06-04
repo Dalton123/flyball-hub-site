@@ -30,7 +30,7 @@ export function ContactForm({
   >(submitContactForm, {});
 
   const formRef = useRef<HTMLFormElement>(null);
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+  const { ref } = useScrollAnimation<HTMLElement>({
     threshold: 0.1,
   });
 
@@ -42,13 +42,9 @@ export function ContactForm({
   }, [state.success]);
 
   return (
-    <section ref={ref} id="contact" className="px-4 py-12">
+    <section ref={ref} id="contact" className="bg-background px-4 py-16 md:py-24">
       <div className="container mx-auto max-w-3xl">
-        <div
-          className={`mb-10 text-center transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <div className="mb-10 text-center opacity-100 transition-all duration-700">
           {eyebrow && (
             <Badge
               variant="secondary"
@@ -68,11 +64,7 @@ export function ContactForm({
           )}
         </div>
 
-        <div
-          className={`transition-all duration-700 delay-200 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <div className="opacity-100 transition-all delay-200 duration-700">
           {/* Success Message */}
           {state.success && (
             <div className="mb-6 flex items-center gap-3 rounded-lg border border-success/30 bg-success/10 p-4">
