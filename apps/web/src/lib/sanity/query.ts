@@ -422,6 +422,7 @@ export const queryHomePageData =
     "slug": slug.current,
     title,
     description,
+    "seoImageUrl": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85&v=20260607",
     ${pageBuilderFragment}
   }`);
 

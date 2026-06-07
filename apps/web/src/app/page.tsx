@@ -24,6 +24,7 @@ export async function generateMetadata() {
           slug: homePageData?.slug,
           contentId: homePageData?._id,
           contentType: homePageData?._type,
+          ogImageUrl: homePageData?.seoImageUrl ?? undefined,
         }
       : {},
   );

@@ -18,6 +18,7 @@ interface PageSeoData extends Metadata {
   slug?: string;
   contentId?: string;
   contentType?: string;
+  ogImageUrl?: string;
   keywords?: string[];
   seoNoIndex?: boolean;
   pageType?: Extract<Metadata["openGraph"], { type: string }>["type"];
@@ -96,6 +97,7 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
     slug = "/",
     contentId,
     contentType,
+    ogImageUrl,
     keywords: pageKeywords = [],
     seoNoIndex = false,
     pageType = "website",
@@ -116,10 +118,12 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
   const defaultDescription = pageDescription || siteConfig.description;
   const allKeywords = [...siteConfig.keywords, ...pageKeywords];
 
-  const ogImage = generateOgImageUrl({
-    type: contentType,
-    id: contentId,
-  });
+  const ogImage =
+    ogImageUrl ??
+    generateOgImageUrl({
+      type: contentType,
+      id: contentId,
+    });
 
   const fullTitle =
     defaultTitle === siteConfig.title ||
@@ -139,6 +143,7 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
       card: "summary_large_image",
       images: [ogImage],
       creator: siteConfig.twitterHandle,
+      site: siteConfig.twitterHandle,
       title: defaultTitle,
       description: defaultDescription,
     },
@@ -147,6 +152,7 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
     },
     openGraph: {
       type: pageType ?? "website",
+      siteName: siteConfig.title,
       countryName: "UK",
       description: defaultDescription,
       title: defaultTitle,
