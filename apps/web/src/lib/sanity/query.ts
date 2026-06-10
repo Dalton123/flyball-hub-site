@@ -558,11 +558,14 @@ const ogFieldsFragment = /* groq */ `
     defined(seoDescription) => seoDescription,
     description
   ),
-  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",
+  "image": coalesce(
+    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",
+    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"
+  ),
   "dominantColor": image.asset->metadata.palette.dominant.background,
-  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max", 
-  "logo": *[_type == "settings"][0].logo.asset->url + "?w=80&h=40&dpr=3&fit=max&q=100",
-  "date": coalesce(date, _createdAt)
+  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",
+  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",
+  "date": coalesce(date, publishedAt, _createdAt)
 `;
 
 export const queryHomePageOGData = defineQuery(`
