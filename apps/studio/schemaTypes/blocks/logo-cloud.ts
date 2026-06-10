@@ -1,5 +1,6 @@
 import { LayoutGrid } from "lucide-react";
 import { defineField, defineType } from "sanity";
+
 import { customRichText } from "../definitions/rich-text";
 
 const logoItem = defineField({
@@ -10,14 +11,16 @@ const logoItem = defineField({
       name: "name",
       type: "string",
       title: "Organization Name",
-      description: "Name of the league or organization (e.g., 'North American Flyball Association')",
+      description:
+        "Name of the league or organization (e.g., 'North American Flyball Association')",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "logo",
       type: "image",
       title: "Logo",
-      description: "Organization logo - should be high quality and ideally on transparent background",
+      description:
+        "Organization logo - should be high quality and ideally on transparent background",
       options: {
         hotspot: true,
       },
@@ -63,7 +66,8 @@ export const logoCloud = defineType({
       name: "title",
       type: "string",
       title: "Title",
-      description: "Main heading (e.g., 'Works with all major flyball leagues')",
+      description:
+        "Main heading (e.g., 'Works with all major flyball leagues')",
     }),
     customRichText(["block"]),
     defineField({

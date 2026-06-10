@@ -8,6 +8,12 @@ interface RelatedPostsProps {
   posts: BlogCardProps[];
 }
 
+const relatedPostDateFormatter = new Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
 export function RelatedPosts({ posts }: RelatedPostsProps) {
   if (!posts || posts.length === 0) return null;
 
@@ -64,11 +70,7 @@ function RelatedPostCard({
             <div className="mb-3 flex items-center gap-2 text-xs text-white/80">
               {publishedAt && (
                 <time dateTime={publishedAt}>
-                  {new Date(publishedAt).toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {relatedPostDateFormatter.format(new Date(publishedAt))}
                 </time>
               )}
               {authors?.name && (

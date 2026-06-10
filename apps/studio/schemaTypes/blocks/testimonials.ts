@@ -1,5 +1,6 @@
 import { MessageSquareQuote } from "lucide-react";
 import { defineField, defineType } from "sanity";
+
 import { customRichText } from "../definitions/rich-text";
 
 const testimonialCard = defineField({
@@ -24,7 +25,8 @@ const testimonialCard = defineField({
       name: "authorRole",
       type: "string",
       title: "Author Role",
-      description: "Job title, team name, or role (e.g., 'Team Captain, Flyball Fanatics')",
+      description:
+        "Job title, team name, or role (e.g., 'Team Captain, Flyball Fanatics')",
     }),
     defineField({
       name: "authorImage",
@@ -69,13 +71,15 @@ export const testimonials = defineType({
   title: "Testimonials",
   type: "object",
   icon: MessageSquareQuote,
-  description: "Display customer testimonials with quotes, author info, and optional ratings",
+  description:
+    "Display customer testimonials with quotes, author info, and optional ratings",
   fields: [
     defineField({
       name: "eyebrow",
       type: "string",
       title: "Eyebrow",
-      description: "Small text above the main title (e.g., 'What Teams Are Saying')",
+      description:
+        "Small text above the main title (e.g., 'What Teams Are Saying')",
     }),
     defineField({
       name: "title",

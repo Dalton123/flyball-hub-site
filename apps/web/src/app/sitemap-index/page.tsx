@@ -17,8 +17,14 @@ interface SitemapBlog {
 export const metadata: Metadata = {
   title: "Sitemap - All Pages & Posts | Flyball Hub",
   description:
-    "Browse the complete sitemap for Flyball Hub. Find all breed guides, blog posts, training resources, and pages about flyball for dogs in the UK.",
+    "Browse the complete sitemap for Flyball Hub. Find breed guides, blog posts, training resources and flyball team-management pages.",
 };
+
+const sitemapDateFormatter = new Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
 
 function normalizeSlug(slug: string | null): string {
   if (!slug) return "/";
@@ -99,13 +105,8 @@ export default async function SitemapIndexPage() {
                     </Link>
                     {blog.publishedAt && (
                       <span className="text-sm text-muted-foreground">
-                        {new Date(blog.publishedAt).toLocaleDateString(
-                          "en-GB",
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          },
+                        {sitemapDateFormatter.format(
+                          new Date(blog.publishedAt),
                         )}
                       </span>
                     )}

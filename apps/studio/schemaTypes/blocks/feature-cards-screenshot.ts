@@ -1,5 +1,6 @@
 import { ImageIcon } from "lucide-react";
 import { defineField, defineType } from "sanity";
+
 import { customRichText } from "../definitions/rich-text";
 
 const featureCardItem = defineField({
@@ -10,7 +11,8 @@ const featureCardItem = defineField({
       name: "screenshot",
       type: "image",
       title: "Screenshot",
-      description: "Screenshot showcasing this feature (recommended: 800x600 or 4:3 ratio)",
+      description:
+        "Screenshot showcasing this feature (recommended: 800x600 or 4:3 ratio)",
       options: {
         hotspot: true,
       },

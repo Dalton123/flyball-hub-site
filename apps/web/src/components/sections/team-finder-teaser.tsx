@@ -4,6 +4,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { MapPin, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -17,6 +18,56 @@ export type TeamFinderTeaserProps = PagebuilderType<"teamFinderTeaser">;
 interface TeamStats {
   teamCount: number;
   countryCount: number;
+}
+
+interface PublicTeamsApiResponse {
+  data?: Array<{ country?: string | null }>;
+  meta?: {
+    total?: number;
+    totalPages?: number;
+  };
+}
+
+const PUBLIC_TEAMS_API_URL = "https://app.flyballhub.com/api/v1/teams";
+const PUBLIC_TEAMS_PAGE_LIMIT = 100;
+
+async function fetchTeamsPage(page: number): Promise<PublicTeamsApiResponse> {
+  const params = new URLSearchParams({
+    limit: String(PUBLIC_TEAMS_PAGE_LIMIT),
+    page: String(page),
+  });
+  const res = await fetch(`${PUBLIC_TEAMS_API_URL}?${params.toString()}`);
+
+  if (!res.ok) {
+    throw new Error(`Team stats request failed with ${res.status}`);
+  }
+
+  return (await res.json()) as PublicTeamsApiResponse;
+}
+
+async function fetchTeamStats(): Promise<TeamStats> {
+  const firstPage = await fetchTeamsPage(1);
+  const totalPages = Math.max(1, firstPage.meta?.totalPages ?? 1);
+  const remainingPages = Array.from(
+    { length: totalPages - 1 },
+    (_, index) => index + 2,
+  );
+  const remainingResults = await Promise.all(
+    remainingPages.map((page) => fetchTeamsPage(page)),
+  );
+  const allTeams = [firstPage, ...remainingResults].flatMap(
+    (result) => result.data ?? [],
+  );
+  const countries = new Set(
+    allTeams
+      .map((team) => team.country)
+      .filter((country): country is string => Boolean(country)),
+  );
+
+  return {
+    teamCount: firstPage.meta?.total ?? allTeams.length,
+    countryCount: countries.size,
+  };
 }
 
 export function TeamFinderTeaser({
@@ -38,36 +89,19 @@ export function TeamFinderTeaser({
   useEffect(() => {
     if (!showStats) return;
 
-    async function fetchStats() {
+    async function loadStats() {
       try {
-        const res = await fetch(
-          "https://app.flyballhub.com/api/v1/teams?limit=500",
-        );
-        const json = await res.json();
-        const teams = json.data || [];
-
-        // Count unique countries
-        const countries = new Set(
-          teams
-            .map((team: { country: string | null }) => team.country)
-            .filter(Boolean),
-        );
-
-        setStats({
-          teamCount: teams.length,
-          countryCount: countries.size,
-        });
+        setStats(await fetchTeamStats());
       } catch (err) {
         console.error("Failed to fetch team stats:", err);
-        // Fallback stats
-        setStats({ teamCount: 150, countryCount: 12 });
+        setStats(null);
       }
     }
 
-    fetchStats();
+    loadStats();
   }, [showStats]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/find-a-team?q=${encodeURIComponent(searchQuery.trim())}`);
@@ -131,7 +165,9 @@ export function TeamFinderTeaser({
           {/* Content */}
           <div className="relative z-10 mx-auto grid max-w-5xl gap-8 text-center opacity-100 transition-all duration-700 lg:grid-cols-[0.82fr_1fr] lg:items-center lg:text-left">
             <div className="space-y-5">
-              {eyebrow && <span className="section-kicker-dark">{eyebrow}</span>}
+              {eyebrow && (
+                <span className="section-kicker-dark">{eyebrow}</span>
+              )}
 
               {title && <h2 className="section-heading text-white">{title}</h2>}
 
@@ -154,7 +190,9 @@ export function TeamFinderTeaser({
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={searchPlaceholder || "Enter city or country..."}
+                    placeholder={
+                      searchPlaceholder || "Enter city or country..."
+                    }
                     className="h-14 rounded-2xl border-white/20 bg-white/[0.12]! pl-12 text-base text-primary-foreground shadow-sm transition-shadow placeholder:text-primary-foreground/50 focus:shadow-md focus:ring-2 focus:ring-secondary/45"
                   />
                 </div>
@@ -173,7 +211,7 @@ export function TeamFinderTeaser({
                 <div className="mt-5 grid grid-cols-2 gap-3 text-left text-secondary-foreground/70 opacity-100 transition-all delay-300 duration-700">
                   <div className="rounded-2xl border border-white/10 bg-black/10 px-4 py-3">
                     <span className="block text-3xl font-black tracking-tight text-primary-foreground">
-                      {stats.teamCount}+
+                      {stats.teamCount}
                     </span>
                     <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground/60">
                       Teams

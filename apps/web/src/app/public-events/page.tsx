@@ -57,7 +57,7 @@ function formatDateLabel(rawEvent: Record<string, unknown>) {
     return primaryDate;
   }
 
-  const formatter = new Intl.DateTimeFormat("en-GB", {
+  const formatter = new Intl.DateTimeFormat(undefined, {
     day: "numeric",
     month: "short",
     year: "numeric",

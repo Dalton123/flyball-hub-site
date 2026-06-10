@@ -31,7 +31,8 @@ export const videoSection = defineType({
       name: "videoUrl",
       type: "url",
       title: "Video URL",
-      description: "YouTube or Vimeo video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)",
+      description:
+        "YouTube or Vimeo video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

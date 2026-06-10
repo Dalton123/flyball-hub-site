@@ -86,7 +86,7 @@ export const appPromo = defineType({
       title: "Social Proof Text",
       type: "string",
       description:
-        "Trust indicator text (e.g., 'Trusted by 150+ teams in 12+ countries')",
+        "Trust indicator text (e.g., 'Used by flyball teams around the world')",
     }),
     defineField({
       name: "showStarRating",
@@ -145,7 +145,8 @@ export const appPromo = defineType({
       description:
         "Show the iOS badge as greyed out with 'Coming Soon' text when the app isn't available yet",
       initialValue: false,
-      hidden: ({ parent }) => !parent?.showAppStoreButtons || !!parent?.appStoreUrl,
+      hidden: ({ parent }) =>
+        !parent?.showAppStoreButtons || !!parent?.appStoreUrl,
       group: "appStore",
     }),
   ],

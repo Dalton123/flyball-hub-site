@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { RichText } from "@/components/elements/rich-text";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { TableOfContent } from "@/components/elements/table-of-content";
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import {
   ArticleJsonLd,
   BreadcrumbJsonLd,
@@ -21,6 +21,12 @@ import {
 } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
 import type { BlogCardProps } from "@/types";
+
+const blogDateFormatter = new Intl.DateTimeFormat(undefined, {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 
 async function fetchBlogSlugPageData(slug: string) {
   const data = await client.fetch(
@@ -151,11 +157,7 @@ export default async function BlogSlugPage({
                     )}
                     {publishedAt && (
                       <time dateTime={publishedAt}>
-                        {new Date(publishedAt).toLocaleDateString("en-GB", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
+                        {blogDateFormatter.format(new Date(publishedAt))}
                       </time>
                     )}
                   </div>

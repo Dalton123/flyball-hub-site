@@ -1,9 +1,4 @@
-import {
-  BlockquoteIcon,
-  CodeIcon,
-  ImageIcon,
-  LinkIcon,
-} from "@sanity/icons";
+import { BlockquoteIcon, CodeIcon, ImageIcon, LinkIcon } from "@sanity/icons";
 import { Minus } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
@@ -121,7 +116,8 @@ const richTextMembers = [
         name: "source",
         type: "string",
         title: "Source",
-        description: "Where the quote is from, e.g., book title, article (optional)",
+        description:
+          "Where the quote is from, e.g., book title, article (optional)",
       }),
     ],
     preview: {
@@ -185,7 +181,8 @@ const richTextMembers = [
         name: "highlightLines",
         type: "string",
         title: "Highlight Lines",
-        description: "Comma-separated line numbers to highlight, e.g., '1,3,5-7'",
+        description:
+          "Comma-separated line numbers to highlight, e.g., '1,3,5-7'",
       }),
     ],
     preview: {

@@ -38,7 +38,7 @@ interface OgImageParams {
 const siteConfig: SiteConfig = {
   title: "Flyball Hub",
   description:
-    "Manage flyball teams, dogs, training sessions and RSVPs in one simple app. Built for UK teams.",
+    "Manage flyball teams, dogs, training sessions and RSVPs in one simple app, wherever your club races.",
   twitterHandle: "@flyballhub", // Update this to your actual Twitter handle
   keywords: [
     "flyball",
@@ -46,7 +46,6 @@ const siteConfig: SiteConfig = {
     "training",
     "teams",
     "rsvp",
-    "uk",
     "canine",
     "sport",
     "agility",
@@ -153,7 +152,6 @@ export function getSEOMetadata(page: PageSeoData = {}): Metadata {
     openGraph: {
       type: pageType ?? "website",
       siteName: siteConfig.title,
-      countryName: "UK",
       description: defaultDescription,
       title: defaultTitle,
       images: [

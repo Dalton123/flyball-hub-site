@@ -1,5 +1,6 @@
 import { TrendingUp } from "lucide-react";
 import { defineField, defineType } from "sanity";
+
 import { customRichText } from "../definitions/rich-text";
 
 const statItem = defineField({
@@ -17,7 +18,8 @@ const statItem = defineField({
       name: "label",
       type: "string",
       title: "Label",
-      description: "Description of the statistic (e.g., 'Active Teams', 'Dogs Registered')",
+      description:
+        "Description of the statistic (e.g., 'Active Teams', 'Dogs Registered')",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

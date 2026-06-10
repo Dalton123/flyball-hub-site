@@ -146,7 +146,12 @@ export const structure = (
         context,
       }),
       createList({ S, type: "author", title: "Authors", icon: User }),
-      createList({ S, type: "redirect", title: "Redirects", icon: TrendingUpDown }),
+      createList({
+        S,
+        type: "redirect",
+        title: "Redirects",
+        icon: TrendingUpDown,
+      }),
       S.divider(),
       S.listItem()
         .title("Site Configuration")

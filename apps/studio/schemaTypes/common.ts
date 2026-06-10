@@ -9,7 +9,7 @@ import { GROUP } from "../utils/constant";
 export const createImageField = (
   name: string,
   title: string,
-  description: string
+  description: string,
 ) =>
   defineField({
     name,

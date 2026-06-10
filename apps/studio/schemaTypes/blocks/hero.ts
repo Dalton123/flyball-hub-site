@@ -48,7 +48,7 @@ export const hero = defineType({
       type: "array",
       title: "Social Proof Stats",
       description:
-        "Key metrics to display below the hero content (e.g., '150+ Teams', 'Lightning Fast')",
+        "Key metrics to display below the hero content (e.g., 'Global Directory', 'Lightning Fast')",
       of: [
         {
           type: "object",
@@ -57,14 +57,16 @@ export const hero = defineType({
               name: "value",
               type: "string",
               title: "Value",
-              description: "The statistic value (e.g., '150+', 'Lightning Fast')",
+              description:
+                "The statistic value (e.g., 'Global', 'Lightning Fast')",
               validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: "label",
               type: "string",
               title: "Label",
-              description: "Description of the stat (e.g., 'Teams', 'Performance')",
+              description:
+                "Description of the stat (e.g., 'Teams', 'Performance')",
               validation: (Rule) => Rule.required(),
             }),
           ],
