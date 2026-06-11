@@ -1,5 +1,7 @@
 import { CogIcon } from "lucide-react";
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
+
+import { buttonsField, createImageField } from "../common";
 
 const socialLinks = defineField({
   name: "socialLinks",
@@ -37,6 +39,171 @@ const socialLinks = defineField({
       title: "YouTube URL",
       description: "Full URL to your YouTube channel",
       type: "string",
+    }),
+  ],
+});
+
+const appPromoDefaults = defineField({
+  name: "appPromoDefaults",
+  title: "App Promo Defaults",
+  type: "object",
+  description:
+    "Single source of truth for App Promo sections. Existing page blocks use these values unless 'Override global app promo copy' is enabled on that block.",
+  options: { collapsible: true, collapsed: false },
+  fields: [
+    defineField({
+      name: "eyebrow",
+      title: "Badge Text",
+      type: "string",
+      description: "Short badge shown above the headline.",
+      initialValue: "Free team app",
+    }),
+    defineField({
+      name: "title",
+      title: "Title",
+      type: "string",
+      description: "Main heading used by reusable App Promo blocks.",
+      initialValue: "Run your flyball team from your pocket",
+    }),
+    defineField({
+      name: "highlightedText",
+      title: "Highlighted Text",
+      type: "string",
+      description: "Exact part of the title to highlight.",
+      initialValue: "from your pocket",
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+      rows: 3,
+      description:
+        "Global-first supporting copy. Keep it honest and avoid hardcoded team counts unless recently verified.",
+      initialValue:
+        "Keep dogs, handlers, training plans and event details in one place, whether your club is across town or across the world.",
+    }),
+    defineField({
+      name: "features",
+      title: "Feature Highlights",
+      type: "array",
+      description:
+        "Reusable feature bullets for App Promo sections. Keep to three.",
+      initialValue: [
+        {
+          _key: "default-records",
+          title: "Dog and team records",
+          description:
+            "Keep rosters, dog details and handler notes tidy without another spreadsheet",
+          icon: "users",
+        },
+        {
+          _key: "default-training-events",
+          title: "Training and event organisation",
+          description:
+            "Plan sessions, track attendance and keep everyone clear on what is next",
+          icon: "calendar",
+        },
+        {
+          _key: "default-team-hub",
+          title: "One shared team hub",
+          description:
+            "Give captains and members one reliable place for the details that matter",
+          icon: "layoutGrid",
+        },
+      ],
+      of: [
+        defineArrayMember({
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
+              title: "Title",
+              type: "string",
+            }),
+            defineField({
+              name: "description",
+              title: "Description",
+              type: "string",
+            }),
+            defineField({
+              name: "icon",
+              title: "Icon",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Users", value: "users" },
+                  { title: "Calendar", value: "calendar" },
+                  { title: "Layout Grid", value: "layoutGrid" },
+                ],
+              },
+            }),
+          ],
+          preview: {
+            select: { title: "title" },
+            prepare: ({ title }) => ({ title: title || "Feature" }),
+          },
+        }),
+      ],
+      validation: (Rule) => Rule.max(3),
+    }),
+    defineField({
+      name: "socialProofText",
+      title: "Social Proof Text",
+      type: "string",
+      description:
+        "Optional trust text. Prefer broad, verified language over stale counts.",
+      initialValue: "Built for flyball teams around the world",
+    }),
+    defineField({
+      name: "showStarRating",
+      title: "Show Star Rating",
+      type: "boolean",
+      description:
+        "Only enable if the rating value is currently verified from an app store or review source.",
+      initialValue: false,
+    }),
+    defineField({
+      name: "starRating",
+      title: "Star Rating Value",
+      type: "string",
+      description:
+        "Verified rating value, for example 4.9. Leave blank otherwise.",
+      hidden: ({ parent }) => !parent?.showStarRating,
+    }),
+    buttonsField,
+    defineField({
+      name: "platformNote",
+      title: "Platform Note",
+      type: "string",
+      description: "Short availability note below the calls to action.",
+      initialValue: "Use it on the web, iOS or Android",
+    }),
+    createImageField(
+      "phoneScreenshot",
+      "Phone Screenshot (Optional)",
+      "Upload a real current app screenshot. Leave empty to use the generic honest app preview.",
+    ),
+    defineField({
+      name: "showAppStoreButtons",
+      title: "Show App Store Buttons",
+      type: "boolean",
+      description:
+        "Display App Store and Google Play badges when URLs are set.",
+      initialValue: false,
+    }),
+    defineField({
+      name: "googlePlayUrl",
+      title: "Google Play Store URL",
+      type: "url",
+      description: "Canonical Google Play URL for Flyball Hub.",
+      hidden: ({ parent }) => !parent?.showAppStoreButtons,
+    }),
+    defineField({
+      name: "appStoreUrl",
+      title: "Apple App Store URL",
+      type: "url",
+      description: "Canonical Apple App Store URL for Flyball Hub.",
+      hidden: ({ parent }) => !parent?.showAppStoreButtons,
     }),
   ],
 });
@@ -103,6 +270,7 @@ export const settings = defineType({
       initialValue: true,
     }),
     socialLinks,
+    appPromoDefaults,
   ],
   preview: {
     select: {

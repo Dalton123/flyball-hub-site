@@ -11,26 +11,37 @@ export const appPromo = defineType({
   description: "Promotional block for the Flyball Hub mobile app",
   fields: [
     defineField({
+      name: "useGlobalDefaults",
+      title: "Use Global App Promo Defaults",
+      type: "boolean",
+      description:
+        "Keep enabled for the shared Flyball Hub app copy from Settings. Disable only when this page needs a specific override.",
+      initialValue: true,
+    }),
+    defineField({
       name: "eyebrow",
       title: "Badge Text",
       type: "string",
-      description: "Small badge text (e.g., 'Free to Use', 'Mobile App')",
-      initialValue: "Free to Use",
+      description: "Small badge text, for example 'Free team app'.",
+      initialValue: "Free team app",
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
     }),
     defineField({
       name: "title",
       title: "Title",
       type: "string",
       description: "Main heading for the promo section",
-      initialValue: "Your Flyball Team, In Your Pocket",
+      initialValue: "Run your flyball team from your pocket",
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
     }),
     defineField({
       name: "highlightedText",
       title: "Highlighted Text",
       type: "string",
       description:
-        "Part of the title to highlight with lime gradient (e.g., 'In Your Pocket')",
-      initialValue: "In Your Pocket",
+        "Part of the title to highlight with lime gradient, for example 'from your pocket'.",
+      initialValue: "from your pocket",
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
     }),
     defineField({
       name: "description",
@@ -38,12 +49,16 @@ export const appPromo = defineType({
       type: "text",
       rows: 3,
       description: "Supporting text below the headline",
+      initialValue:
+        "Keep dogs, handlers, training plans and event details in one place, whether your club is across town or across the world.",
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
     }),
     defineField({
       name: "features",
       title: "Feature Highlights",
       type: "array",
       description: "Key features to highlight (max 3)",
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
       of: [
         defineArrayMember({
           type: "object",
@@ -86,32 +101,44 @@ export const appPromo = defineType({
       title: "Social Proof Text",
       type: "string",
       description:
-        "Trust indicator text (e.g., 'Used by flyball teams around the world')",
+        "Trust indicator text. Prefer broad verified language over stale hardcoded counts.",
+      initialValue: "Built for flyball teams around the world",
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
     }),
     defineField({
       name: "showStarRating",
       title: "Show Star Rating",
       type: "boolean",
-      initialValue: true,
+      description:
+        "Only enable if the rating value is currently verified from an app store or review source.",
+      initialValue: false,
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
     }),
     defineField({
       name: "starRating",
       title: "Star Rating Value",
       type: "string",
-      initialValue: "4.9",
+      description:
+        "Verified rating value, for example 4.9. Leave blank otherwise.",
+      hidden: ({ parent }) =>
+        parent?.useGlobalDefaults !== false || !parent?.showStarRating,
     }),
-    buttonsField,
+    {
+      ...buttonsField,
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
+    },
     defineField({
       name: "platformNote",
       title: "Platform Note",
       type: "string",
       description: "Text below CTAs about platform availability",
-      initialValue: "Works on any device — web, iOS & Android",
+      initialValue: "Use it on the web, iOS or Android",
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
     }),
     createImageField(
       "phoneScreenshot",
       "Phone Screenshot (Optional)",
-      "Upload a custom app screenshot. Leave empty to use the default app preview.",
+      "Upload a real current app screenshot. Leave empty to use the generic honest app preview.",
     ),
     defineField({
       name: "showAppStoreButtons",
@@ -119,6 +146,7 @@ export const appPromo = defineType({
       type: "boolean",
       description: "Display App Store and Google Play download badges",
       initialValue: false,
+      hidden: ({ parent }) => parent?.useGlobalDefaults !== false,
       group: "appStore",
     }),
     defineField({
@@ -126,7 +154,8 @@ export const appPromo = defineType({
       title: "Google Play Store URL",
       type: "url",
       description: "Link to the app on Google Play Store",
-      hidden: ({ parent }) => !parent?.showAppStoreButtons,
+      hidden: ({ parent }) =>
+        parent?.useGlobalDefaults !== false || !parent?.showAppStoreButtons,
       group: "appStore",
     }),
     defineField({
@@ -135,7 +164,8 @@ export const appPromo = defineType({
       type: "url",
       description:
         "Link to the app on Apple App Store. Leave empty if not yet available.",
-      hidden: ({ parent }) => !parent?.showAppStoreButtons,
+      hidden: ({ parent }) =>
+        parent?.useGlobalDefaults !== false || !parent?.showAppStoreButtons,
       group: "appStore",
     }),
     defineField({
@@ -146,7 +176,9 @@ export const appPromo = defineType({
         "Show the iOS badge as greyed out with 'Coming Soon' text when the app isn't available yet",
       initialValue: false,
       hidden: ({ parent }) =>
-        !parent?.showAppStoreButtons || !!parent?.appStoreUrl,
+        parent?.useGlobalDefaults !== false ||
+        !parent?.showAppStoreButtons ||
+        !!parent?.appStoreUrl,
       group: "appStore",
     }),
   ],
