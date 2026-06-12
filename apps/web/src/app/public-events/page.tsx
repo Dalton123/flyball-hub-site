@@ -38,26 +38,34 @@ function getObject(value: unknown): Record<string, unknown> | null {
     : null;
 }
 
-function formatDateLabel(rawEvent: Record<string, unknown>) {
-  const primaryDate =
-    getString(rawEvent.start_date) ??
-    getString(rawEvent.starts_at) ??
-    getString(rawEvent.date) ??
-    getString(rawEvent.event_date);
+function getAppBaseUrl() {
+  return (
+    process.env.FLYBALL_HUB_APP_URL?.replace(/\/$/, "") ??
+    "https://app.flyballhub.com"
+  );
+}
 
-  const secondaryDate =
-    getString(rawEvent.end_date) ?? getString(rawEvent.ends_at);
+function parseDateOnly(value: string) {
+  const [year, month, day] = value.split("-").map(Number);
+  if (!year || !month || !day) return null;
+
+  return new Date(year, month - 1, day);
+}
+
+function formatDateLabel(rawEvent: Record<string, unknown>) {
+  const primaryDate = getString(rawEvent.start_date);
+  const secondaryDate = getString(rawEvent.end_date);
 
   if (!primaryDate) {
     return "Date to be confirmed";
   }
 
-  const start = new Date(primaryDate);
-  if (Number.isNaN(start.getTime())) {
+  const start = parseDateOnly(primaryDate);
+  if (!start || Number.isNaN(start.getTime())) {
     return primaryDate;
   }
 
-  const formatter = new Intl.DateTimeFormat(undefined, {
+  const formatter = new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -67,48 +75,83 @@ function formatDateLabel(rawEvent: Record<string, unknown>) {
     return formatter.format(start);
   }
 
-  const end = new Date(secondaryDate);
-  if (Number.isNaN(end.getTime())) {
+  const end = parseDateOnly(secondaryDate);
+  if (!end || Number.isNaN(end.getTime())) {
     return formatter.format(start);
   }
 
   return `${formatter.format(start)} to ${formatter.format(end)}`;
 }
 
-function normalizeEvent(rawEvent: unknown, status: "live" | "upcoming") {
+function getVenueLabel(rawEvent: Record<string, unknown>) {
+  const venue = getObject(rawEvent.venue);
+  const name = getString(venue?.name);
+  const city = getString(venue?.city);
+  const region = getString(venue?.region);
+  const country = getString(venue?.country);
+
+  const locationParts = [city, region, country].filter(Boolean);
+  if (name && locationParts.length > 0) {
+    return `${name}, ${locationParts.join(", ")}`;
+  }
+
+  if (name) return name;
+  if (locationParts.length > 0) return locationParts.join(", ");
+
+  return "Venue to be confirmed";
+}
+
+function getPlacesLabel(rawEvent: Record<string, unknown>) {
+  const capacity = getObject(rawEvent.capacity);
+  const remainingPlaces = capacity?.remaining_places;
+
+  if (typeof remainingPlaces !== "number") return null;
+  if (remainingPlaces <= 0) return "Fully booked";
+  if (remainingPlaces === 1) return "1 place left";
+
+  return `${remainingPlaces} places left`;
+}
+
+function normalizeEvent(
+  rawEvent: unknown,
+  fallbackStatus: "live" | "upcoming",
+) {
   const event = getObject(rawEvent);
   if (!event) return null;
 
-  const slug = getString(event.slug);
-  if (!slug) return null;
-
-  const venue =
-    getString(event.venue_name) ??
-    getString(event.location_name) ??
-    getString(getObject(event.venue)?.name) ??
-    "Venue to be confirmed";
+  const id = getString(event.id);
+  if (!id) return null;
 
   const hostTeam =
-    getString(event.host_team_name) ??
-    getString(getObject(event.host_team)?.name) ??
-    getString(event.organizer_name) ??
-    "Host team to be confirmed";
+    getString(getObject(event.host_team)?.name) ?? "Host team to be confirmed";
+  const metadata = getObject(event.metadata);
+  const entryStatus = getString(event.entry_status);
+  const status = entryStatus === "live" ? "live" : fallbackStatus;
+
+  const detailUrl = `${getAppBaseUrl()}/public-events/${id}`;
 
   return {
-    id: getString(event.id) ?? `${status}-${slug}`,
+    id,
     name: getString(event.name) ?? getString(event.title) ?? "Flyball Event",
-    slug,
+    description: getString(event.description),
     status,
     dateLabel: formatDateLabel(event),
-    venue,
+    venue: getVenueLabel(event),
     hostTeam,
+    league: getString(metadata?.league),
+    placesLabel: getPlacesLabel(event),
+    detailUrl,
   } satisfies PublicEvent;
 }
 
-async function fetchEvents(status: "live" | "upcoming", limit: number) {
+async function fetchEvents(
+  status: "live" | "accepting",
+  limit: number,
+  displayStatus: "live" | "upcoming",
+) {
   try {
     const response = await fetch(
-      `https://app.flyballhub.com/api/v1/events?status=${status}&limit=${limit}`,
+      `${getAppBaseUrl()}/api/v1/public-events?status=${status}&limit=${limit}`,
       {
         cache: "no-store",
       },
@@ -117,13 +160,13 @@ async function fetchEvents(status: "live" | "upcoming", limit: number) {
     if (!response.ok) {
       return {
         data: [],
-        error: `The ${status} events feed returned ${response.status}.`,
+        error: `The ${displayStatus} events feed returned ${response.status}.`,
       } satisfies FetchEventsResult;
     }
 
     const json = (await response.json()) as EventsApiResponse;
     const normalizedEvents = (json.data ?? [])
-      .map((event) => normalizeEvent(event, status))
+      .map((event) => normalizeEvent(event, displayStatus))
       .filter((event): event is PublicEvent => event !== null);
 
     return { data: normalizedEvents, error: null } satisfies FetchEventsResult;
@@ -133,7 +176,7 @@ async function fetchEvents(status: "live" | "upcoming", limit: number) {
 
     return {
       data: [],
-      error: `The ${status} events feed could not be reached: ${message}`,
+      error: `The ${displayStatus} events feed could not be reached: ${message}`,
     } satisfies FetchEventsResult;
   }
 }
@@ -145,8 +188,8 @@ function getPageError(errors: Array<string | null>) {
 
 export default async function PublicEventsPage() {
   const [liveResult, upcomingResult] = await Promise.all([
-    fetchEvents("live", 10),
-    fetchEvents("upcoming", 20),
+    fetchEvents("live", 10, "live"),
+    fetchEvents("accepting", 20, "upcoming"),
   ]);
 
   const { data: liveEvents, error: liveError } = liveResult;

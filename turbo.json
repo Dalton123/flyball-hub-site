@@ -4,6 +4,7 @@
   "globalEnv": [
     "SANITY_API_READ_TOKEN",
     "SANITY_API_WRITE_TOKEN",
+    "FLYBALL_HUB_APP_URL",
     "VERCEL_URL",
     "VERCEL_PROJECT_PRODUCTION_URL",
     "VERCEL_ENV",
@@ -13,12 +14,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "dist/**",
-        ".sanity/**"
-      ]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", ".sanity/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
