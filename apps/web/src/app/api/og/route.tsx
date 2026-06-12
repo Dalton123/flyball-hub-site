@@ -8,6 +8,7 @@ import type { Maybe } from "@/types";
 import { getOgMetaData } from "./og-config";
 import {
   getBlogPageOGData,
+  getBreedPageOGData,
   getGenericPageOGData,
   getHomePageOGData,
   getSlugPageOGData,
@@ -32,6 +33,7 @@ const fallbackContent = {
   title: "Flyball Hub",
   description: "Find teams, learn the sport, and manage your flyball club.",
   blogEyebrow: "FLYBALL GUIDE",
+  breedEyebrow: "BREED GUIDE",
   pageEyebrow: "LEARN FLYBALL",
   genericEyebrow: "FLYBALL HUB",
 };
@@ -42,7 +44,15 @@ type SeoImageRenderProps = {
 
 type ContentProps = Record<string, string>;
 
-type OgContentType = "blog" | "page" | "generic";
+type OgContentType = "blog" | "breed" | "page" | "generic";
+
+type BreedStats = {
+  size?: Maybe<string>;
+  energy?: Maybe<number>;
+  trainability?: Maybe<number>;
+  speed?: Maybe<string>;
+  heightDog?: Maybe<boolean>;
+};
 
 type BrandedOgRenderProps = {
   image?: Maybe<string>;
@@ -50,6 +60,13 @@ type BrandedOgRenderProps = {
   logo?: Maybe<string>;
   description?: Maybe<string>;
   variant: OgContentType;
+};
+
+type BreedOgRenderProps = BrandedOgRenderProps & {
+  name?: Maybe<string>;
+  verdict?: Maybe<string>;
+  verdictRating?: Maybe<number>;
+  stats?: Maybe<BreedStats>;
 };
 
 const seoImageRender = ({ seoImage }: SeoImageRenderProps) => {
@@ -67,6 +84,7 @@ const seoImageRender = ({ seoImage }: SeoImageRenderProps) => {
 
 const getEyebrow = (variant: OgContentType) => {
   if (variant === "blog") return fallbackContent.blogEyebrow;
+  if (variant === "breed") return fallbackContent.breedEyebrow;
   if (variant === "page") return fallbackContent.pageEyebrow;
   return fallbackContent.genericEyebrow;
 };
@@ -93,6 +111,33 @@ const getHeadlineFontSize = (headline: string) => {
 const clampDescription = (value: string) => {
   if (value.length <= 112) return value;
   return `${value.slice(0, 109).trim()}...`;
+};
+
+const formatRating = (rating?: Maybe<number>) => {
+  if (!rating) return null;
+  return `${rating}/5 flyball fit`;
+};
+
+const formatScore = (label: string, score?: Maybe<number>) => {
+  if (!score) return null;
+  return `${label} ${score}/5`;
+};
+
+const getBreedHighlights = ({
+  stats,
+  verdictRating,
+}: {
+  stats?: Maybe<BreedStats>;
+  verdictRating?: Maybe<number>;
+}) => {
+  return [
+    formatRating(verdictRating),
+    stats?.speed ? `${stats.speed} speed` : null,
+    formatScore("Energy", stats?.energy),
+    formatScore("Trainability", stats?.trainability),
+    stats?.heightDog ? "Height dog potential" : null,
+    stats?.size ? `${stats.size} size` : null,
+  ].filter((item): item is string => Boolean(item));
 };
 
 const PawPattern = () => (
@@ -386,6 +431,184 @@ const brandedOgImageRender = ({
   );
 };
 
+const BreedHighlights = ({ highlights }: { highlights: string[] }) => (
+  <div tw="flex flex-wrap" style={{ gap: 12 }}>
+    {highlights.slice(0, 4).map((highlight) => (
+      <div
+        key={highlight}
+        tw="flex rounded-full px-4 py-2 font-bold"
+        style={{
+          backgroundColor: "rgba(251,242,214,0.14)",
+          border: `1px solid rgba(251,242,214,0.24)`,
+          color: brand.creamSoft,
+          fontSize: 20,
+        }}
+      >
+        {highlight}
+      </div>
+    ))}
+  </div>
+);
+
+const BreedVisualPanel = ({
+  image,
+  logo,
+  name,
+  verdictRating,
+}: {
+  image?: Maybe<string>;
+  logo?: Maybe<string>;
+  name: string;
+  verdictRating?: Maybe<number>;
+}) => (
+  <div
+    tw="flex relative items-center justify-center overflow-hidden"
+    style={{
+      width: 430,
+      height: 430,
+      borderRadius: 220,
+      backgroundColor: brand.cream,
+      border: `10px solid ${brand.creamSoft}`,
+      boxShadow: "0 34px 95px rgba(0,0,0,0.28)",
+    }}
+  >
+    {image ? (
+      <img
+        src={image}
+        width={430}
+        height={430}
+        alt={`${name} breed preview`}
+        tw="w-full h-full"
+        style={{ objectFit: "cover" }}
+      />
+    ) : (
+      <BrandedFallbackArt logo={logo} />
+    )}
+    <div
+      tw="flex absolute bottom-8 left-8 right-8 items-center justify-between rounded-3xl px-5 py-4"
+      style={{
+        backgroundColor: "rgba(251,242,214,0.94)",
+        color: brand.forest,
+      }}
+    >
+      <div tw="flex flex-col">
+        <div tw="flex font-bold" style={{ fontSize: 22 }}>
+          {verdictRating ? `${verdictRating}/5 fit` : "Breed guide"}
+        </div>
+        <div tw="flex" style={{ fontSize: 15, color: "rgba(18,51,41,0.72)" }}>
+          Flyball suitability
+        </div>
+      </div>
+      <div
+        tw="flex items-center justify-center rounded-full font-bold"
+        style={{
+          width: 54,
+          height: 54,
+          backgroundColor: brand.lime,
+          color: brand.forest,
+          fontSize: 24,
+        }}
+      >
+        ★
+      </div>
+    </div>
+  </div>
+);
+
+const breedOgImageRender = ({
+  image,
+  title,
+  logo,
+  description,
+  name,
+  verdict,
+  verdictRating,
+  stats,
+}: BreedOgRenderProps) => {
+  const breedName = cleanText(name, cleanHeadline(title));
+  const headline = `${breedName} in Flyball`;
+  const body = clampDescription(
+    cleanText(verdict ?? description, fallbackContent.description),
+  );
+  const highlights = getBreedHighlights({ stats, verdictRating });
+
+  return (
+    <div
+      tw="flex w-full h-full relative overflow-hidden"
+      style={{ fontFamily: "Inter" }}
+    >
+      <PawPattern />
+      <div tw="flex w-full h-full relative p-12">
+        <div tw="flex flex-col justify-between" style={{ width: 660 }}>
+          <LogoLockup logo={logo} />
+
+          <div tw="flex flex-col">
+            <div
+              tw="flex self-start rounded-full px-5 py-3 font-bold tracking-widest"
+              style={{
+                backgroundColor: brand.lime,
+                color: brand.forest,
+                fontSize: 21,
+                letterSpacing: 2.4,
+              }}
+            >
+              {fallbackContent.breedEyebrow}
+            </div>
+            <h1
+              tw="flex font-bold leading-none my-7"
+              style={{
+                color: brand.white,
+                fontSize: getHeadlineFontSize(headline),
+                letterSpacing: -2.4,
+                maxWidth: 640,
+              }}
+            >
+              {headline}
+            </h1>
+            <p
+              tw="flex leading-snug m-0"
+              style={{
+                color: "rgba(251,242,214,0.84)",
+                fontSize: 27,
+                maxWidth: 600,
+              }}
+            >
+              {body}
+            </p>
+            {highlights.length > 0 && (
+              <div tw="flex mt-8">
+                <BreedHighlights highlights={highlights} />
+              </div>
+            )}
+          </div>
+
+          <div tw="flex items-center">
+            <div
+              tw="flex rounded-full mr-4"
+              style={{ width: 86, height: 10, backgroundColor: brand.lime }}
+            />
+            <div
+              tw="flex"
+              style={{ color: "rgba(251,242,214,0.74)", fontSize: 22 }}
+            >
+              flyballhub.com/breeds
+            </div>
+          </div>
+        </div>
+
+        <div tw="flex flex-1 items-center justify-center pl-8">
+          <BreedVisualPanel
+            image={image}
+            logo={logo}
+            name={breedName}
+            verdictRating={verdictRating}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 async function getTtfFont(
   family: string,
   axes: string[],
@@ -466,6 +689,13 @@ const getBlogPageContent = async ({ id }: ContentProps) => {
   return brandedOgImageRender({ ...result, variant: "blog" });
 };
 
+const getBreedPageContent = async ({ id }: ContentProps) => {
+  if (!id) return brandedOgImageRender({ variant: "breed" });
+  const [result, err] = await getBreedPageOGData(id);
+  if (err || !result) return brandedOgImageRender({ variant: "breed" });
+  return breedOgImageRender({ ...result, variant: "breed" });
+};
+
 const getGenericPageContent = async ({ id }: ContentProps) => {
   if (!id) return brandedOgImageRender({ variant: "generic" });
   const [result, err] = await getGenericPageOGData(id);
@@ -477,6 +707,7 @@ const block = {
   homePage: getHomePageContent,
   page: getSlugPageContent,
   blog: getBlogPageContent,
+  breed: getBreedPageContent,
 } as const;
 
 export async function GET({ url }: Request): Promise<ImageResponse> {

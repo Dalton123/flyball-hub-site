@@ -674,7 +674,17 @@ export const queryBreedPageOGData = defineQuery(`
       defined(ogTitle) => ogTitle,
       defined(seoTitle) => seoTitle,
       name + " - Flyball Breed Guide"
-    )
+    ),
+    "description": select(
+      defined(ogDescription) => ogDescription,
+      defined(seoDescription) => seoDescription,
+      defined(verdict) => verdict,
+      "Breed guide for flyball suitability, training fit and team role."
+    ),
+    name,
+    verdict,
+    verdictRating,
+    stats
   }
 `);
 
