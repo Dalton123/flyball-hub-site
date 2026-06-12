@@ -95,7 +95,7 @@ export default async function BlogIndexPage() {
 
         {remainingBlogs.length > 0 && (
           <div className="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2 mt-8">
-            {remainingBlogs.map((blog, index) => (
+            {remainingBlogs.map((blog: BlogItem, index: number) => (
               <BlogCard key={blog._id} blog={blog} eager={index < 3} />
             ))}
           </div>

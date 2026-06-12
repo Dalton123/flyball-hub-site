@@ -371,83 +371,84 @@ const appPromoFeatureProjection = /* groq */ `
 `;
 
 const appPromoDefaultsPath = '*[_type == "settings"][0].appPromoDefaults';
+const appPromoUsesLocalFields = "useGlobalDefaults != true";
 
 const appPromoBlock = /* groq */ `
   _type == "appPromo" => {
     _type,
     _key,
     "eyebrow": select(
-      useGlobalDefaults == false && defined(eyebrow) => eyebrow,
+      ${appPromoUsesLocalFields} && defined(eyebrow) => eyebrow,
       defined(${appPromoDefaultsPath}.eyebrow) => ${appPromoDefaultsPath}.eyebrow,
       null
     ),
     "title": select(
-      useGlobalDefaults == false && defined(title) => title,
+      ${appPromoUsesLocalFields} && defined(title) => title,
       defined(${appPromoDefaultsPath}.title) => ${appPromoDefaultsPath}.title,
       null
     ),
     "highlightedText": select(
-      useGlobalDefaults == false && defined(highlightedText) => highlightedText,
+      ${appPromoUsesLocalFields} && defined(highlightedText) => highlightedText,
       defined(${appPromoDefaultsPath}.highlightedText) => ${appPromoDefaultsPath}.highlightedText,
       null
     ),
     "description": select(
-      useGlobalDefaults == false && defined(description) => description,
+      ${appPromoUsesLocalFields} && defined(description) => description,
       defined(${appPromoDefaultsPath}.description) => ${appPromoDefaultsPath}.description,
       null
     ),
     "features": select(
-      useGlobalDefaults == false && count(features[]) > 0 => features[] { ${appPromoFeatureProjection} },
+      ${appPromoUsesLocalFields} && count(features[]) > 0 => features[] { ${appPromoFeatureProjection} },
       count(${appPromoDefaultsPath}.features[]) > 0 => ${appPromoDefaultsPath}.features[] { ${appPromoFeatureProjection} },
       null
     ),
     "socialProofText": select(
-      useGlobalDefaults == false && defined(socialProofText) => socialProofText,
+      ${appPromoUsesLocalFields} && defined(socialProofText) => socialProofText,
       defined(${appPromoDefaultsPath}.socialProofText) => ${appPromoDefaultsPath}.socialProofText,
       null
     ),
     "showStarRating": select(
-      useGlobalDefaults == false && defined(showStarRating) => showStarRating,
+      ${appPromoUsesLocalFields} && defined(showStarRating) => showStarRating,
       defined(${appPromoDefaultsPath}.showStarRating) => ${appPromoDefaultsPath}.showStarRating,
       false
     ),
     "starRating": select(
-      useGlobalDefaults == false && defined(starRating) => starRating,
+      ${appPromoUsesLocalFields} && defined(starRating) => starRating,
       defined(${appPromoDefaultsPath}.starRating) => ${appPromoDefaultsPath}.starRating,
       null
     ),
     "buttons": select(
-      useGlobalDefaults == false && count(buttons[]) > 0 => buttons[] { ${appPromoButtonProjection} },
+      ${appPromoUsesLocalFields} && count(buttons[]) > 0 => buttons[] { ${appPromoButtonProjection} },
       count(${appPromoDefaultsPath}.buttons[]) > 0 => ${appPromoDefaultsPath}.buttons[] { ${appPromoButtonProjection} },
       null
     ),
     "platformNote": select(
-      useGlobalDefaults == false && defined(platformNote) => platformNote,
+      ${appPromoUsesLocalFields} && defined(platformNote) => platformNote,
       defined(${appPromoDefaultsPath}.platformNote) => ${appPromoDefaultsPath}.platformNote,
       null
     ),
     "phoneScreenshot": select(
-      useGlobalDefaults == false && defined(phoneScreenshot.asset) => phoneScreenshot { ${imageFields} },
+      ${appPromoUsesLocalFields} && defined(phoneScreenshot.asset) => phoneScreenshot { ${imageFields} },
       defined(${appPromoDefaultsPath}.phoneScreenshot.asset) => ${appPromoDefaultsPath}.phoneScreenshot { ${imageFields} },
       null
     ),
     "showAppStoreButtons": select(
-      useGlobalDefaults == false && defined(showAppStoreButtons) => showAppStoreButtons,
+      ${appPromoUsesLocalFields} && defined(showAppStoreButtons) => showAppStoreButtons,
       defined(${appPromoDefaultsPath}.showAppStoreButtons) => ${appPromoDefaultsPath}.showAppStoreButtons,
       false
     ),
     "googlePlayUrl": select(
-      useGlobalDefaults == false && defined(googlePlayUrl) => googlePlayUrl,
+      ${appPromoUsesLocalFields} && defined(googlePlayUrl) => googlePlayUrl,
       defined(${appPromoDefaultsPath}.googlePlayUrl) => ${appPromoDefaultsPath}.googlePlayUrl,
       null
     ),
     "appStoreUrl": select(
-      useGlobalDefaults == false && defined(appStoreUrl) => appStoreUrl,
+      ${appPromoUsesLocalFields} && defined(appStoreUrl) => appStoreUrl,
       defined(${appPromoDefaultsPath}.appStoreUrl) => ${appPromoDefaultsPath}.appStoreUrl,
       null
     ),
     "appStoreComingSoon": select(
-      useGlobalDefaults == false && defined(appStoreComingSoon) => appStoreComingSoon,
+      ${appPromoUsesLocalFields} && defined(appStoreComingSoon) => appStoreComingSoon,
       false
     )
   }
