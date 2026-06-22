@@ -2,6 +2,7 @@
 
 import { Button } from "@workspace/ui/components/button";
 import { AlertCircle, RefreshCw } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
@@ -57,11 +58,27 @@ export function PublicEventList(props: PublicEventListProps) {
     return (
       <section className="container mx-auto px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-2xl rounded-3xl border bg-muted/30 px-6 py-10 text-center">
-          <h2 className="text-2xl font-semibold">No public events right now</h2>
+          <h2 className="text-2xl font-semibold">
+            No public events listed yet
+          </h2>
           <p className="mt-3 text-muted-foreground">
-            Check back soon for new tournament weekends and live competition
-            updates.
+            Public event listings are new. Teams can host competitions through
+            Flyball Hub and publish event details here when entries open.
           </p>
+          <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+            <a
+              href="https://app.flyballhub.com/login"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              Host a public competition
+            </a>
+            <Link
+              href="/features"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl border bg-background px-6 text-sm font-medium transition-colors hover:bg-muted"
+            >
+              See app features
+            </Link>
+          </div>
         </div>
       </section>
     );

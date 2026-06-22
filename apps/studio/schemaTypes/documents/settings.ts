@@ -63,14 +63,14 @@ const appPromoDefaults = defineField({
       title: "Title",
       type: "string",
       description: "Main heading used by reusable App Promo blocks.",
-      initialValue: "Run your flyball team from your pocket",
+      initialValue: "Run your flyball team from one place",
     }),
     defineField({
       name: "highlightedText",
       title: "Highlighted Text",
       type: "string",
       description: "Exact part of the title to highlight.",
-      initialValue: "from your pocket",
+      initialValue: "one place",
     }),
     defineField({
       name: "description",
@@ -80,7 +80,7 @@ const appPromoDefaults = defineField({
       description:
         "Global-first supporting copy. Keep it honest and avoid hardcoded team counts unless recently verified.",
       initialValue:
-        "Keep dogs, handlers, training plans and event details in one place, whether your club is across town or across the world.",
+        "Plan training, manage dogs and members, organise competitions, time runs from video, and keep race-day details together on web, iOS and Android.",
     }),
     defineField({
       name: "features",
@@ -91,23 +91,23 @@ const appPromoDefaults = defineField({
       initialValue: [
         {
           _key: "default-records",
-          title: "Dog and team records",
+          title: "Team planning",
           description:
-            "Keep rosters, dog details and handler notes tidy without another spreadsheet",
+            "Keep dogs, members, RSVPs, line-ups and repeated schedules tidy without spreadsheet drift",
           icon: "users",
         },
         {
           _key: "default-training-events",
-          title: "Training and event organisation",
+          title: "Competition tools",
           description:
-            "Plan sessions, track attendance and keep everyone clear on what is next",
+            "Plan race days, track heats, host public events and keep event comments with the right details",
           icon: "calendar",
         },
         {
           _key: "default-team-hub",
-          title: "One shared team hub",
+          title: "Stats and timing",
           description:
-            "Give captains and members one reliable place for the details that matter",
+            "Record results, save dog splits from video timing and spot clearer performance trends",
           icon: "layoutGrid",
         },
       ],

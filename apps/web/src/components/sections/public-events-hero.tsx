@@ -20,16 +20,16 @@ export function PublicEventsHero({
             variant="secondary"
             className="relative mb-6 overflow-hidden px-4 py-1.5 text-sm font-medium"
           >
-            <span className="relative z-10">Watch Flyball In Person</span>
+            <span className="relative z-10">Public competition listings</span>
             <span className="absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/30 to-transparent" />
           </Badge>
           <h1 className="mb-6 text-balance text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl">
             Find Flyball Events Near You
           </h1>
           <p className="mx-auto max-w-2xl text-balance text-lg text-muted-foreground md:text-xl">
-            Discover public flyball tournaments and live competition weekends.
-            See what is happening now, plan a visit, and follow links for full
-            event details.
+            Discover public flyball tournaments, entry opportunities and live
+            competition weekends. Teams can publish listings from Flyball Hub,
+            then share event details with clubs, spectators and applicants.
           </p>
           <div className="mx-auto mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
             <div className="rounded-3xl border bg-background/80 p-6 shadow-sm backdrop-blur-sm">
