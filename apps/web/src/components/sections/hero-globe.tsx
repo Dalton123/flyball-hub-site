@@ -84,31 +84,6 @@ export function HeroGlobe({
     }
   }, [shouldLoadGlobe]);
 
-  // Optional: prefetch globe on idle after page load
-  useEffect(() => {
-    if (shouldLoadGlobe) return;
-
-    const prefetchOnIdle = () => {
-      if ("requestIdleCallback" in window) {
-        const idleCallbackId = window.requestIdleCallback(
-          () => {
-            // Only prefetch if user hasn't already interacted
-            if (!shouldLoadGlobe) {
-              setIsLoading(true);
-              setShouldLoadGlobe(true);
-            }
-          },
-          { timeout: 5000 }, // 5 second timeout
-        );
-        return () => window.cancelIdleCallback(idleCallbackId);
-      }
-    };
-
-    // Delay prefetch check to ensure page is fully loaded
-    const timer = setTimeout(prefetchOnIdle, 3000);
-    return () => clearTimeout(timer);
-  }, [shouldLoadGlobe]);
-
   // Fetch countries GeoJSON for polygon rendering (local cached version)
   useEffect(() => {
     if (!shouldLoadGlobe) return;
@@ -265,11 +240,7 @@ export function HeroGlobe({
         <div className="grid items-center gap-8 py-10 lg:min-h-[86dvh] lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10 lg:py-0">
           {/* Content Side */}
           <div className="order-2 space-y-6 text-center lg:order-1 lg:space-y-8 lg:text-left">
-            {badge && (
-              <span className="section-kicker-dark">
-                {badge}
-              </span>
-            )}
+            {badge && <span className="section-kicker-dark">{badge}</span>}
 
             {title && (
               <h1 className="font-hero text-5xl font-black leading-[0.9] tracking-[-0.055em] text-white text-balance sm:text-6xl lg:text-7xl xl:text-8xl">

@@ -87,14 +87,6 @@ export default async function RootLayout({
             gtag('config', 'G-TJ9VYF25SX');
           `}
         </Script>
-        <Script id="grow-me-init" strategy="lazyOnload">
-          {`window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));`}
-        </Script>
-        <Script
-          src="https://faves.grow.me/main.js"
-          strategy="lazyOnload"
-          data-grow-faves-site-id="U2l0ZTplMWNhOTk1NS1hMWMwLTQ5MTktYjkwZi0wZGZjMzI2YTRhOWQ="
-        />
         <Providers>
           <a
             href="#main-content"
