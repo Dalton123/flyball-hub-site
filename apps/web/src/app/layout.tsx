@@ -3,7 +3,7 @@ import "@workspace/ui/globals.css";
 import type { Metadata } from "next";
 
 export const revalidate = 3600; // 1 hour
-import { DM_Sans, Geist, Geist_Mono, Outfit } from "next/font/google";
+import { Geist } from "next/font/google";
 import { draftMode } from "next/headers";
 import Script from "next/script";
 import { VisualEditing } from "next-sanity";
@@ -21,26 +21,6 @@ import { SanityLive } from "@/lib/sanity/live";
 const fontSans = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
-
-const fontDisplay = Outfit({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
-const fontHero = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-hero",
-  weight: ["700", "800", "900"],
   display: "swap",
 });
 
@@ -72,9 +52,7 @@ export default async function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body
-        className={`${fontSans.variable} ${fontMono.variable} ${fontDisplay.variable} ${fontHero.variable} font-sans antialiased`}
-      >
+      <body className={`${fontSans.variable} font-sans antialiased`}>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-TJ9VYF25SX"
           strategy="lazyOnload"

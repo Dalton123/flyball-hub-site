@@ -71,7 +71,7 @@ export function HeroDynamic({
             {/* Title */}
             <h1
               className={`
-                font-hero font-black
+                font-sans font-black
                 text-5xl sm:text-7xl lg:text-7xl xl:text-8xl
                 leading-[0.9]
                 bg-gradient-to-br from-primary via-primary to-secondary

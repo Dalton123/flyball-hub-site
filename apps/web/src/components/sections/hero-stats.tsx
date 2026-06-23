@@ -18,7 +18,7 @@ export function HeroStats({ stats }: HeroStatsProps) {
             animationFillMode: "forwards",
           }}
         >
-          <div className="text-3xl lg:text-4xl font-bold text-primary font-hero">
+          <div className="text-3xl lg:text-4xl font-bold text-primary font-sans">
             {stat.value}
           </div>
           <div className="text-sm lg:text-base text-muted-foreground">

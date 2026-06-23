@@ -78,7 +78,7 @@ export function HeroBlock(props: HeroBlockProps) {
           >
             {badge && <span className="section-kicker">{badge}</span>}
             <div className="grid gap-4 lg:gap-6">
-              <h1 className="font-hero text-5xl font-black leading-[0.95] tracking-[-0.05em] text-balance sm:text-6xl lg:text-7xl">
+              <h1 className="font-sans text-5xl font-black leading-[0.95] tracking-[-0.05em] text-balance sm:text-6xl lg:text-7xl">
                 {title}
               </h1>
               <RichText

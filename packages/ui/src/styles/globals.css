@@ -148,12 +148,12 @@
   }
 
   .section-heading {
-    font-family: var(--font-hero), var(--font-display), system-ui, sans-serif;
+    font-family: var(--font-sans), system-ui, sans-serif;
     @apply text-4xl font-black leading-[0.95] tracking-[-0.045em] text-balance md:text-5xl lg:text-6xl;
   }
 
   .section-heading-compact {
-    font-family: var(--font-hero), var(--font-display), system-ui, sans-serif;
+    font-family: var(--font-sans), system-ui, sans-serif;
     @apply text-3xl font-black leading-[1] tracking-[-0.035em] text-balance md:text-4xl lg:text-5xl;
   }
 
@@ -164,14 +164,26 @@
 
   .field-light-section {
     background:
-      radial-gradient(circle at 10% 10%, color-mix(in oklch, var(--secondary) 16%, transparent), transparent 34rem),
+      radial-gradient(
+        circle at 10% 10%,
+        color-mix(in oklch, var(--secondary) 16%, transparent),
+        transparent 34rem
+      ),
       linear-gradient(180deg, var(--field-warm), var(--field-light));
   }
 
   .sport-panel {
     background:
-      radial-gradient(circle at 85% 15%, color-mix(in oklch, var(--action-lime) 22%, transparent), transparent 26rem),
-      radial-gradient(circle at 8% 85%, color-mix(in oklch, var(--primary) 55%, transparent), transparent 28rem),
+      radial-gradient(
+        circle at 85% 15%,
+        color-mix(in oklch, var(--action-lime) 22%, transparent),
+        transparent 26rem
+      ),
+      radial-gradient(
+        circle at 8% 85%,
+        color-mix(in oklch, var(--primary) 55%, transparent),
+        transparent 28rem
+      ),
       linear-gradient(135deg, var(--field-dark), var(--field-dark-2));
     box-shadow: var(--sport-shadow);
   }
@@ -206,7 +218,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-display), system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   @apply text-balance;
 }
 

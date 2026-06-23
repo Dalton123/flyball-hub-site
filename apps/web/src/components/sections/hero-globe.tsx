@@ -204,7 +204,7 @@ export function HeroGlobe({
             {badge && <span className="section-kicker-dark">{badge}</span>}
 
             {title && (
-              <h1 className="font-hero text-5xl font-black leading-[0.9] tracking-[-0.055em] text-white text-balance sm:text-6xl lg:text-7xl xl:text-8xl">
+              <h1 className="font-sans text-5xl font-black leading-[0.9] tracking-[-0.055em] text-white text-balance sm:text-6xl lg:text-7xl xl:text-8xl">
                 {title}
               </h1>
             )}
