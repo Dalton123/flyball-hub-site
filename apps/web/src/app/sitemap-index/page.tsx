@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryHtmlSitemapData } from "@/lib/sanity/query";
+import { getSEOMetadata } from "@/lib/seo";
 interface SitemapPage {
   title: string | null;
   slug: string | null;
@@ -14,11 +15,12 @@ interface SitemapBlog {
   publishedAt: string | null;
 }
 
-export const metadata: Metadata = {
-  title: "Sitemap - All Pages & Posts | Flyball Hub",
+export const metadata: Metadata = getSEOMetadata({
+  title: "Sitemap - All Pages & Posts",
   description:
     "Browse the complete sitemap for Flyball Hub. Find breed guides, blog posts, training resources and flyball team-management pages.",
-};
+  slug: "/sitemap-index",
+});
 
 const sitemapDateFormatter = new Intl.DateTimeFormat(undefined, {
   day: "numeric",

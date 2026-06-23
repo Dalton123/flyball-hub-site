@@ -7,6 +7,7 @@ import {
   type PortableTextBlock,
   type PortableTextReactComponents,
 } from "next-sanity";
+import type { ReactNode } from "react";
 
 import { parseChildrenToSlug } from "@/utils";
 
@@ -31,7 +32,7 @@ function CodeBlockSkeleton({ filename }: { filename?: string }) {
   );
 }
 
-// Lazy-loaded code block component wrapper 
+// Lazy-loaded code block component wrapper
 const LazyCodeBlock = dynamic(
   () => import("./code-block").then((mod) => mod.CodeBlock),
   {
@@ -61,6 +62,18 @@ function parseHighlightLines(input?: string): number[] {
     }
   });
   return lines;
+}
+
+function hasRenderableChildren(children: ReactNode): boolean {
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children).trim().length > 0;
+  }
+
+  if (Array.isArray(children)) {
+    return children.some(hasRenderableChildren);
+  }
+
+  return children != null && children !== false;
 }
 
 const components: Partial<PortableTextReactComponents> = {
@@ -145,6 +158,7 @@ const components: Partial<PortableTextReactComponents> = {
       if (!value?.href || value.href === "#") {
         return <span>{children}</span>;
       }
+      if (!hasRenderableChildren(children)) return null;
       const isExternal =
         value.href.startsWith("http") && !value.href.includes("flyballhub.com");
       return (
@@ -168,6 +182,7 @@ const components: Partial<PortableTextReactComponents> = {
           </span>
         );
       }
+      if (!hasRenderableChildren(children)) return null;
       return (
         <Link
           className="text-primary underline decoration-primary/40 decoration-2 underline-offset-2 transition-all duration-200 hover:decoration-primary hover:decoration-[3px]"
@@ -184,9 +199,13 @@ const components: Partial<PortableTextReactComponents> = {
       // Legacy mark no longer in schema — href may be unresolved
       const href = value?.href;
       if (!href || href === "#") {
-        console.warn("⚠️ Legacy internalLink mark missing href (stale data):", value);
+        console.warn(
+          "⚠️ Legacy internalLink mark missing href (stale data):",
+          value,
+        );
         return <span>{children}</span>;
       }
+      if (!hasRenderableChildren(children)) return null;
       return (
         <Link
           className="text-primary underline decoration-primary/40 decoration-2 underline-offset-2 transition-all duration-200 hover:decoration-primary hover:decoration-[3px]"
@@ -275,7 +294,12 @@ const components: Partial<PortableTextReactComponents> = {
         | {
             _key?: string;
             _type?: string;
-            children?: Array<{ _type?: string; text?: string; marks?: string[] } & Record<string, unknown>>;
+            children?: Array<
+              { _type?: string; text?: string; marks?: string[] } & Record<
+                string,
+                unknown
+              >
+            >;
           };
 
       type TableRow = {
@@ -292,8 +316,8 @@ const components: Partial<PortableTextReactComponents> = {
           Array.isArray(cell.children)
         ) {
           return cell.children
-            .filter(
-              (c) => Boolean(c && typeof c === "object" && c._type === "span"),
+            .filter((c) =>
+              Boolean(c && typeof c === "object" && c._type === "span"),
             )
             .map((c) => {
               const span = c as { text?: string };

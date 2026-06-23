@@ -185,8 +185,16 @@ export function TeamFinderTeaser({
                 className="mx-auto flex max-w-xl flex-col gap-3 sm:flex-row lg:mx-0"
               >
                 <div className="relative flex-1">
+                  <label
+                    htmlFor="team-finder-teaser-search"
+                    className="sr-only"
+                  >
+                    Search teams by city or country
+                  </label>
                   <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-secondary" />
                   <Input
+                    id="team-finder-teaser-search"
+                    name="location"
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}

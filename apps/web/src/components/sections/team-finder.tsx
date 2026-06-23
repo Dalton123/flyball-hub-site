@@ -229,8 +229,13 @@ function TeamFinderContent({
         className="mx-auto mb-10 flex max-w-xl flex-col gap-3 sm:flex-row"
       >
         <div className="relative flex-1">
+          <label htmlFor="team-location-search" className="sr-only">
+            Search teams by city, country or postcode
+          </label>
           <MapPin className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
           <Input
+            id="team-location-search"
+            name="location"
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

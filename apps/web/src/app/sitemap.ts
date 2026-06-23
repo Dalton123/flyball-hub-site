@@ -12,17 +12,12 @@ interface SitemapPage {
 }
 
 const baseUrl = getBaseUrl();
-
-const STALE_SLUGS = new Set([
-  "/blog/best-canicross-shoes",
-  "/blog/canicross-beginners-guide",
-  "/cookie-policy",
-]);
+const supplementalIndexableSlugs = ["/blog/best-flirt-poles"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { slugPages, blogPages, breedPages } =
     await client.fetch(querySitemapData);
-  return [
+  const entries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -47,29 +42,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    ...(slugPages as SitemapPage[])
-      .filter((page) => !STALE_SLUGS.has(page.slug))
-      .map((page) => ({
-        url: `${baseUrl}${page.slug}`,
-        lastModified: new Date(page.lastModified ?? new Date()),
-        changeFrequency: "weekly" as const,
-        priority: 0.8,
-      })),
-    ...(blogPages as SitemapPage[])
-      .filter((page) => !STALE_SLUGS.has(page.slug))
-      .map((page) => ({
-        url: `${baseUrl}${page.slug}`,
-        lastModified: new Date(page.lastModified ?? new Date()),
-        changeFrequency: "weekly" as const,
-        priority: 0.8,
-      })),
-    ...(breedPages as SitemapPage[])
-      .filter((page) => !STALE_SLUGS.has(page.slug))
-      .map((page) => ({
-        url: `${baseUrl}${page.slug}`,
-        lastModified: new Date(page.lastModified ?? new Date()),
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      })),
+    ...(slugPages as SitemapPage[]).map((page) => ({
+      url: `${baseUrl}${page.slug}`,
+      lastModified: new Date(page.lastModified ?? new Date()),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...(blogPages as SitemapPage[]).map((page) => ({
+      url: `${baseUrl}${page.slug}`,
+      lastModified: new Date(page.lastModified ?? new Date()),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...(breedPages as SitemapPage[]).map((page) => ({
+      url: `${baseUrl}${page.slug}`,
+      lastModified: new Date(page.lastModified ?? new Date()),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...supplementalIndexableSlugs.map((slug) => ({
+      url: `${baseUrl}${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
   ];
+
+  return entries.filter(
+    (entry, index, allEntries) =>
+      allEntries.findIndex((candidate) => candidate.url === entry.url) ===
+      index,
+  );
 }
