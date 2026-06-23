@@ -170,9 +170,12 @@ export default async function BlogSlugPage({
               <SanityImage
                 image={image}
                 alt={title}
-                width={1600}
+                width={1200}
                 loading="eager"
+                priority
+                fetchPriority="high"
                 height={900}
+                sizes="(max-width: 1024px) 100vw, 896px"
                 className="rounded-lg h-auto w-full"
               />
             </div>

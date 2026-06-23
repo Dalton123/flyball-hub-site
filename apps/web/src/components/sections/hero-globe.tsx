@@ -3,23 +3,22 @@
 import { Button } from "@workspace/ui/components/button";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Color, MeshPhongMaterial } from "three";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
 import { StaticGlobe } from "../elements/static-globe";
 
+const InteractiveGlobe = dynamic(
+  () => import("./interactive-globe").then((mod) => mod.InteractiveGlobe),
+  { ssr: false },
+);
+
 // Feature toggles - flip these to enable/disable globe interactions
 const ENABLE_ZOOM = false;
 const ENABLE_PIN_HOVER = false;
 const ENABLE_PIN_CLICK = false;
-
-// Dynamic import to avoid SSR issues with WebGL - no loading spinner needed since we use StaticGlobe
-const Globe = dynamic(() => import("react-globe.gl"), {
-  ssr: false,
-});
 
 interface TeamLocation {
   name: string;
@@ -47,16 +46,13 @@ export function HeroGlobe({
   stats,
 }: HeroGlobeProps) {
   const router = useRouter();
-  const globeRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [teams, setTeams] = useState<GlobePoint[]>([]);
-  const [countries, setCountries] = useState<any[]>([]);
+  const [countries, setCountries] = useState<object[]>([]);
   const [hoveredTeam, setHoveredTeam] = useState<GlobePoint | null>(null);
-  const [globeReady, setGlobeReady] = useState(false);
   const [globeVisible, setGlobeVisible] = useState(false);
   const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
   const [dimensions, setDimensions] = useState({ width: 600, height: 600 });
-  const test = false;
 
   // Handle resize
   useEffect(() => {
@@ -73,13 +69,9 @@ export function HeroGlobe({
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Track if globe is currently loading (triggered but not ready)
-  const [isLoading, setIsLoading] = useState(false);
-
   // Trigger globe loading on user interaction (hover or click)
   const handleInteraction = useCallback(() => {
     if (!shouldLoadGlobe) {
-      setIsLoading(true);
       setShouldLoadGlobe(true);
     }
   }, [shouldLoadGlobe]);
@@ -92,7 +84,7 @@ export function HeroGlobe({
       try {
         const res = await fetch("/data/countries.json");
         const data = await res.json();
-        setCountries(data.features);
+        setCountries(data.features ?? []);
       } catch (err) {
         console.error("Failed to fetch countries:", err);
       }
@@ -172,28 +164,6 @@ export function HeroGlobe({
     fetchTeams();
   }, [shouldLoadGlobe]);
 
-  // Configure globe on ready and trigger crossfade
-  useEffect(() => {
-    if (globeRef.current && globeReady) {
-      const controls = globeRef.current.controls();
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.4;
-      controls.enableZoom = ENABLE_ZOOM;
-      // Limit zoom range
-      controls.minDistance = 200;
-      controls.maxDistance = 500;
-      // Keep the first view globally framed for the homepage.
-      globeRef.current.pointOfView({ lat: 18, lng: 0, altitude: 1.9 });
-
-      // Small delay to ensure globe has rendered, then crossfade
-      const timer = setTimeout(() => {
-        setGlobeVisible(true);
-        setIsLoading(false);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [globeReady]);
-
   const handlePointClick = useCallback(
     (point: GlobePoint) => {
       if (point.country) {
@@ -204,15 +174,6 @@ export function HeroGlobe({
     },
     [router],
   );
-
-  // Create globe material for water using tree-shakeable ES imports
-  const globeMaterial = useMemo(() => {
-    return new MeshPhongMaterial({
-      color: new Color("#c2ffc5"),
-      emissive: new Color("#c2ffc5"),
-      emissiveIntensity: 0.15,
-    });
-  }, []);
 
   return (
     <section className="sport-panel relative overflow-hidden pb-10 lg:min-h-[86dvh] lg:pb-0">
@@ -325,57 +286,24 @@ export function HeroGlobe({
               </div>
             </div>
 
-            {/* Interactive globe - loads in background, fades in when ready */}
+            {/* Interactive globe - loads only after interaction, then fades in when ready */}
             {shouldLoadGlobe && (
               <div
                 className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
                   globeVisible ? "opacity-100" : "opacity-0"
                 }`}
               >
-                <Globe
-                  ref={globeRef}
+                <InteractiveGlobe
                   width={dimensions.width}
                   height={dimensions.height}
-                  backgroundColor="rgba(0,0,0,0)"
-                  globeImageUrl=""
-                  globeMaterial={globeMaterial}
-                  showGlobe={true}
-                  showAtmosphere={true}
-                  atmosphereColor="rgba(134, 239, 172, 0.5)"
-                  atmosphereAltitude={0.12}
-                  // Country polygons - green land
-                  polygonsData={countries}
-                  polygonCapColor={() => "rgba(34, 197, 94, 0.95)"}
-                  polygonSideColor={() => "rgba(22, 163, 74, 0.4)"}
-                  polygonStrokeColor={() => "rgba(255, 255, 255, 0.3)"}
-                  polygonAltitude={0.006}
-                  // Team location markers
-                  labelsData={teams}
-                  labelLat={(d) => (d as GlobePoint).lat}
-                  labelLng={(d) => (d as GlobePoint).lng}
-                  labelText={() => ""}
-                  labelSize={0}
-                  labelDotRadius={0.4}
-                  labelColor={() => "#ffffff"}
-                  labelResolution={2}
-                  labelAltitude={0.01}
-                  onLabelHover={(label) =>
-                    ENABLE_PIN_HOVER &&
-                    setHoveredTeam(label as GlobePoint | null)
-                  }
-                  onLabelClick={(label) =>
-                    ENABLE_PIN_CLICK && handlePointClick(label as GlobePoint)
-                  }
-                  onGlobeReady={() => setGlobeReady(true)}
-                  // Pulse rings around team locations - white
-                  ringsData={teams}
-                  ringLat={(d) => (d as GlobePoint).lat}
-                  ringLng={(d) => (d as GlobePoint).lng}
-                  ringColor={() => "rgba(255, 255, 255, 0.6)"}
-                  ringMaxRadius={2}
-                  ringPropagationSpeed={2}
-                  ringRepeatPeriod={3200}
-                  ringAltitude={0.015}
+                  countries={countries}
+                  teams={teams}
+                  enableZoom={ENABLE_ZOOM}
+                  enablePinHover={ENABLE_PIN_HOVER}
+                  enablePinClick={ENABLE_PIN_CLICK}
+                  onHoverTeam={setHoveredTeam}
+                  onPointClick={handlePointClick}
+                  onReady={() => setGlobeVisible(true)}
                 />
               </div>
             )}
