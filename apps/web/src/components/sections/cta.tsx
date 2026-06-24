@@ -12,7 +12,7 @@ import { SanityButtons } from "../elements/sanity-buttons";
 export type CTABlockProps = PagebuilderType<"cta">;
 
 export function CTABlock({ richText, title, eyebrow, buttons }: CTABlockProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
+  const { ref } = useScrollAnimation<HTMLElement>({
     threshold: 0.1,
   });
 
@@ -27,13 +27,7 @@ export function CTABlock({ richText, title, eyebrow, buttons }: CTABlockProps) {
             className="text-primary-foreground"
           />
 
-          <div
-            className={`relative z-10 text-center max-w-3xl mx-auto space-y-6 md:space-y-8 transition-all duration-700 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
+          <div className="relative z-10 mx-auto max-w-3xl space-y-6 text-center opacity-100 transition-all duration-700 md:space-y-8">
             {eyebrow && (
               <Badge
                 variant="secondary"

@@ -2,10 +2,6 @@
 
 import { Badge } from "@workspace/ui/components/badge";
 
-import {
-  useScrollAnimation,
-  useStaggeredAnimation,
-} from "@/hooks/use-scroll-animation";
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
@@ -48,24 +44,10 @@ export function FeatureCardsWithIcon({
   richText,
   cards,
 }: FeatureCardsWithIconProps) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>({
-    threshold: 0.1,
-  });
-  const { containerRef, visibleItems } = useStaggeredAnimation(
-    cards?.length ?? 0,
-    {
-      staggerDelay: 150,
-    },
-  );
-
   return (
-    <section ref={ref} id="features" className="py-12 md:py-20">
+    <section id="features" className="py-12 md:py-20">
       <div className="container mx-auto px-4 md:px-6">
-        <div
-          className={`flex w-full flex-col items-center transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <div className="flex w-full flex-col items-center opacity-100 transition-all duration-700">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
             {eyebrow && (
               <Badge
@@ -86,15 +68,12 @@ export function FeatureCardsWithIcon({
             />
           </div>
         </div>
-        <div
-          ref={containerRef}
-          className="mx-auto mt-12 lg:mt-16 grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-2 md:gap-8 lg:mt-16 lg:grid-cols-3">
           {cards?.map((card, index) => (
             <FeatureCard
               key={`FeatureCard-${card?._key}-${index}`}
               card={card}
-              isVisible={visibleItems[index] ?? false}
+              isVisible={true}
             />
           ))}
         </div>
