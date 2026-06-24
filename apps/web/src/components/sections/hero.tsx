@@ -95,23 +95,25 @@ export function HeroBlock(props: HeroBlockProps) {
 
           {image && (
             <div
-              className={`relative h-80 md:h-96 lg:h-[28rem] w-full transition-all duration-700 delay-200 ${
+              className={`relative mx-auto aspect-[4/3] w-full max-w-[46rem] overflow-visible rounded-[2rem] transition-all delay-200 duration-700 ${
                 isVisible
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
               }`}
             >
               {/* Decorative accent behind image */}
-              <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-linear-to-br from-secondary/25 to-primary/10" />
-              <SanityImage
-                image={image}
-                alt={image?.alt || "Hero image"}
-                loading="eager"
-                width={800}
-                height={800}
-                fetchPriority="high"
-                className="h-full w-full rounded-3xl object-cover shadow-lg"
-              />
+              <div className="absolute -inset-3 -z-10 rounded-[2.25rem] bg-linear-to-br from-secondary/25 to-primary/10 md:-inset-4" />
+              <div className="relative h-full w-full overflow-hidden rounded-[1.6rem] border border-primary/10 bg-primary/5 shadow-lg">
+                <SanityImage
+                  image={image}
+                  alt={image?.alt || "Hero image"}
+                  loading="eager"
+                  width={900}
+                  height={675}
+                  fetchPriority="high"
+                  className="h-full w-full rounded-[inherit] object-cover"
+                />
+              </div>
             </div>
           )}
         </div>
