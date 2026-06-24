@@ -22,18 +22,17 @@ function FeatureCard({ card, isVisible }: FeatureCardProps) {
   const { icon, title, richText } = card ?? {};
   return (
     <div
-      className={`rounded-3xl bg-accent/60 border border-border/40 p-6 md:p-8 md:min-h-[280px] transition-all duration-500 hover:bg-accent hover:shadow-lg hover:-translate-y-1 ${
+      className={`group relative overflow-hidden rounded-[2rem] border border-primary/10 bg-white/55 p-6 shadow-sm backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-primary/20 hover:bg-white/75 hover:shadow-xl md:min-h-[280px] md:p-8 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
     >
-      <span className="mb-6 flex w-fit p-3 items-center justify-center rounded-2xl bg-background shadow-md">
-        <SanityIcon icon={icon} />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-lime-300 via-secondary to-primary opacity-70" />
+      <span className="mb-6 flex size-14 items-center justify-center rounded-2xl border border-primary/10 bg-accent/70 shadow-sm transition-colors group-hover:bg-secondary/30">
+        <SanityIcon icon={icon} className="size-8 text-primary" />
       </span>
 
       <div>
-        <h3 className="text-lg font-semibold md:text-xl mb-3">
-          {title}
-        </h3>
+        <h3 className="text-lg font-semibold md:text-xl mb-3">{title}</h3>
         <RichText
           richText={richText}
           className="font-normal text-sm md:text-base text-muted-foreground leading-relaxed"

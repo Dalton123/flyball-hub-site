@@ -75,6 +75,13 @@ export function StatsSection({
 
   const effectiveVariant = variant ?? "default";
   const isAccent = effectiveVariant === "accent";
+  const statsCount = stats?.length ?? 0;
+  const gridColumnsClass =
+    statsCount === 4
+      ? "lg:grid-cols-4"
+      : statsCount === 3
+        ? "lg:grid-cols-3"
+        : "lg:grid-cols-3 xl:grid-cols-6";
 
   return (
     <section
@@ -135,7 +142,7 @@ export function StatsSection({
         {/* Stats grid */}
         <div
           ref={containerRef}
-          className="mx-auto mt-12 lg:mt-16 grid gap-8 md:gap-12 grid-cols-2 lg:grid-cols-3 max-w-6xl"
+          className={`mx-auto mt-12 lg:mt-16 grid max-w-6xl grid-cols-2 gap-8 md:gap-12 ${gridColumnsClass}`}
         >
           {stats?.map((stat, index) => (
             <StatItem
