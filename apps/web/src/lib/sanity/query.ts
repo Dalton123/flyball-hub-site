@@ -751,7 +751,13 @@ export const querySitemapData = defineQuery(`{
     "slug": slug.current,
     "lastModified": _updatedAt
   },
-  "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{
+  "blogPages": *[
+    _type == "blog"
+    && defined(slug.current)
+    && slug.current != "/blog/canicross-beginners-guide"
+    && defined(publishedAt)
+    && publishedAt <= now()
+  ]{
     "slug": slug.current,
     "lastModified": _updatedAt
   },
@@ -805,7 +811,13 @@ export const queryHtmlSitemapData = defineQuery(`{
     title,
     "slug": slug.current
   },
-  "blogs": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {
+  "blogs": *[
+    _type == "blog"
+    && defined(slug.current)
+    && slug.current != "/blog/canicross-beginners-guide"
+    && defined(publishedAt)
+    && publishedAt <= now()
+  ] | order(publishedAt desc) {
     title,
     "slug": slug.current,
     publishedAt
