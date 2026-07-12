@@ -1,5 +1,5 @@
 import { BlockquoteIcon, CodeIcon, ImageIcon, LinkIcon } from "@sanity/icons";
-import { Minus } from "lucide-react";
+import { MegaphoneIcon, Minus } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 const richTextMembers = [
@@ -201,6 +201,49 @@ const richTextMembers = [
   }),
   defineArrayMember({
     type: "table",
+  }),
+  defineArrayMember({
+    name: "sponsorPlacement",
+    title: "Sponsor Placement",
+    type: "object",
+    icon: MegaphoneIcon,
+    description:
+      "Insert a clearly labelled sponsor campaign at this exact point in the article.",
+    fields: [
+      defineField({
+        name: "sponsor",
+        title: "Sponsor Campaign",
+        type: "reference",
+        to: [{ type: "sponsor" }],
+        options: { disableNew: true },
+        validation: (Rule) => Rule.required(),
+      }),
+      defineField({
+        name: "placementId",
+        title: "Placement ID",
+        type: "string",
+        description:
+          "Stable analytics label, for example article-training-treats-intro.",
+        validation: (Rule) =>
+          Rule.required().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+            name: "lowercase kebab-case",
+          }),
+      }),
+    ],
+    preview: {
+      select: {
+        sponsorName: "sponsor.name",
+        placementId: "placementId",
+        media: "sponsor.desktopImage",
+      },
+      prepare({ sponsorName, placementId, media }) {
+        return {
+          title: sponsorName || "Select a sponsor campaign",
+          subtitle: placementId || "Sponsor placement",
+          media,
+        };
+      },
+    },
   }),
 ];
 

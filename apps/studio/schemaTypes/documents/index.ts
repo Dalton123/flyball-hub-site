@@ -10,6 +10,7 @@ import { navbar } from "./navbar";
 import { page } from "./page";
 import { redirect } from "./redirect";
 import { settings } from "./settings";
+import { sponsor } from "./sponsor";
 
 export const singletons = [
   homePage,
@@ -28,4 +29,5 @@ export const documents = [
   breed,
   ...singletons,
   redirect,
+  sponsor,
 ];

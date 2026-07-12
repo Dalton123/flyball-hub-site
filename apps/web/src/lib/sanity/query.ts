@@ -76,6 +76,29 @@ const richTextFragment = /* groq */ `
       _type,
       _key,
       rows
+    },
+    _type == "sponsorPlacement" => {
+      _type,
+      _key,
+      placementId,
+      "sponsor": sponsor->{
+        _id,
+        name,
+        "campaignId": campaignId.current,
+        status,
+        startsAt,
+        endsAt,
+        destinationUrl,
+        supportingCopy,
+        ctaLabel,
+        discountCode,
+        desktopImage {
+          ${imageFields}
+        },
+        mobileImage {
+          ${imageFields}
+        }
+      }
     }
   }
 `;

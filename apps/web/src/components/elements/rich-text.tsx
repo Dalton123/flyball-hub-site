@@ -42,6 +42,10 @@ const LazyCodeBlock = dynamic(
 );
 
 import { SanityImage } from "./sanity-image";
+import {
+  SponsorPlacement,
+  type SponsorPlacementValue,
+} from "./sponsor-placement";
 
 // Helper to parse highlight lines (e.g., "1,3,5-7" -> [1, 3, 5, 6, 7])
 function parseHighlightLines(input?: string): number[] {
@@ -372,6 +376,9 @@ const components: Partial<PortableTextReactComponents> = {
         </div>
       );
     },
+    sponsorPlacement: ({ value }) => (
+      <SponsorPlacement value={value as SponsorPlacementValue} />
+    ),
   },
   hardBreak: () => <br />,
 };
