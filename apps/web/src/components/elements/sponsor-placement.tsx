@@ -33,7 +33,17 @@ type GtagWindow = Window & {
 
 const MAX_TIMEOUT_MS = 2_147_000_000;
 
-export function SponsorPlacement({ value }: { value: SponsorPlacementValue }) {
+interface SponsorPlacementProps {
+  value: SponsorPlacementValue;
+  placementType?: "blog_card" | "homepage_card";
+  contentCategory?: "blog" | "homepage";
+}
+
+export function SponsorPlacement({
+  value,
+  placementType = "blog_card",
+  contentCategory = "blog",
+}: SponsorPlacementProps) {
   const placementRef = useRef<HTMLElement>(null);
   const impressionSent = useRef(false);
   const [campaignTime, setCampaignTime] = useState(() => Date.now());
@@ -77,7 +87,12 @@ export function SponsorPlacement({ value }: { value: SponsorPlacementValue }) {
           entry.intersectionRatio >= 0.5 &&
           !impressionSent.current
         ) {
-          trackSponsorEvent("sponsor_impression", value);
+          trackSponsorEvent(
+            "sponsor_impression",
+            value,
+            placementType,
+            contentCategory,
+          );
           impressionSent.current = true;
           observer.disconnect();
         }
@@ -87,7 +102,7 @@ export function SponsorPlacement({ value }: { value: SponsorPlacementValue }) {
 
     observer.observe(placement);
     return () => observer.disconnect();
-  }, [isLive, value]);
+  }, [contentCategory, isLive, placementType, value]);
 
   if (
     !isLive ||
@@ -127,7 +142,14 @@ export function SponsorPlacement({ value }: { value: SponsorPlacementValue }) {
         href={href}
         target="_blank"
         rel="sponsored noopener noreferrer"
-        onClick={() => trackSponsorEvent("sponsor_click", value)}
+        onClick={() =>
+          trackSponsorEvent(
+            "sponsor_click",
+            value,
+            placementType,
+            contentCategory,
+          )
+        }
         className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         <div className="md:hidden">
@@ -190,6 +212,8 @@ function buildSponsorUrl(
 function trackSponsorEvent(
   eventName: SponsorEventName,
   value: SponsorPlacementValue,
+  placementType: "blog_card" | "homepage_card",
+  contentCategory: "blog" | "homepage",
 ) {
   const sponsor = value.sponsor;
   if (
@@ -197,21 +221,23 @@ function trackSponsorEvent(
     !sponsor?._id ||
     !sponsor.name ||
     !sponsor.campaignId ||
+    !sponsor.destinationUrl ||
     !value.placementId
   ) {
     return;
   }
 
+  const destinationUrl = sponsor.destinationUrl;
   const payload = {
     sponsor_id: sponsor._id,
     sponsor_name: sponsor.name,
     placement_id: value.placementId,
-    placement_type: "blog_card",
+    placement_type: placementType,
     campaign: sponsor.campaignId,
     page_path: window.location.pathname,
-    link_url: sponsor.destinationUrl,
-    link_domain: new URL(sponsor.destinationUrl).hostname,
-    content_category: "blog",
+    link_url: destinationUrl,
+    link_domain: new URL(destinationUrl).hostname,
+    content_category: contentCategory,
   };
   const gtag = (window as GtagWindow).gtag;
 

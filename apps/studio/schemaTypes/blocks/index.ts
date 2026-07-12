@@ -9,6 +9,7 @@ import { imageLinkCards } from "./image-link-cards";
 import { latestPosts } from "./latest-posts";
 import { logoCloud } from "./logo-cloud";
 import { macbookScroll } from "./macbook-scroll";
+import { sponsorPlacement } from "./sponsor-placement";
 import { statsSection } from "./stats-section";
 import { subscribeNewsletter } from "./subscribe-newsletter";
 import { teamFinder } from "./team-finder";
@@ -30,6 +31,7 @@ export const pageBuilderBlocks = [
   contactForm,
   testimonials,
   logoCloud,
+  sponsorPlacement,
   statsSection,
   macbookScroll,
   videoSection,

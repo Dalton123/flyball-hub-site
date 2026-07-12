@@ -127,6 +127,10 @@ const AppPromoBlock = dynamic(
   () => import("./sections/app-promo").then((mod) => mod.AppPromoBlock),
   { loading: () => <BlockSkeleton /> },
 );
+const SponsorSection = dynamic(
+  () => import("./sections/sponsor-section").then((mod) => mod.SponsorSection),
+  { loading: () => <BlockSkeleton /> },
+);
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<
@@ -168,6 +172,7 @@ const FULL_WIDTH_BLOCKS = new Set<string>([
 // Component mapping for page builder blocks
 const BLOCK_COMPONENTS: Record<string, React.ComponentType<any>> = {
   appPromo: AppPromoBlock,
+  sponsorPlacement: SponsorSection,
   cta: CTABlock,
   contactForm: ContactForm,
   faqAccordion: FaqAccordion,

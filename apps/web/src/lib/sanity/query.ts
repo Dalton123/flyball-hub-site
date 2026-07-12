@@ -493,6 +493,29 @@ const pageBuilderFragment = /* groq */ `
     ${testimonialsBlock},
     ${logoCloudBlock},
     ${statsSectionBlock},
+    _type == "sponsorPlacement" => {
+      _type,
+      _key,
+      placementId,
+      "sponsor": sponsor->{
+        _id,
+        name,
+        "campaignId": campaignId.current,
+        status,
+        startsAt,
+        endsAt,
+        destinationUrl,
+        supportingCopy,
+        ctaLabel,
+        discountCode,
+        desktopImage {
+          ${imageFields}
+        },
+        mobileImage {
+          ${imageFields}
+        }
+      }
+    },
     ${macbookScrollBlock},
     ${videoSectionBlock},
     ${latestPostsBlock},
