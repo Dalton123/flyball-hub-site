@@ -336,7 +336,12 @@ const components: Partial<PortableTextReactComponents> = {
       const [headerRow, ...bodyRows] = rows;
 
       return (
-        <div className="not-prose my-6 overflow-x-auto max-w-[calc(100dvw-90px)] md:max-w-[calc(100dvw-100px)] xl:max-w-full">
+        <div
+          className="not-prose my-6 w-full max-w-full overflow-x-auto overscroll-x-contain"
+          role="region"
+          aria-label="Scrollable comparison table"
+          tabIndex={0}
+        >
           <table
             className="border-collapse border border-border text-sm md:text-base"
             style={{ width: "max-content", minWidth: "100%" }}
