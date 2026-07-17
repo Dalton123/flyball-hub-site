@@ -2,6 +2,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { parseBody } from "next-sanity/webhook";
 
+import { getContentRevalidationPaths } from "./revalidation-paths";
+
 export async function POST(req: NextRequest) {
   try {
     const { isValidSignature, body } = await parseBody<{
@@ -20,9 +22,8 @@ export async function POST(req: NextRequest) {
     revalidateTag(body._type);
     revalidateTag("sanity");
 
-    // Revalidate the specific page path when a slug is provided
-    if (body.slug?.current) {
-      revalidatePath(body.slug.current);
+    for (const path of getContentRevalidationPaths(body)) {
+      revalidatePath(path);
     }
 
     return NextResponse.json({

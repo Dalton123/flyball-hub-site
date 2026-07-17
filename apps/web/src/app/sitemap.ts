@@ -1,22 +1,21 @@
 import type { MetadataRoute } from "next";
 
 import { client } from "@/lib/sanity/client";
-
-export const revalidate = 3600; // 1 hour
 import { querySitemapData } from "@/lib/sanity/query";
 import { getBaseUrl } from "@/utils";
 
-interface SitemapPage {
-  slug: string;
-  lastModified: string | null;
-}
+import {
+  buildDynamicSitemapEntries,
+  type SitemapData,
+} from "./sitemap-entries";
+
+export const revalidate = 86400; // 24 hours
 
 const baseUrl = getBaseUrl();
 const supplementalIndexableSlugs = ["/blog/best-flirt-poles"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { slugPages, blogPages, breedPages } =
-    await client.fetch(querySitemapData);
+  const sitemapData = (await client.fetch(querySitemapData)) as SitemapData;
   const entries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -42,24 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    ...(slugPages as SitemapPage[]).map((page) => ({
-      url: `${baseUrl}${page.slug}`,
-      lastModified: new Date(page.lastModified ?? new Date()),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    })),
-    ...(blogPages as SitemapPage[]).map((page) => ({
-      url: `${baseUrl}${page.slug}`,
-      lastModified: new Date(page.lastModified ?? new Date()),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    })),
-    ...(breedPages as SitemapPage[]).map((page) => ({
-      url: `${baseUrl}${page.slug}`,
-      lastModified: new Date(page.lastModified ?? new Date()),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
+    ...buildDynamicSitemapEntries(sitemapData, baseUrl),
     ...supplementalIndexableSlugs.map((slug) => ({
       url: `${baseUrl}${slug}`,
       lastModified: new Date(),
