@@ -5,6 +5,19 @@ interface RevalidationBody {
 
 const sitemapDocumentTypes = new Set(["blog", "page", "breed"]);
 
+function publicPathFor(_type: string, slug: string): string {
+  const rootedSlug = `/${slug.replace(/^\/+/, "")}`;
+  if (_type === "blog") {
+    return rootedSlug.startsWith("/blog/") ? rootedSlug : `/blog${rootedSlug}`;
+  }
+  if (_type === "breed") {
+    return rootedSlug.startsWith("/breeds/")
+      ? rootedSlug
+      : `/breeds${rootedSlug}`;
+  }
+  return rootedSlug;
+}
+
 export function getContentRevalidationPaths({
   _type,
   slug,
@@ -12,7 +25,7 @@ export function getContentRevalidationPaths({
   const paths = new Set<string>();
 
   if (slug?.current) {
-    paths.add(slug.current);
+    paths.add(publicPathFor(_type, slug.current));
   }
 
   if (sitemapDocumentTypes.has(_type)) {
