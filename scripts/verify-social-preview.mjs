@@ -12,7 +12,7 @@ const DEFAULT_URLS = [
   "https://www.flyballhub.com/breeds/whippet",
 ];
 
-const urls = process.argv.slice(2).filter(Boolean);
+const urls = process.argv.slice(2).filter((value) => value && value !== "--");
 const targetUrls = urls.length > 0 ? urls : DEFAULT_URLS;
 
 function decodeHtml(value) {
