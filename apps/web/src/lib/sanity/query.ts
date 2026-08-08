@@ -655,6 +655,61 @@ export const queryBreedIndexPageData = defineQuery(`
   }
 `);
 
+// Organisation anchor-page queries
+const organisationCardFragment = /* groq */ `
+  _id,
+  _type,
+  name,
+  shortName,
+  "slug": slug.current,
+  summary,
+  organisationType,
+  region,
+  countries,
+  "heroImage": heroImage {
+    ${imageFields}
+  }
+`;
+
+export const queryOrganisationBySlug = defineQuery(`
+  *[_type == "organisation" && slug.current == $slug][0]{
+    ...,
+    ${organisationCardFragment},
+    foundedYear,
+    status,
+    quickFacts,
+    officialLinks[]{_key, label, url, category, primary, verifiedAt, accessNote},
+    officialSources[]{_key, label, url, verifiedAt},
+    lastVerifiedAt,
+    ${richTextFragment}
+  }
+`);
+
+export const queryOrganisationPaths = defineQuery(`
+  *[_type == "organisation" && defined(slug.current)].slug.current
+`);
+
+export const queryAllOrganisations = defineQuery(`
+  *[_type == "organisation" && seoHideFromLists != true] | order(orderRank asc, name asc){
+    ${organisationCardFragment}
+  }
+`);
+
+export const queryOrganisationIndexPageData = defineQuery(`
+  *[_type == "organisationIndex"][0]{
+    ...,
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current,
+    ${pageBuilderFragment},
+    "organisations": *[_type == "organisation" && seoHideFromLists != true] | order(name asc) {
+      ${organisationCardFragment}
+    }
+  }
+`);
+
 export const queryRelatedPosts = defineQuery(`
   *[_type == "blog"
     && _id != $currentId
@@ -734,6 +789,26 @@ export const queryBreedPageOGData = defineQuery(`
   }
 `);
 
+export const queryOrganisationPageOGData = defineQuery(`
+  *[_type == "organisation" && _id == $id][0]{
+    ${ogFieldsFragment},
+    "title": select(
+      defined(ogTitle) => ogTitle,
+      defined(seoTitle) => seoTitle,
+      name + " (" + shortName + ") - Flyball Organisation"
+    ),
+    "description": select(
+      defined(ogDescription) => ogDescription,
+      defined(seoDescription) => seoDescription,
+      summary
+    ),
+    name,
+    shortName,
+    organisationType,
+    region
+  }
+`);
+
 export const queryFooterData = defineQuery(`
   *[_type == "footer" && _id == "footer"][0]{
     _id,
@@ -793,6 +868,7 @@ export const queryNavbarData = defineQuery(`
 `);
 
 export const querySitemapData = defineQuery(`{
+  "organisationIndex": *[_type == "organisationIndex"][0]{seoNoIndex},
   "slugPages": *[_type == "page" && defined(slug.current)]{
     "slug": slug.current,
     "lastModified": _updatedAt
@@ -802,6 +878,10 @@ export const querySitemapData = defineQuery(`{
     "lastModified": _updatedAt
   },
   "breedPages": *[_type == "breed" && defined(slug.current)]{
+    "slug": slug.current,
+    "lastModified": _updatedAt
+  },
+  "organisationPages": *[_type == "organisation" && defined(slug.current) && seoNoIndex != true]{
     "slug": slug.current,
     "lastModified": _updatedAt
   }
@@ -855,5 +935,9 @@ export const queryHtmlSitemapData = defineQuery(`{
     title,
     "slug": slug.current,
     publishedAt
+  },
+  "organisations": *[_type == "organisation" && defined(slug.current) && seoNoIndex != true] | order(name asc) {
+    "title": name,
+    "slug": slug.current
   }
 }`);

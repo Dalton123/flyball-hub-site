@@ -7,6 +7,8 @@ const allLinkableTypes = [
   { type: "blogIndex" },
   { type: "breed" },
   { type: "breedIndex" },
+  { type: "organisation" },
+  { type: "organisationIndex" },
   { type: "page" },
 ];
 

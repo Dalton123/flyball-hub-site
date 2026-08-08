@@ -719,6 +719,18 @@ export type OptionalUrl = {
         _ref: string;
         _type: "reference";
         _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "organisation";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "organisationIndex";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "page";
       };
 };
@@ -753,6 +765,18 @@ export type CustomUrl = {
         _type: "reference";
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "breedIndex";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "organisation";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "organisationIndex";
       }
     | {
         _ref: string;
@@ -921,6 +945,35 @@ export type SanityImageHotspot = {
   width: number;
 };
 
+export type OrganisationIndex = {
+  _id: string;
+  _type: "organisationIndex";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  description: string;
+  slug: Slug;
+  pageBuilder?: PageBuilder;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  seoNoIndex?: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+};
+
 export type BreedIndex = {
   _id: string;
   _type: "breedIndex";
@@ -1003,6 +1056,91 @@ export type HomePage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  ogTitle?: string;
+  ogDescription?: string;
+};
+
+export type Organisation = {
+  _id: string;
+  _type: "organisation";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name: string;
+  shortName: string;
+  slug: Slug;
+  summary: string;
+  organisationType: "league" | "governingBody" | "sanctioningBody" | "other";
+  region: string;
+  countries: Array<string>;
+  foundedYear?: number;
+  status?: "active" | "inactive" | "historical";
+  heroImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  quickFacts?: {
+    geographicCoverage?: string;
+    competitionModel?: string;
+    membershipModel?: string;
+    titleProgrammes?: string;
+    flagshipEvent?: string;
+  };
+  officialLinks: Array<{
+    label: string;
+    url: string;
+    category:
+      | "officialSite"
+      | "rules"
+      | "joinRegister"
+      | "events"
+      | "results"
+      | "records"
+      | "titles"
+      | "teamClubFinder"
+      | "contact"
+      | "other";
+    primary?: boolean;
+    verifiedAt: string;
+    accessNote?: string;
+    _type: "officialLink";
+    _key: string;
+  }>;
+  richText: RichText;
+  officialSources: Array<{
+    label: string;
+    url: string;
+    verifiedAt: string;
+    _type: "officialSource";
+    _key: string;
+  }>;
+  lastVerifiedAt: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  seoNoIndex?: boolean;
+  seoHideFromLists?: boolean;
   ogTitle?: string;
   ogDescription?: string;
 };
@@ -1539,9 +1677,11 @@ export type AllSanitySchemaTypes =
   | Settings
   | SanityImageCrop
   | SanityImageHotspot
+  | OrganisationIndex
   | BreedIndex
   | BlogIndex
   | HomePage
+  | Organisation
   | Breed
   | Author
   | Faq
@@ -8159,6 +8299,1797 @@ export type QueryBreedIndexPageDataResult = {
     } | null;
   }>;
 } | null;
+// Variable: queryOrganisationBySlug
+// Query: *[_type == "organisation" && slug.current == $slug][0]{    ...,      _id,  _type,  name,  shortName,  "slug": slug.current,  summary,  organisationType,  region,  countries,  "heroImage": heroImage {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  },    foundedYear,    status,    quickFacts,    officialLinks[]{_key, label, url, category, primary, verifiedAt, accessNote},    officialSources[]{_key, label, url, verifiedAt},    lastVerifiedAt,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  }  }
+export type QueryOrganisationBySlugResult = {
+  _id: string;
+  _type: "organisation";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name: string;
+  shortName: string;
+  slug: string;
+  summary: string;
+  organisationType: "governingBody" | "league" | "other" | "sanctioningBody";
+  region: string;
+  countries: Array<string>;
+  foundedYear: number | null;
+  status: "active" | "historical" | "inactive" | null;
+  heroImage: {
+    id: string | null;
+    preview: string | null;
+    alt: string;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
+    } | null;
+  } | null;
+  quickFacts: {
+    geographicCoverage?: string;
+    competitionModel?: string;
+    membershipModel?: string;
+    titleProgrammes?: string;
+    flagshipEvent?: string;
+  } | null;
+  officialLinks: Array<{
+    _key: string;
+    label: string;
+    url: string;
+    category:
+      | "contact"
+      | "events"
+      | "joinRegister"
+      | "officialSite"
+      | "other"
+      | "records"
+      | "results"
+      | "rules"
+      | "teamClubFinder"
+      | "titles";
+    primary: boolean | null;
+    verifiedAt: string;
+    accessNote: string | null;
+  }>;
+  richText: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<
+          | {
+              customLink?: CustomUrl;
+              _type: "customLink";
+              _key: string;
+              openInNewTab: boolean | null;
+              href: string | "#" | null;
+            }
+          | {
+              customLink?: CustomUrl;
+              _type: "customLink";
+              _key: string;
+            }
+        > | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        quote: string;
+        attribution: string | null;
+        source: string | null;
+        _type: "blockquote";
+        _key: string;
+      }
+    | {
+        style: "dashed" | "default" | "subtle" | null;
+        _type: "break";
+        _key: string;
+      }
+    | {
+        code: string;
+        language:
+          | "bash"
+          | "css"
+          | "graphql"
+          | "html"
+          | "javascript"
+          | "json"
+          | "jsx"
+          | "markdown"
+          | "python"
+          | "sql"
+          | "text"
+          | "tsx"
+          | "typescript"
+          | "yaml"
+          | null;
+        filename: string | null;
+        highlightLines: string | null;
+        _type: "codeBlock";
+        _key: string;
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot: {
+          x: number;
+          y: number;
+        } | null;
+        crop: {
+          bottom: number;
+          left: number;
+          right: number;
+          top: number;
+        } | null;
+        alt: string | null;
+        caption: string | null;
+        _type: "image";
+        _key: string;
+        id: string | null;
+        preview: string | null;
+      }
+    | {
+        sponsor: {
+          _id: string;
+          name: string;
+          campaignId: string;
+          status: "draft" | "ended" | "live";
+          startsAt: string;
+          endsAt: string;
+          destinationUrl: string;
+          supportingCopy: string | null;
+          ctaLabel: string;
+          discountCode: string | null;
+          desktopImage: {
+            id: string | null;
+            preview: string | null;
+            alt: string;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          };
+          mobileImage: {
+            id: string | null;
+            preview: string | null;
+            alt: string;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          };
+        };
+        placementId: string;
+        _type: "sponsorPlacement";
+        _key: string;
+      }
+    | {
+        _key: string;
+        _type: "table";
+        rows: Array<
+          {
+            _key: string;
+          } & TableRow
+        > | null;
+      }
+  >;
+  officialSources: Array<{
+    _key: string;
+    label: string;
+    url: string;
+    verifiedAt: string;
+  }>;
+  lastVerifiedAt: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  seoNoIndex?: boolean;
+  seoHideFromLists?: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+} | null;
+// Variable: queryOrganisationPaths
+// Query: *[_type == "organisation" && defined(slug.current)].slug.current
+export type QueryOrganisationPathsResult = Array<string>;
+// Variable: queryAllOrganisations
+// Query: *[_type == "organisation" && seoHideFromLists != true] | order(orderRank asc, name asc){      _id,  _type,  name,  shortName,  "slug": slug.current,  summary,  organisationType,  region,  countries,  "heroImage": heroImage {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  }  }
+export type QueryAllOrganisationsResult = Array<{
+  _id: string;
+  _type: "organisation";
+  name: string;
+  shortName: string;
+  slug: string;
+  summary: string;
+  organisationType: "governingBody" | "league" | "other" | "sanctioningBody";
+  region: string;
+  countries: Array<string>;
+  heroImage: {
+    id: string | null;
+    preview: string | null;
+    alt: string;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
+    } | null;
+  } | null;
+}>;
+// Variable: queryOrganisationIndexPageData
+// Query: *[_type == "organisationIndex"][0]{    ...,    _id,    _type,    title,    description,    "slug": slug.current,      pageBuilder[]{    ...,    _type,      _type == "appPromo" => {    _type,    _key,    "eyebrow": select(      useGlobalDefaults != true && defined(eyebrow) => eyebrow,      defined(*[_type == "settings"][0].appPromoDefaults.eyebrow) => *[_type == "settings"][0].appPromoDefaults.eyebrow,      null    ),    "title": select(      useGlobalDefaults != true && defined(title) => title,      defined(*[_type == "settings"][0].appPromoDefaults.title) => *[_type == "settings"][0].appPromoDefaults.title,      null    ),    "highlightedText": select(      useGlobalDefaults != true && defined(highlightedText) => highlightedText,      defined(*[_type == "settings"][0].appPromoDefaults.highlightedText) => *[_type == "settings"][0].appPromoDefaults.highlightedText,      null    ),    "description": select(      useGlobalDefaults != true && defined(description) => description,      defined(*[_type == "settings"][0].appPromoDefaults.description) => *[_type == "settings"][0].appPromoDefaults.description,      null    ),    "features": select(      useGlobalDefaults != true && count(features[]) > 0 => features[] {   _key,  title,  description,  icon },      count(*[_type == "settings"][0].appPromoDefaults.features[]) > 0 => *[_type == "settings"][0].appPromoDefaults.features[] {   _key,  title,  description,  icon },      null    ),    "socialProofText": select(      useGlobalDefaults != true && defined(socialProofText) => socialProofText,      defined(*[_type == "settings"][0].appPromoDefaults.socialProofText) => *[_type == "settings"][0].appPromoDefaults.socialProofText,      null    ),    "showStarRating": select(      useGlobalDefaults != true && defined(showStarRating) => showStarRating,      defined(*[_type == "settings"][0].appPromoDefaults.showStarRating) => *[_type == "settings"][0].appPromoDefaults.showStarRating,      false    ),    "starRating": select(      useGlobalDefaults != true && defined(starRating) => starRating,      defined(*[_type == "settings"][0].appPromoDefaults.starRating) => *[_type == "settings"][0].appPromoDefaults.starRating,      null    ),    "buttons": select(      useGlobalDefaults != true && count(buttons[]) > 0 => buttons[] {   text,  variant,  _key,  _type,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => url.internal->slug.current,    url.type == "external" => url.external,    url.href  ) },      count(*[_type == "settings"][0].appPromoDefaults.buttons[]) > 0 => *[_type == "settings"][0].appPromoDefaults.buttons[] {   text,  variant,  _key,  _type,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => url.internal->slug.current,    url.type == "external" => url.external,    url.href  ) },      null    ),    "platformNote": select(      useGlobalDefaults != true && defined(platformNote) => platformNote,      defined(*[_type == "settings"][0].appPromoDefaults.platformNote) => *[_type == "settings"][0].appPromoDefaults.platformNote,      null    ),    "phoneScreenshot": select(      useGlobalDefaults != true && defined(phoneScreenshot.asset) => phoneScreenshot {   "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  } },      defined(*[_type == "settings"][0].appPromoDefaults.phoneScreenshot.asset) => *[_type == "settings"][0].appPromoDefaults.phoneScreenshot {   "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  } },      null    ),    "showAppStoreButtons": select(      useGlobalDefaults != true && defined(showAppStoreButtons) => showAppStoreButtons,      defined(*[_type == "settings"][0].appPromoDefaults.showAppStoreButtons) => *[_type == "settings"][0].appPromoDefaults.showAppStoreButtons,      false    ),    "googlePlayUrl": select(      useGlobalDefaults != true && defined(googlePlayUrl) => googlePlayUrl,      defined(*[_type == "settings"][0].appPromoDefaults.googlePlayUrl) => *[_type == "settings"][0].appPromoDefaults.googlePlayUrl,      null    ),    "appStoreUrl": select(      useGlobalDefaults != true && defined(appStoreUrl) => appStoreUrl,      defined(*[_type == "settings"][0].appPromoDefaults.appStoreUrl) => *[_type == "settings"][0].appPromoDefaults.appStoreUrl,      null    ),    "appStoreComingSoon": select(      useGlobalDefaults != true && defined(appStoreComingSoon) => appStoreComingSoon,      false    )  },      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "hero" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },    variant,    "stats": array::compact(stats[]{      _key,      value,      label    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    title,    _id,    _type,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  }  }),    link{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      )    }  },      _type == "featureCardsIcon" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },    "cards": array::compact(cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },    })  },      _type == "featureCardsScreenshot" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },    "cards": array::compact(cards[]{      ...,      _key,      title,      description,      "screenshot": screenshot {          "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }      },      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      )    })  },      _type == "subscribeNewsletter" => {    ...,    "subTitle": subTitle[]{      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    "helperText": helperText[]{      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    }  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  },    })  },      _type == "textBlock" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  }  },      _type == "testimonials" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },    "testimonials": array::compact(testimonials[]{      ...,      _key,      quote,      authorName,      authorRole,      rating,      "authorImage": authorImage {          "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }      }    })  },      _type == "logoCloud" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },    "logos": array::compact(logos[]{      ...,      _key,      name,      url,      "logo": logo {          "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }      }    })  },      _type == "statsSection" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },      "alt": alt,      "caption": caption    },    _type == "break" => {      _type,      _key,      style    },    _type == "blockquote" => {      _type,      _key,      quote,      attribution,      source    },    _type == "codeBlock" => {      _type,      _key,      code,      language,      filename,      highlightLines    },    _type == "table" => {      _type,      _key,      rows    },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    }  },    variant,    "stats": array::compact(stats[]{      ...,      _key,      value,      label,      description    })  },    _type == "sponsorPlacement" => {      _type,      _key,      placementId,      "sponsor": sponsor->{        _id,        name,        "campaignId": campaignId.current,        status,        startsAt,        endsAt,        destinationUrl,        supportingCopy,        ctaLabel,        discountCode,        desktopImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        },        mobileImage {            "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }        }      }    },      _type == "macbookScroll" => {    ...,    eyebrow,    title,    description,    "screenImage": screenImage {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }    },    showGradient  },      _type == "videoSection" => {    ...,    eyebrow,    title,    description,    videoUrl,    "posterImage": posterImage {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }    }  },      _type == "latestPosts" => {    ...,    eyebrow,    title,    description,    postsCount,    showViewAll,    "posts": *[_type == "blog" && seoHideFromLists != true && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc)[0..6]{        _type,  _id,  title,  description,  "slug":slug.current,  orderRank,    image {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  },  publishedAt,    authors[0]->{    _id,    name,    position,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  }  }    }  },      _type == "teamFinder" => {    _type,    _key,    eyebrow,    title,    description,    searchPlaceholder,    noResultsMessage  },      _type == "teamFinderTeaser" => {    _type,    _key,    eyebrow,    title,    description,    searchPlaceholder,    showStats,    ctaText  }  },    "organisations": *[_type == "organisation" && seoHideFromLists != true] | order(name asc) {        _id,  _type,  name,  shortName,  "slug": slug.current,  summary,  organisationType,  region,  countries,  "heroImage": heroImage {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  }    }  }
+export type QueryOrganisationIndexPageDataResult = {
+  _id: string;
+  _type: "organisationIndex";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  description: string;
+  slug: string;
+  pageBuilder: Array<
+    | {
+        _key: string;
+        _type: "appPromo";
+        useGlobalDefaults?: boolean;
+        eyebrow: string | null;
+        title: string | null;
+        highlightedText: string | null;
+        description: string | null;
+        features: Array<{
+          _key: string;
+          title: string | null;
+          description: string | null;
+          icon: "calendar" | "layoutGrid" | "users" | null;
+        }> | null;
+        socialProofText: string | null;
+        showStarRating: boolean | false | null;
+        starRating: string | null;
+        buttons: Array<{
+          text: string | null;
+          variant: "default" | "link" | "outline" | "secondary" | null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
+        platformNote: string | null;
+        phoneScreenshot: {
+          id: string | null;
+          preview: string | null;
+          alt: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+        } | null;
+        showAppStoreButtons: boolean | false | null;
+        googlePlayUrl: string | null;
+        appStoreUrl: string | null;
+        appStoreComingSoon: boolean | false | null;
+      }
+    | {
+        _key: string;
+        _type: "contactForm";
+        eyebrow?: string;
+        title: string;
+        subTitle?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            customLink?: CustomUrl;
+            _type: "customLink";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        buttonText?: string;
+        helperText?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            customLink?: CustomUrl;
+            _type: "customLink";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        successMessage?: string;
+      }
+    | {
+        _key: string;
+        _type: "cta";
+        eyebrow?: string;
+        title?: string;
+        richText: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                    openInNewTab: boolean | null;
+                    href: string | "#" | null;
+                  }
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              quote: string;
+              attribution: string | null;
+              source: string | null;
+              _type: "blockquote";
+              _key: string;
+            }
+          | {
+              style: "dashed" | "default" | "subtle" | null;
+              _type: "break";
+              _key: string;
+            }
+          | {
+              code: string;
+              language:
+                | "bash"
+                | "css"
+                | "graphql"
+                | "html"
+                | "javascript"
+                | "json"
+                | "jsx"
+                | "markdown"
+                | "python"
+                | "sql"
+                | "text"
+                | "tsx"
+                | "typescript"
+                | "yaml"
+                | null;
+              filename: string | null;
+              highlightLines: string | null;
+              _type: "codeBlock";
+              _key: string;
+            }
+          | {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot: {
+                x: number;
+                y: number;
+              } | null;
+              crop: {
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
+              } | null;
+              alt: string | null;
+              caption: string | null;
+              _type: "image";
+              _key: string;
+              id: string | null;
+              preview: string | null;
+            }
+          | {
+              sponsor: {
+                _id: string;
+                name: string;
+                campaignId: string;
+                status: "draft" | "ended" | "live";
+                startsAt: string;
+                endsAt: string;
+                destinationUrl: string;
+                supportingCopy: string | null;
+                ctaLabel: string;
+                discountCode: string | null;
+                desktopImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+                mobileImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+              };
+              placementId: string;
+              _type: "sponsorPlacement";
+              _key: string;
+            }
+          | {
+              _key: string;
+              _type: "table";
+              rows: Array<
+                {
+                  _key: string;
+                } & TableRow
+              > | null;
+            }
+        > | null;
+        buttons: Array<{
+          text: string | null;
+          variant: "default" | "link" | "outline" | "secondary" | null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "faqAccordion";
+        eyebrow?: string;
+        title: string;
+        subtitle?: string;
+        link: {
+          title?: string;
+          description?: string;
+          url?: OptionalUrl;
+          openInNewTab: boolean | null;
+          href: string | null;
+        } | null;
+        faqs: Array<{
+          title: string;
+          _id: string;
+          _type: "faq";
+          richText: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?:
+                  | "h1"
+                  | "h2"
+                  | "h3"
+                  | "h4"
+                  | "h5"
+                  | "h6"
+                  | "inline"
+                  | "normal";
+                listItem?: "bullet" | "number";
+                markDefs: Array<
+                  | {
+                      customLink?: CustomUrl;
+                      _type: "customLink";
+                      _key: string;
+                      openInNewTab: boolean | null;
+                      href: string | "#" | null;
+                    }
+                  | {
+                      customLink?: CustomUrl;
+                      _type: "customLink";
+                      _key: string;
+                    }
+                > | null;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                quote: string;
+                attribution: string | null;
+                source: string | null;
+                _type: "blockquote";
+                _key: string;
+              }
+            | {
+                style: "dashed" | "default" | "subtle" | null;
+                _type: "break";
+                _key: string;
+              }
+            | {
+                code: string;
+                language:
+                  | "bash"
+                  | "css"
+                  | "graphql"
+                  | "html"
+                  | "javascript"
+                  | "json"
+                  | "jsx"
+                  | "markdown"
+                  | "python"
+                  | "sql"
+                  | "text"
+                  | "tsx"
+                  | "typescript"
+                  | "yaml"
+                  | null;
+                filename: string | null;
+                highlightLines: string | null;
+                _type: "codeBlock";
+                _key: string;
+              }
+            | {
+                asset?: {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+                };
+                media?: unknown;
+                hotspot: {
+                  x: number;
+                  y: number;
+                } | null;
+                crop: {
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
+                } | null;
+                alt: string | null;
+                caption: string | null;
+                _type: "image";
+                _key: string;
+                id: string | null;
+                preview: string | null;
+              }
+            | {
+                sponsor: {
+                  _id: string;
+                  name: string;
+                  campaignId: string;
+                  status: "draft" | "ended" | "live";
+                  startsAt: string;
+                  endsAt: string;
+                  destinationUrl: string;
+                  supportingCopy: string | null;
+                  ctaLabel: string;
+                  discountCode: string | null;
+                  desktopImage: {
+                    id: string | null;
+                    preview: string | null;
+                    alt: string;
+                    hotspot: {
+                      x: number;
+                      y: number;
+                    } | null;
+                    crop: {
+                      bottom: number;
+                      left: number;
+                      right: number;
+                      top: number;
+                    } | null;
+                  };
+                  mobileImage: {
+                    id: string | null;
+                    preview: string | null;
+                    alt: string;
+                    hotspot: {
+                      x: number;
+                      y: number;
+                    } | null;
+                    crop: {
+                      bottom: number;
+                      left: number;
+                      right: number;
+                      top: number;
+                    } | null;
+                  };
+                };
+                placementId: string;
+                _type: "sponsorPlacement";
+                _key: string;
+              }
+            | {
+                _key: string;
+                _type: "table";
+                rows: Array<
+                  {
+                    _key: string;
+                  } & TableRow
+                > | null;
+              }
+          > | null;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "featureCardsIcon";
+        eyebrow?: string;
+        title?: string;
+        richText: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+        cards: Array<{
+          icon?: IconPicker;
+          title?: string;
+          richText: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?:
+              | "h1"
+              | "h2"
+              | "h3"
+              | "h4"
+              | "h5"
+              | "h6"
+              | "inline"
+              | "normal";
+            listItem?: "bullet" | "number";
+            markDefs: Array<
+              | {
+                  customLink?: CustomUrl;
+                  _type: "customLink";
+                  _key: string;
+                  openInNewTab: boolean | null;
+                  href: string | "#" | null;
+                }
+              | {
+                  customLink?: CustomUrl;
+                  _type: "customLink";
+                  _key: string;
+                }
+            > | null;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }> | null;
+          _type: "featureCardIcon";
+          _key: string;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "featureCardsScreenshot";
+        eyebrow?: string;
+        title?: string;
+        richText: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+        cards: Array<{
+          screenshot: {
+            id: string | null;
+            preview: string | null;
+            alt: string | null;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          };
+          title: string;
+          description: string | null;
+          url?: OptionalUrl;
+          _type: "featureCardItem";
+          _key: string;
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "hero";
+        badge?: string;
+        title?: string;
+        richText: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                    openInNewTab: boolean | null;
+                    href: string | "#" | null;
+                  }
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              quote: string;
+              attribution: string | null;
+              source: string | null;
+              _type: "blockquote";
+              _key: string;
+            }
+          | {
+              style: "dashed" | "default" | "subtle" | null;
+              _type: "break";
+              _key: string;
+            }
+          | {
+              code: string;
+              language:
+                | "bash"
+                | "css"
+                | "graphql"
+                | "html"
+                | "javascript"
+                | "json"
+                | "jsx"
+                | "markdown"
+                | "python"
+                | "sql"
+                | "text"
+                | "tsx"
+                | "typescript"
+                | "yaml"
+                | null;
+              filename: string | null;
+              highlightLines: string | null;
+              _type: "codeBlock";
+              _key: string;
+            }
+          | {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot: {
+                x: number;
+                y: number;
+              } | null;
+              crop: {
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
+              } | null;
+              alt: string | null;
+              caption: string | null;
+              _type: "image";
+              _key: string;
+              id: string | null;
+              preview: string | null;
+            }
+          | {
+              sponsor: {
+                _id: string;
+                name: string;
+                campaignId: string;
+                status: "draft" | "ended" | "live";
+                startsAt: string;
+                endsAt: string;
+                destinationUrl: string;
+                supportingCopy: string | null;
+                ctaLabel: string;
+                discountCode: string | null;
+                desktopImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+                mobileImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+              };
+              placementId: string;
+              _type: "sponsorPlacement";
+              _key: string;
+            }
+          | {
+              _key: string;
+              _type: "table";
+              rows: Array<
+                {
+                  _key: string;
+                } & TableRow
+              > | null;
+            }
+        > | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          alt: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: "default" | "link" | "outline" | "secondary" | null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
+        stats: Array<{
+          _key: string;
+          value: string;
+          label: string;
+        }> | null;
+        variant: "classic" | "dynamic" | "globe" | null;
+      }
+    | {
+        _key: string;
+        _type: "imageLinkCards";
+        eyebrow?: string;
+        title: string;
+        richText: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                    openInNewTab: boolean | null;
+                    href: string | "#" | null;
+                  }
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              quote: string;
+              attribution: string | null;
+              source: string | null;
+              _type: "blockquote";
+              _key: string;
+            }
+          | {
+              style: "dashed" | "default" | "subtle" | null;
+              _type: "break";
+              _key: string;
+            }
+          | {
+              code: string;
+              language:
+                | "bash"
+                | "css"
+                | "graphql"
+                | "html"
+                | "javascript"
+                | "json"
+                | "jsx"
+                | "markdown"
+                | "python"
+                | "sql"
+                | "text"
+                | "tsx"
+                | "typescript"
+                | "yaml"
+                | null;
+              filename: string | null;
+              highlightLines: string | null;
+              _type: "codeBlock";
+              _key: string;
+            }
+          | {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot: {
+                x: number;
+                y: number;
+              } | null;
+              crop: {
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
+              } | null;
+              alt: string | null;
+              caption: string | null;
+              _type: "image";
+              _key: string;
+              id: string | null;
+              preview: string | null;
+            }
+          | {
+              sponsor: {
+                _id: string;
+                name: string;
+                campaignId: string;
+                status: "draft" | "ended" | "live";
+                startsAt: string;
+                endsAt: string;
+                destinationUrl: string;
+                supportingCopy: string | null;
+                ctaLabel: string;
+                discountCode: string | null;
+                desktopImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+                mobileImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+              };
+              placementId: string;
+              _type: "sponsorPlacement";
+              _key: string;
+            }
+          | {
+              _key: string;
+              _type: "table";
+              rows: Array<
+                {
+                  _key: string;
+                } & TableRow
+              > | null;
+            }
+        > | null;
+        buttons: Array<{
+          text: string | null;
+          variant: "default" | "link" | "outline" | "secondary" | null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
+        cards: Array<{
+          title: string;
+          description: string;
+          image: {
+            id: string | null;
+            preview: string | null;
+            alt: string | null;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          } | null;
+          url?: CustomUrl;
+          _type: "imageLinkCard";
+          _key: string;
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "latestPosts";
+        eyebrow: string | null;
+        title: string | null;
+        description: string | null;
+        postsCount: number | null;
+        showViewAll: boolean | null;
+        posts: Array<{
+          _type: "blog";
+          _id: string;
+          title: string;
+          description: string | null;
+          slug: string;
+          orderRank: string | null;
+          image: {
+            id: string | null;
+            preview: string | null;
+            alt: string | null;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          };
+          publishedAt: string | null;
+          authors: {
+            _id: string;
+            name: string;
+            position: string | null;
+            image: {
+              id: string | null;
+              preview: string | null;
+              alt: string | null;
+              hotspot: {
+                x: number;
+                y: number;
+              } | null;
+              crop: {
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
+              } | null;
+            } | null;
+          } | null;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "logoCloud";
+        eyebrow?: string;
+        title?: string;
+        richText: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+        logos: Array<{
+          name: string;
+          logo: {
+            id: string | null;
+            preview: string | null;
+            alt: string | null;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          };
+          url: string | null;
+          _type: "logoItem";
+          _key: string;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "macbookScroll";
+        eyebrow: string | null;
+        title: string | null;
+        description: string | null;
+        screenImage: {
+          id: string | null;
+          preview: string | null;
+          alt: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+        };
+        showGradient: boolean | null;
+      }
+    | {
+        _key: string;
+        _type: "sponsorPlacement";
+        sponsor: {
+          _id: string;
+          name: string;
+          campaignId: string;
+          status: "draft" | "ended" | "live";
+          startsAt: string;
+          endsAt: string;
+          destinationUrl: string;
+          supportingCopy: string | null;
+          ctaLabel: string;
+          discountCode: string | null;
+          desktopImage: {
+            id: string | null;
+            preview: string | null;
+            alt: string;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          };
+          mobileImage: {
+            id: string | null;
+            preview: string | null;
+            alt: string;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          };
+        };
+        placementId: string;
+      }
+    | {
+        _key: string;
+        _type: "statsSection";
+        eyebrow?: string;
+        title?: string;
+        richText: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+        stats: Array<{
+          value: string;
+          label: string;
+          description: string | null;
+          _type: "statItem";
+          _key: string;
+        }> | null;
+        variant: "accent" | "default" | null;
+      }
+    | {
+        _key: string;
+        _type: "subscribeNewsletter";
+        title?: string;
+        subTitle: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+        helperText: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "teamFinder";
+        eyebrow: string | null;
+        title: string;
+        description: string | null;
+        searchPlaceholder: string | null;
+        noResultsMessage: string | null;
+      }
+    | {
+        _key: string;
+        _type: "teamFinderTeaser";
+        eyebrow: string | null;
+        title: string;
+        description: string | null;
+        searchPlaceholder: string | null;
+        ctaText: string | null;
+        showStats: boolean | null;
+      }
+    | {
+        _key: string;
+        _type: "testimonials";
+        eyebrow?: string;
+        title?: string;
+        richText: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+        testimonials: Array<{
+          quote: string;
+          authorName: string;
+          authorRole: string | null;
+          authorImage: {
+            id: string | null;
+            preview: string | null;
+            alt: string | null;
+            hotspot: {
+              x: number;
+              y: number;
+            } | null;
+            crop: {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+            } | null;
+          } | null;
+          rating: number | null;
+          _type: "testimonialCard";
+          _key: string;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "textBlock";
+        title?: string;
+        richText: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?:
+                | "h1"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                    openInNewTab: boolean | null;
+                    href: string | "#" | null;
+                  }
+                | {
+                    customLink?: CustomUrl;
+                    _type: "customLink";
+                    _key: string;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              quote: string;
+              attribution: string | null;
+              source: string | null;
+              _type: "blockquote";
+              _key: string;
+            }
+          | {
+              style: "dashed" | "default" | "subtle" | null;
+              _type: "break";
+              _key: string;
+            }
+          | {
+              code: string;
+              language:
+                | "bash"
+                | "css"
+                | "graphql"
+                | "html"
+                | "javascript"
+                | "json"
+                | "jsx"
+                | "markdown"
+                | "python"
+                | "sql"
+                | "text"
+                | "tsx"
+                | "typescript"
+                | "yaml"
+                | null;
+              filename: string | null;
+              highlightLines: string | null;
+              _type: "codeBlock";
+              _key: string;
+            }
+          | {
+              asset?: {
+                _ref: string;
+                _type: "reference";
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              media?: unknown;
+              hotspot: {
+                x: number;
+                y: number;
+              } | null;
+              crop: {
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
+              } | null;
+              alt: string | null;
+              caption: string | null;
+              _type: "image";
+              _key: string;
+              id: string | null;
+              preview: string | null;
+            }
+          | {
+              sponsor: {
+                _id: string;
+                name: string;
+                campaignId: string;
+                status: "draft" | "ended" | "live";
+                startsAt: string;
+                endsAt: string;
+                destinationUrl: string;
+                supportingCopy: string | null;
+                ctaLabel: string;
+                discountCode: string | null;
+                desktopImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+                mobileImage: {
+                  id: string | null;
+                  preview: string | null;
+                  alt: string;
+                  hotspot: {
+                    x: number;
+                    y: number;
+                  } | null;
+                  crop: {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+                  } | null;
+                };
+              };
+              placementId: string;
+              _type: "sponsorPlacement";
+              _key: string;
+            }
+          | {
+              _key: string;
+              _type: "table";
+              rows: Array<
+                {
+                  _key: string;
+                } & TableRow
+              > | null;
+            }
+        > | null;
+        alignment?: "center" | "left" | "right";
+      }
+    | {
+        _key: string;
+        _type: "videoSection";
+        eyebrow: string | null;
+        title: string | null;
+        description: string | null;
+        videoUrl: string;
+        posterImage: {
+          id: string | null;
+          preview: string | null;
+          alt: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+        } | null;
+      }
+  > | null;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  seoNoIndex?: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+  organisations: Array<{
+    _id: string;
+    _type: "organisation";
+    name: string;
+    shortName: string;
+    slug: string;
+    summary: string;
+    organisationType: "governingBody" | "league" | "other" | "sanctioningBody";
+    region: string;
+    countries: Array<string>;
+    heroImage: {
+      id: string | null;
+      preview: string | null;
+      alt: string;
+      hotspot: {
+        x: number;
+        y: number;
+      } | null;
+      crop: {
+        bottom: number;
+        left: number;
+        right: number;
+        top: number;
+      } | null;
+    } | null;
+  }>;
+} | null;
 // Variable: queryRelatedPosts
 // Query: *[_type == "blog"    && _id != $currentId    && seoHideFromLists != true    && defined(publishedAt)    && publishedAt <= now()  ] | order(publishedAt desc) {      _type,  _id,  title,  description,  "slug":slug.current,  orderRank,    image {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  },  publishedAt,    authors[0]->{    _id,    name,    position,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  }  }  }
 export type QueryRelatedPostsResult = Array<{
@@ -8304,6 +10235,28 @@ export type QueryGenericPageOGDataResult =
     }
   | {
       _id: string;
+      _type: "organisation";
+      title: string | null;
+      description: string | null;
+      image: string | null;
+      dominantColor: null;
+      seoImage: string | null;
+      logo: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
+      _type: "organisationIndex";
+      title: string | null;
+      description: string | null;
+      image: string | null;
+      dominantColor: null;
+      seoImage: string | null;
+      logo: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
       _type: "page";
       title: string | null;
       description: string | null;
@@ -8336,6 +10289,23 @@ export type QueryBreedPageOGDataResult = {
     speed: "Fast" | "Medium" | "Slow" | "Very Fast";
     heightDog?: boolean;
   } | null;
+} | null;
+// Variable: queryOrganisationPageOGData
+// Query: *[_type == "organisation" && _id == $id][0]{      _id,  _type,  "title": select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    title  ),  "description": select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    description  ),  "image": coalesce(    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"  ),  "dominantColor": image.asset->metadata.palette.dominant.background,  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",  "date": coalesce(date, publishedAt, _createdAt),    "title": select(      defined(ogTitle) => ogTitle,      defined(seoTitle) => seoTitle,      name + " (" + shortName + ") - Flyball Organisation"    ),    "description": select(      defined(ogDescription) => ogDescription,      defined(seoDescription) => seoDescription,      summary    ),    name,    shortName,    organisationType,    region  }
+export type QueryOrganisationPageOGDataResult = {
+  _id: string;
+  _type: "organisation";
+  title: string | null;
+  description: string | null;
+  image: string | null;
+  dominantColor: null;
+  seoImage: string | null;
+  logo: string | null;
+  date: string;
+  name: string;
+  shortName: string;
+  organisationType: "governingBody" | "league" | "other" | "sanctioningBody";
+  region: string;
 } | null;
 // Variable: queryFooterData
 // Query: *[_type == "footer" && _id == "footer"][0]{    _id,    subtitle,    columns[]{      _key,      title,      links[]{        _key,        name,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        ),      }    }  }
@@ -8390,8 +10360,11 @@ export type QueryNavbarDataResult = {
   }> | null;
 } | null;
 // Variable: querySitemapData
-// Query: {  "slugPages": *[_type == "page" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{    "slug": slug.current,    "lastModified": _updatedAt  },  "breedPages": *[_type == "breed" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
+// Query: {  "organisationIndex": *[_type == "organisationIndex"][0]{seoNoIndex},  "slugPages": *[_type == "page" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{    "slug": slug.current,    "lastModified": _updatedAt  },  "breedPages": *[_type == "breed" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "organisationPages": *[_type == "organisation" && defined(slug.current) && seoNoIndex != true]{    "slug": slug.current,    "lastModified": _updatedAt  }}
 export type QuerySitemapDataResult = {
+  organisationIndex: {
+    seoNoIndex: boolean | null;
+  } | null;
   slugPages: Array<{
     slug: string;
     lastModified: string;
@@ -8401,6 +10374,10 @@ export type QuerySitemapDataResult = {
     lastModified: string;
   }>;
   breedPages: Array<{
+    slug: string;
+    lastModified: string;
+  }>;
+  organisationPages: Array<{
     slug: string;
     lastModified: string;
   }>;
@@ -8461,7 +10438,7 @@ export type QueryRedirectsResult = Array<{
   permanent: boolean | null;
 }>;
 // Variable: queryHtmlSitemapData
-// Query: {  "pages": *[_type == "page" && defined(slug.current)] | order(title asc) {    title,    "slug": slug.current  },  "blogs": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {    title,    "slug": slug.current,    publishedAt  }}
+// Query: {  "pages": *[_type == "page" && defined(slug.current)] | order(title asc) {    title,    "slug": slug.current  },  "blogs": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {    title,    "slug": slug.current,    publishedAt  },  "organisations": *[_type == "organisation" && defined(slug.current) && seoNoIndex != true] | order(name asc) {    "title": name,    "slug": slug.current  }}
 export type QueryHtmlSitemapDataResult = {
   pages: Array<{
     title: string;
@@ -8471,6 +10448,10 @@ export type QueryHtmlSitemapDataResult = {
     title: string;
     slug: string;
     publishedAt: string | null;
+  }>;
+  organisations: Array<{
+    title: string;
+    slug: string;
   }>;
 };
 
@@ -8489,18 +10470,23 @@ declare module "@sanity/client" {
     '\n  *[_type == "breed" && defined(slug.current)].slug.current\n': QueryBreedPathsResult;
     '\n  *[_type == "breed" && seoHideFromLists != true] | order(verdictRating desc, name asc){\n    \n  _id,\n  _type,\n  name,\n  "slug": slug.current,\n  verdict,\n  verdictRating,\n  \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n  stats\n\n  }\n': QueryAllBreedsResult;
     '\n  *[_type == "breedIndex"][0]{\n    ...,\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    ...,\n    _type,\n    \n  _type == "appPromo" => {\n    _type,\n    _key,\n    "eyebrow": select(\n      useGlobalDefaults != true && defined(eyebrow) => eyebrow,\n      defined(*[_type == "settings"][0].appPromoDefaults.eyebrow) => *[_type == "settings"][0].appPromoDefaults.eyebrow,\n      null\n    ),\n    "title": select(\n      useGlobalDefaults != true && defined(title) => title,\n      defined(*[_type == "settings"][0].appPromoDefaults.title) => *[_type == "settings"][0].appPromoDefaults.title,\n      null\n    ),\n    "highlightedText": select(\n      useGlobalDefaults != true && defined(highlightedText) => highlightedText,\n      defined(*[_type == "settings"][0].appPromoDefaults.highlightedText) => *[_type == "settings"][0].appPromoDefaults.highlightedText,\n      null\n    ),\n    "description": select(\n      useGlobalDefaults != true && defined(description) => description,\n      defined(*[_type == "settings"][0].appPromoDefaults.description) => *[_type == "settings"][0].appPromoDefaults.description,\n      null\n    ),\n    "features": select(\n      useGlobalDefaults != true && count(features[]) > 0 => features[] { \n  _key,\n  title,\n  description,\n  icon\n },\n      count(*[_type == "settings"][0].appPromoDefaults.features[]) > 0 => *[_type == "settings"][0].appPromoDefaults.features[] { \n  _key,\n  title,\n  description,\n  icon\n },\n      null\n    ),\n    "socialProofText": select(\n      useGlobalDefaults != true && defined(socialProofText) => socialProofText,\n      defined(*[_type == "settings"][0].appPromoDefaults.socialProofText) => *[_type == "settings"][0].appPromoDefaults.socialProofText,\n      null\n    ),\n    "showStarRating": select(\n      useGlobalDefaults != true && defined(showStarRating) => showStarRating,\n      defined(*[_type == "settings"][0].appPromoDefaults.showStarRating) => *[_type == "settings"][0].appPromoDefaults.showStarRating,\n      false\n    ),\n    "starRating": select(\n      useGlobalDefaults != true && defined(starRating) => starRating,\n      defined(*[_type == "settings"][0].appPromoDefaults.starRating) => *[_type == "settings"][0].appPromoDefaults.starRating,\n      null\n    ),\n    "buttons": select(\n      useGlobalDefaults != true && count(buttons[]) > 0 => buttons[] { \n  text,\n  variant,\n  _key,\n  _type,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => url.internal->slug.current,\n    url.type == "external" => url.external,\n    url.href\n  )\n },\n      count(*[_type == "settings"][0].appPromoDefaults.buttons[]) > 0 => *[_type == "settings"][0].appPromoDefaults.buttons[] { \n  text,\n  variant,\n  _key,\n  _type,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => url.internal->slug.current,\n    url.type == "external" => url.external,\n    url.href\n  )\n },\n      null\n    ),\n    "platformNote": select(\n      useGlobalDefaults != true && defined(platformNote) => platformNote,\n      defined(*[_type == "settings"][0].appPromoDefaults.platformNote) => *[_type == "settings"][0].appPromoDefaults.platformNote,\n      null\n    ),\n    "phoneScreenshot": select(\n      useGlobalDefaults != true && defined(phoneScreenshot.asset) => phoneScreenshot { \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n },\n      defined(*[_type == "settings"][0].appPromoDefaults.phoneScreenshot.asset) => *[_type == "settings"][0].appPromoDefaults.phoneScreenshot { \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n },\n      null\n    ),\n    "showAppStoreButtons": select(\n      useGlobalDefaults != true && defined(showAppStoreButtons) => showAppStoreButtons,\n      defined(*[_type == "settings"][0].appPromoDefaults.showAppStoreButtons) => *[_type == "settings"][0].appPromoDefaults.showAppStoreButtons,\n      false\n    ),\n    "googlePlayUrl": select(\n      useGlobalDefaults != true && defined(googlePlayUrl) => googlePlayUrl,\n      defined(*[_type == "settings"][0].appPromoDefaults.googlePlayUrl) => *[_type == "settings"][0].appPromoDefaults.googlePlayUrl,\n      null\n    ),\n    "appStoreUrl": select(\n      useGlobalDefaults != true && defined(appStoreUrl) => appStoreUrl,\n      defined(*[_type == "settings"][0].appPromoDefaults.appStoreUrl) => *[_type == "settings"][0].appPromoDefaults.appStoreUrl,\n      null\n    ),\n    "appStoreComingSoon": select(\n      useGlobalDefaults != true && defined(appStoreComingSoon) => appStoreComingSoon,\n      false\n    )\n  }\n,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "hero" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    variant,\n    "stats": array::compact(stats[]{\n      _key,\n      value,\n      label\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    title,\n    _id,\n    _type,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n\n  })\n,\n    link{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      )\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    })\n  }\n,\n    \n  _type == "featureCardsScreenshot" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      _key,\n      title,\n      description,\n      "screenshot": screenshot {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n      },\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      )\n    })\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    "subTitle": subTitle[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    "helperText": helperText[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "textBlock" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n\n  }\n,\n    \n  _type == "testimonials" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "testimonials": array::compact(testimonials[]{\n      ...,\n      _key,\n      quote,\n      authorName,\n      authorRole,\n      rating,\n      "authorImage": authorImage {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n      }\n    })\n  }\n,\n    \n  _type == "logoCloud" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "logos": array::compact(logos[]{\n      ...,\n      _key,\n      name,\n      url,\n      "logo": logo {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n      }\n    })\n  }\n,\n    \n  _type == "statsSection" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    variant,\n    "stats": array::compact(stats[]{\n      ...,\n      _key,\n      value,\n      label,\n      description\n    })\n  }\n,\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    },\n    \n  _type == "macbookScroll" => {\n    ...,\n    eyebrow,\n    title,\n    description,\n    "screenImage": screenImage {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    },\n    showGradient\n  }\n,\n    \n  _type == "videoSection" => {\n    ...,\n    eyebrow,\n    title,\n    description,\n    videoUrl,\n    "posterImage": posterImage {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    }\n  }\n,\n    \n  _type == "latestPosts" => {\n    ...,\n    eyebrow,\n    title,\n    description,\n    postsCount,\n    showViewAll,\n    "posts": *[_type == "blog" && seoHideFromLists != true && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc)[0..6]{\n      \n  _type,\n  _id,\n  title,\n  description,\n  "slug":slug.current,\n  orderRank,\n  \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n  publishedAt,\n  \n  authors[0]->{\n    _id,\n    name,\n    position,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n  }\n\n\n    }\n  }\n,\n    \n  _type == "teamFinder" => {\n    _type,\n    _key,\n    eyebrow,\n    title,\n    description,\n    searchPlaceholder,\n    noResultsMessage\n  }\n,\n    \n  _type == "teamFinderTeaser" => {\n    _type,\n    _key,\n    eyebrow,\n    title,\n    description,\n    searchPlaceholder,\n    showStats,\n    ctaText\n  }\n\n  }\n,\n    "breeds": *[_type == "breed" && seoHideFromLists != true] | order(verdictRating desc, name asc){\n      \n  _id,\n  _type,\n  name,\n  "slug": slug.current,\n  verdict,\n  verdictRating,\n  \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n  stats\n\n    }\n  }\n': QueryBreedIndexPageDataResult;
+    '\n  *[_type == "organisation" && slug.current == $slug][0]{\n    ...,\n    \n  _id,\n  _type,\n  name,\n  shortName,\n  "slug": slug.current,\n  summary,\n  organisationType,\n  region,\n  countries,\n  "heroImage": heroImage {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    foundedYear,\n    status,\n    quickFacts,\n    officialLinks[]{_key, label, url, category, primary, verifiedAt, accessNote},\n    officialSources[]{_key, label, url, verifiedAt},\n    lastVerifiedAt,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n\n  }\n': QueryOrganisationBySlugResult;
+    '\n  *[_type == "organisation" && defined(slug.current)].slug.current\n': QueryOrganisationPathsResult;
+    '\n  *[_type == "organisation" && seoHideFromLists != true] | order(orderRank asc, name asc){\n    \n  _id,\n  _type,\n  name,\n  shortName,\n  "slug": slug.current,\n  summary,\n  organisationType,\n  region,\n  countries,\n  "heroImage": heroImage {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n  }\n': QueryAllOrganisationsResult;
+    '\n  *[_type == "organisationIndex"][0]{\n    ...,\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    ...,\n    _type,\n    \n  _type == "appPromo" => {\n    _type,\n    _key,\n    "eyebrow": select(\n      useGlobalDefaults != true && defined(eyebrow) => eyebrow,\n      defined(*[_type == "settings"][0].appPromoDefaults.eyebrow) => *[_type == "settings"][0].appPromoDefaults.eyebrow,\n      null\n    ),\n    "title": select(\n      useGlobalDefaults != true && defined(title) => title,\n      defined(*[_type == "settings"][0].appPromoDefaults.title) => *[_type == "settings"][0].appPromoDefaults.title,\n      null\n    ),\n    "highlightedText": select(\n      useGlobalDefaults != true && defined(highlightedText) => highlightedText,\n      defined(*[_type == "settings"][0].appPromoDefaults.highlightedText) => *[_type == "settings"][0].appPromoDefaults.highlightedText,\n      null\n    ),\n    "description": select(\n      useGlobalDefaults != true && defined(description) => description,\n      defined(*[_type == "settings"][0].appPromoDefaults.description) => *[_type == "settings"][0].appPromoDefaults.description,\n      null\n    ),\n    "features": select(\n      useGlobalDefaults != true && count(features[]) > 0 => features[] { \n  _key,\n  title,\n  description,\n  icon\n },\n      count(*[_type == "settings"][0].appPromoDefaults.features[]) > 0 => *[_type == "settings"][0].appPromoDefaults.features[] { \n  _key,\n  title,\n  description,\n  icon\n },\n      null\n    ),\n    "socialProofText": select(\n      useGlobalDefaults != true && defined(socialProofText) => socialProofText,\n      defined(*[_type == "settings"][0].appPromoDefaults.socialProofText) => *[_type == "settings"][0].appPromoDefaults.socialProofText,\n      null\n    ),\n    "showStarRating": select(\n      useGlobalDefaults != true && defined(showStarRating) => showStarRating,\n      defined(*[_type == "settings"][0].appPromoDefaults.showStarRating) => *[_type == "settings"][0].appPromoDefaults.showStarRating,\n      false\n    ),\n    "starRating": select(\n      useGlobalDefaults != true && defined(starRating) => starRating,\n      defined(*[_type == "settings"][0].appPromoDefaults.starRating) => *[_type == "settings"][0].appPromoDefaults.starRating,\n      null\n    ),\n    "buttons": select(\n      useGlobalDefaults != true && count(buttons[]) > 0 => buttons[] { \n  text,\n  variant,\n  _key,\n  _type,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => url.internal->slug.current,\n    url.type == "external" => url.external,\n    url.href\n  )\n },\n      count(*[_type == "settings"][0].appPromoDefaults.buttons[]) > 0 => *[_type == "settings"][0].appPromoDefaults.buttons[] { \n  text,\n  variant,\n  _key,\n  _type,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => url.internal->slug.current,\n    url.type == "external" => url.external,\n    url.href\n  )\n },\n      null\n    ),\n    "platformNote": select(\n      useGlobalDefaults != true && defined(platformNote) => platformNote,\n      defined(*[_type == "settings"][0].appPromoDefaults.platformNote) => *[_type == "settings"][0].appPromoDefaults.platformNote,\n      null\n    ),\n    "phoneScreenshot": select(\n      useGlobalDefaults != true && defined(phoneScreenshot.asset) => phoneScreenshot { \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n },\n      defined(*[_type == "settings"][0].appPromoDefaults.phoneScreenshot.asset) => *[_type == "settings"][0].appPromoDefaults.phoneScreenshot { \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n },\n      null\n    ),\n    "showAppStoreButtons": select(\n      useGlobalDefaults != true && defined(showAppStoreButtons) => showAppStoreButtons,\n      defined(*[_type == "settings"][0].appPromoDefaults.showAppStoreButtons) => *[_type == "settings"][0].appPromoDefaults.showAppStoreButtons,\n      false\n    ),\n    "googlePlayUrl": select(\n      useGlobalDefaults != true && defined(googlePlayUrl) => googlePlayUrl,\n      defined(*[_type == "settings"][0].appPromoDefaults.googlePlayUrl) => *[_type == "settings"][0].appPromoDefaults.googlePlayUrl,\n      null\n    ),\n    "appStoreUrl": select(\n      useGlobalDefaults != true && defined(appStoreUrl) => appStoreUrl,\n      defined(*[_type == "settings"][0].appPromoDefaults.appStoreUrl) => *[_type == "settings"][0].appPromoDefaults.appStoreUrl,\n      null\n    ),\n    "appStoreComingSoon": select(\n      useGlobalDefaults != true && defined(appStoreComingSoon) => appStoreComingSoon,\n      false\n    )\n  }\n,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "hero" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    variant,\n    "stats": array::compact(stats[]{\n      _key,\n      value,\n      label\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    title,\n    _id,\n    _type,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n\n  })\n,\n    link{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      )\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    })\n  }\n,\n    \n  _type == "featureCardsScreenshot" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      _key,\n      title,\n      description,\n      "screenshot": screenshot {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n      },\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      )\n    })\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    "subTitle": subTitle[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    "helperText": helperText[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "textBlock" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n\n  }\n,\n    \n  _type == "testimonials" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "testimonials": array::compact(testimonials[]{\n      ...,\n      _key,\n      quote,\n      authorName,\n      authorRole,\n      rating,\n      "authorImage": authorImage {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n      }\n    })\n  }\n,\n    \n  _type == "logoCloud" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    "logos": array::compact(logos[]{\n      ...,\n      _key,\n      name,\n      url,\n      "logo": logo {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n      }\n    })\n  }\n,\n    \n  _type == "statsSection" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": alt,\n      "caption": caption\n    },\n    _type == "break" => {\n      _type,\n      _key,\n      style\n    },\n    _type == "blockquote" => {\n      _type,\n      _key,\n      quote,\n      attribution,\n      source\n    },\n    _type == "codeBlock" => {\n      _type,\n      _key,\n      code,\n      language,\n      filename,\n      highlightLines\n    },\n    _type == "table" => {\n      _type,\n      _key,\n      rows\n    },\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    }\n  }\n,\n    variant,\n    "stats": array::compact(stats[]{\n      ...,\n      _key,\n      value,\n      label,\n      description\n    })\n  }\n,\n    _type == "sponsorPlacement" => {\n      _type,\n      _key,\n      placementId,\n      "sponsor": sponsor->{\n        _id,\n        name,\n        "campaignId": campaignId.current,\n        status,\n        startsAt,\n        endsAt,\n        destinationUrl,\n        supportingCopy,\n        ctaLabel,\n        discountCode,\n        desktopImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        },\n        mobileImage {\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n        }\n      }\n    },\n    \n  _type == "macbookScroll" => {\n    ...,\n    eyebrow,\n    title,\n    description,\n    "screenImage": screenImage {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    },\n    showGradient\n  }\n,\n    \n  _type == "videoSection" => {\n    ...,\n    eyebrow,\n    title,\n    description,\n    videoUrl,\n    "posterImage": posterImage {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    }\n  }\n,\n    \n  _type == "latestPosts" => {\n    ...,\n    eyebrow,\n    title,\n    description,\n    postsCount,\n    showViewAll,\n    "posts": *[_type == "blog" && seoHideFromLists != true && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc)[0..6]{\n      \n  _type,\n  _id,\n  title,\n  description,\n  "slug":slug.current,\n  orderRank,\n  \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n  publishedAt,\n  \n  authors[0]->{\n    _id,\n    name,\n    position,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n  }\n\n\n    }\n  }\n,\n    \n  _type == "teamFinder" => {\n    _type,\n    _key,\n    eyebrow,\n    title,\n    description,\n    searchPlaceholder,\n    noResultsMessage\n  }\n,\n    \n  _type == "teamFinderTeaser" => {\n    _type,\n    _key,\n    eyebrow,\n    title,\n    description,\n    searchPlaceholder,\n    showStats,\n    ctaText\n  }\n\n  }\n,\n    "organisations": *[_type == "organisation" && seoHideFromLists != true] | order(name asc) {\n      \n  _id,\n  _type,\n  name,\n  shortName,\n  "slug": slug.current,\n  summary,\n  organisationType,\n  region,\n  countries,\n  "heroImage": heroImage {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n    }\n  }\n': QueryOrganisationIndexPageDataResult;
     '\n  *[_type == "blog"\n    && _id != $currentId\n    && seoHideFromLists != true\n    && defined(publishedAt)\n    && publishedAt <= now()\n  ] | order(publishedAt desc) {\n    \n  _type,\n  _id,\n  title,\n  description,\n  "slug":slug.current,\n  orderRank,\n  \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n  publishedAt,\n  \n  authors[0]->{\n    _id,\n    name,\n    position,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n  }\n\n\n  }\n': QueryRelatedPostsResult;
     '\n  *[_type == "homePage" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n\n  }\n  ': QueryHomePageOGDataResult;
     '\n  *[_type == "page" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n\n  }\n': QuerySlugPageOGDataResult;
     '\n  *[_type == "blog" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n\n  }\n': QueryBlogPageOGDataResult;
     '\n  *[ defined(slug.current) && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n\n  }\n': QueryGenericPageOGDataResult;
     '\n  *[_type == "breed" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n,\n    "title": select(\n      defined(ogTitle) => ogTitle,\n      defined(seoTitle) => seoTitle,\n      name + " - Flyball Breed Guide"\n    ),\n    "description": select(\n      defined(ogDescription) => ogDescription,\n      defined(seoDescription) => seoDescription,\n      defined(verdict) => verdict,\n      "Breed guide for flyball suitability, training fit and team role."\n    ),\n    name,\n    verdict,\n    verdictRating,\n    stats\n  }\n': QueryBreedPageOGDataResult;
+    '\n  *[_type == "organisation" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n,\n    "title": select(\n      defined(ogTitle) => ogTitle,\n      defined(seoTitle) => seoTitle,\n      name + " (" + shortName + ") - Flyball Organisation"\n    ),\n    "description": select(\n      defined(ogDescription) => ogDescription,\n      defined(seoDescription) => seoDescription,\n      summary\n    ),\n    name,\n    shortName,\n    organisationType,\n    region\n  }\n': QueryOrganisationPageOGDataResult;
     '\n  *[_type == "footer" && _id == "footer"][0]{\n    _id,\n    subtitle,\n    columns[]{\n      _key,\n      title,\n      links[]{\n        _key,\n        name,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        ),\n      }\n    }\n  }\n': QueryFooterDataResult;
     '\n  *[_type == "navbar" && _id == "navbar"][0]{\n    _id,\n    columns[]{\n      _key,\n      _type == "navbarColumn" => {\n        "type": "column",\n        title,\n        links[]{\n          _key,\n          name,\n          icon,\n          description,\n          "openInNewTab": url.openInNewTab,\n          "href": select(\n            url.type == "internal" => url.internal->slug.current,\n            url.type == "external" => url.external,\n            url.href\n          )\n        }\n      },\n      _type == "navbarLink" => {\n        "type": "link",\n        name,\n        description,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    },\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n': QueryNavbarDataResult;
-    '{\n  "slugPages": *[_type == "page" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "breedPages": *[_type == "breed" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}': QuerySitemapDataResult;
+    '{\n  "organisationIndex": *[_type == "organisationIndex"][0]{seoNoIndex},\n  "slugPages": *[_type == "page" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "breedPages": *[_type == "breed" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "organisationPages": *[_type == "organisation" && defined(slug.current) && seoNoIndex != true]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}': QuerySitemapDataResult;
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    siteTitle,\n    logo {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    },\n    siteDescription,\n    showFooter,\n    socialLinks{\n      linkedin,\n      facebook,\n      twitter,\n      instagram,\n      youtube\n    }\n  }\n': QueryGlobalSeoSettingsResult;
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    siteTitle,\n    siteDescription,\n    "logo": logo.asset->url + "?w=80&h=40&dpr=3&fit=max",\n    "socialLinks": socialLinks,\n    "contactEmail": contactEmail,\n  }\n': QuerySettingsDataResult;
     '\n  *[_type == "redirect"]{\n    "source":source.current,\n    "destination":destination.current,\n    permanent\n  }\n': QueryRedirectsResult;
-    '{\n  "pages": *[_type == "page" && defined(slug.current)] | order(title asc) {\n    title,\n    "slug": slug.current\n  },\n  "blogs": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {\n    title,\n    "slug": slug.current,\n    publishedAt\n  }\n}': QueryHtmlSitemapDataResult;
+    '{\n  "pages": *[_type == "page" && defined(slug.current)] | order(title asc) {\n    title,\n    "slug": slug.current\n  },\n  "blogs": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {\n    title,\n    "slug": slug.current,\n    publishedAt\n  },\n  "organisations": *[_type == "organisation" && defined(slug.current) && seoNoIndex != true] | order(name asc) {\n    "title": name,\n    "slug": slug.current\n  }\n}': QueryHtmlSitemapDataResult;
   }
 }

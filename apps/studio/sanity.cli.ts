@@ -32,6 +32,7 @@ export default defineCliConfig({
   },
   studioHost: getStudioHost(),
   deployment: {
+    appId: "ll9q4b967dfr2nshjnmbwerl",
     autoUpdates: false,
   },
 });

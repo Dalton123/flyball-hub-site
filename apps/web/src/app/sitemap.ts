@@ -15,8 +15,13 @@ const baseUrl = getBaseUrl();
 const supplementalIndexableSlugs = ["/blog/best-flirt-poles"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { slugPages, blogPages, breedPages } =
-    await client.fetch(querySitemapData);
+  const {
+    slugPages,
+    blogPages,
+    breedPages,
+    organisationPages,
+    organisationIndex,
+  } = await client.fetch(querySitemapData);
   const entries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -42,6 +47,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    ...(!organisationIndex?.seoNoIndex
+      ? [
+          {
+            url: `${baseUrl}/organisations`,
+            lastModified: new Date(),
+            changeFrequency: "weekly" as const,
+            priority: 0.9,
+          },
+        ]
+      : []),
     ...(slugPages as SitemapPage[]).map((page) => ({
       url: `${baseUrl}${page.slug}`,
       lastModified: new Date(page.lastModified ?? new Date()),
@@ -55,6 +70,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })),
     ...(breedPages as SitemapPage[]).map((page) => ({
+      url: `${baseUrl}${page.slug}`,
+      lastModified: new Date(page.lastModified ?? new Date()),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...(organisationPages as SitemapPage[]).map((page) => ({
       url: `${baseUrl}${page.slug}`,
       lastModified: new Date(page.lastModified ?? new Date()),
       changeFrequency: "monthly" as const,
