@@ -830,6 +830,25 @@ export const queryFooterData = defineQuery(`
   }
 `);
 
+export const querySitewideSponsors = defineQuery(`
+  *[
+    _type == "sponsor" &&
+    status == "live" &&
+    sitewideSupport == true &&
+    endsAt >= now()
+  ] | order(coalesce(sitewidePriority, 0) desc, startsAt desc, _id asc){
+    _id,
+    name,
+    "campaignId": campaignId.current,
+    status,
+    startsAt,
+    endsAt,
+    destinationUrl,
+    ctaLabel,
+    discountCode
+  }
+`);
+
 export const queryNavbarData = defineQuery(`
   *[_type == "navbar" && _id == "navbar"][0]{
     _id,

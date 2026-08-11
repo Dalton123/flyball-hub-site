@@ -8814,6 +8814,20 @@
         },
         "optional": false
       },
+      "sitewideSupport": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
+      },
+      "sitewidePriority": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "startsAt": {
         "type": "objectAttribute",
         "value": {
