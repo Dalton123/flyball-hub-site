@@ -1,8 +1,13 @@
 import Link from "next/link";
 import Script from "next/script";
 
+import { SponsorSupportStrip } from "@/components/elements/sponsor-support-strip";
 import { sanityFetch } from "@/lib/sanity/live";
-import { queryFooterData, queryGlobalSeoSettings } from "@/lib/sanity/query";
+import {
+  queryActiveSponsor,
+  queryFooterData,
+  queryGlobalSeoSettings,
+} from "@/lib/sanity/query";
 import type {
   QueryFooterDataResult,
   QueryGlobalSeoSettingsResult,
@@ -27,12 +32,15 @@ interface FooterProps {
 }
 
 export async function FooterServer() {
-  const [response, settingsResponse] = await Promise.all([
+  const [response, settingsResponse, sponsorResponse] = await Promise.all([
     sanityFetch({
       query: queryFooterData,
     }),
     sanityFetch({
       query: queryGlobalSeoSettings,
+    }),
+    sanityFetch({
+      query: queryActiveSponsor,
     }),
   ]);
 
@@ -43,7 +51,14 @@ export async function FooterServer() {
     return null;
   }
 
-  return <Footer data={response.data} settingsData={settingsResponse.data} />;
+  const sponsor = sponsorResponse.data;
+
+  return (
+    <>
+      {sponsor && <SponsorSupportStrip sponsor={sponsor} />}
+      <Footer data={response.data} settingsData={settingsResponse.data} />
+    </>
+  );
 }
 
 function SocialLinks({ data }: SocialLinksProps) {

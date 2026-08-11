@@ -755,6 +755,32 @@ export const queryFooterData = defineQuery(`
   }
 `);
 
+export const queryActiveSponsor = defineQuery(`
+  *[
+    _type == "sponsor" &&
+    status == "live" &&
+    startsAt <= now() &&
+    endsAt >= now()
+  ] | order(startsAt desc)[0]{
+    _id,
+    name,
+    "campaignId": campaignId.current,
+    status,
+    startsAt,
+    endsAt,
+    destinationUrl,
+    supportingCopy,
+    ctaLabel,
+    discountCode,
+    desktopImage {
+      ${imageFields}
+    },
+    mobileImage {
+      ${imageFields}
+    }
+  }
+`);
+
 export const queryNavbarData = defineQuery(`
   *[_type == "navbar" && _id == "navbar"][0]{
     _id,
