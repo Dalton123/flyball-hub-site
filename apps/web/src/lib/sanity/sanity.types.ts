@@ -1219,6 +1219,8 @@ export type Sponsor = {
   name: string;
   campaignId: Slug;
   status: "draft" | "live" | "ended";
+  sitewideSupport?: boolean;
+  sitewidePriority?: number;
   startsAt: string;
   endsAt: string;
   destinationUrl: string;
@@ -8353,9 +8355,9 @@ export type QueryFooterDataResult = {
     }> | null;
   }> | null;
 } | null;
-// Variable: queryActiveSponsor
-// Query: *[    _type == "sponsor" &&    status == "live" &&    startsAt <= now() &&    endsAt >= now()  ] | order(startsAt desc)[0]{    _id,    name,    "campaignId": campaignId.current,    status,    startsAt,    endsAt,    destinationUrl,    supportingCopy,    ctaLabel,    discountCode,    desktopImage {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }    },    mobileImage {        "id": asset._ref,  "preview": asset->metadata.lqip,  "alt": alt,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }    }  }
-export type QueryActiveSponsorResult = {
+// Variable: querySitewideSponsors
+// Query: *[    _type == "sponsor" &&    status == "live" &&    sitewideSupport == true &&    endsAt >= now()  ] | order(coalesce(sitewidePriority, 0) desc, startsAt desc, _id asc){    _id,    name,    "campaignId": campaignId.current,    status,    startsAt,    endsAt,    destinationUrl,    ctaLabel,    discountCode  }
+export type QuerySitewideSponsorsResult = Array<{
   _id: string;
   name: string;
   campaignId: string;
@@ -8363,40 +8365,9 @@ export type QueryActiveSponsorResult = {
   startsAt: string;
   endsAt: string;
   destinationUrl: string;
-  supportingCopy: string | null;
   ctaLabel: string;
   discountCode: string | null;
-  desktopImage: {
-    id: string | null;
-    preview: string | null;
-    alt: string;
-    hotspot: {
-      x: number;
-      y: number;
-    } | null;
-    crop: {
-      bottom: number;
-      left: number;
-      right: number;
-      top: number;
-    } | null;
-  };
-  mobileImage: {
-    id: string | null;
-    preview: string | null;
-    alt: string;
-    hotspot: {
-      x: number;
-      y: number;
-    } | null;
-    crop: {
-      bottom: number;
-      left: number;
-      right: number;
-      top: number;
-    } | null;
-  };
-} | null;
+}>;
 // Variable: queryNavbarData
 // Query: *[_type == "navbar" && _id == "navbar"][0]{    _id,    columns[]{      _key,      _type == "navbarColumn" => {        "type": "column",        title,        links[]{          _key,          name,          icon,          description,          "openInNewTab": url.openInNewTab,          "href": select(            url.type == "internal" => url.internal->slug.current,            url.type == "external" => url.external,            url.href          )        }      },      _type == "navbarLink" => {        "type": "link",        name,        description,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  }
 export type QueryNavbarDataResult = {
@@ -8540,7 +8511,7 @@ declare module "@sanity/client" {
     '\n  *[ defined(slug.current) && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n\n  }\n': QueryGenericPageOGDataResult;
     '\n  *[_type == "breed" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    title\n  ),\n  "description": select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    description\n  ),\n  "image": coalesce(\n    seoImage.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86",\n    image.asset->url + "?w=860&h=860&fit=crop&auto=format&q=86"\n  ),\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&fit=fill&bg=fbf2d6&fm=jpg&q=85",\n  "logo": *[_type == "settings"][0].logo.asset->url + "?w=120&h=120&fit=max&auto=format&q=90",\n  "date": coalesce(date, publishedAt, _createdAt)\n,\n    "title": select(\n      defined(ogTitle) => ogTitle,\n      defined(seoTitle) => seoTitle,\n      name + " - Flyball Breed Guide"\n    ),\n    "description": select(\n      defined(ogDescription) => ogDescription,\n      defined(seoDescription) => seoDescription,\n      defined(verdict) => verdict,\n      "Breed guide for flyball suitability, training fit and team role."\n    ),\n    name,\n    verdict,\n    verdictRating,\n    stats\n  }\n': QueryBreedPageOGDataResult;
     '\n  *[_type == "footer" && _id == "footer"][0]{\n    _id,\n    subtitle,\n    columns[]{\n      _key,\n      title,\n      links[]{\n        _key,\n        name,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        ),\n      }\n    }\n  }\n': QueryFooterDataResult;
-    '\n  *[\n    _type == "sponsor" &&\n    status == "live" &&\n    startsAt <= now() &&\n    endsAt >= now()\n  ] | order(startsAt desc)[0]{\n    _id,\n    name,\n    "campaignId": campaignId.current,\n    status,\n    startsAt,\n    endsAt,\n    destinationUrl,\n    supportingCopy,\n    ctaLabel,\n    discountCode,\n    desktopImage {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    },\n    mobileImage {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    }\n  }\n': QueryActiveSponsorResult;
+    '\n  *[\n    _type == "sponsor" &&\n    status == "live" &&\n    sitewideSupport == true &&\n    endsAt >= now()\n  ] | order(coalesce(sitewidePriority, 0) desc, startsAt desc, _id asc){\n    _id,\n    name,\n    "campaignId": campaignId.current,\n    status,\n    startsAt,\n    endsAt,\n    destinationUrl,\n    ctaLabel,\n    discountCode\n  }\n': QuerySitewideSponsorsResult;
     '\n  *[_type == "navbar" && _id == "navbar"][0]{\n    _id,\n    columns[]{\n      _key,\n      _type == "navbarColumn" => {\n        "type": "column",\n        title,\n        links[]{\n          _key,\n          name,\n          icon,\n          description,\n          "openInNewTab": url.openInNewTab,\n          "href": select(\n            url.type == "internal" => url.internal->slug.current,\n            url.type == "external" => url.external,\n            url.href\n          )\n        }\n      },\n      _type == "navbarLink" => {\n        "type": "link",\n        name,\n        description,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    },\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n': QueryNavbarDataResult;
     '{\n  "slugPages": *[_type == "page" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "blogPages": *[_type == "blog" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "breedPages": *[_type == "breed" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}': QuerySitemapDataResult;
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    siteTitle,\n    logo {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  "alt": alt,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n    },\n    siteDescription,\n    showFooter,\n    socialLinks{\n      linkedin,\n      facebook,\n      twitter,\n      instagram,\n      youtube\n    }\n  }\n': QueryGlobalSeoSettingsResult;

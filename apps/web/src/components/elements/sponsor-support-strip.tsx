@@ -13,49 +13,80 @@ const PLACEMENT_ID = "sitewide-footer-supporter";
 const MAX_TIMEOUT_MS = 2_147_000_000;
 
 interface SponsorSupportStripProps {
-  sponsor: SponsorCampaign;
+  sponsors: SponsorCampaign[];
+  initialTime: number;
 }
 
-export function SponsorSupportStrip({ sponsor }: SponsorSupportStripProps) {
+function isActiveCampaign(sponsor: SponsorCampaign, campaignTime: number) {
+  if (sponsor.status !== "live" || !sponsor.startsAt || !sponsor.endsAt) {
+    return false;
+  }
+
+  const startsAt = Date.parse(sponsor.startsAt);
+  const endsAt = Date.parse(sponsor.endsAt);
+
+  return (
+    Number.isFinite(startsAt) &&
+    Number.isFinite(endsAt) &&
+    campaignTime >= startsAt &&
+    campaignTime <= endsAt
+  );
+}
+
+export function SponsorSupportStrip({
+  sponsors,
+  initialTime,
+}: SponsorSupportStripProps) {
   const stripRef = useRef<HTMLElement>(null);
   const impressionSent = useRef(false);
-  const [campaignTime, setCampaignTime] = useState(() => Date.now());
+  const [campaignTime, setCampaignTime] = useState(initialTime);
+  const sponsor = useMemo(
+    () =>
+      sponsors.find((candidate) => isActiveCampaign(candidate, campaignTime)),
+    [campaignTime, sponsors],
+  );
   const value = useMemo(
     () => ({ placementId: PLACEMENT_ID, sponsor }),
     [sponsor],
   );
 
-  const isLive = useMemo(() => {
-    if (sponsor.status !== "live" || !sponsor.startsAt || !sponsor.endsAt) {
-      return false;
-    }
-
-    const startsAt = Date.parse(sponsor.startsAt);
-    const endsAt = Date.parse(sponsor.endsAt);
-
-    return (
-      Number.isFinite(startsAt) &&
-      Number.isFinite(endsAt) &&
-      campaignTime >= startsAt &&
-      campaignTime <= endsAt
-    );
-  }, [campaignTime, sponsor.endsAt, sponsor.startsAt, sponsor.status]);
+  useEffect(() => {
+    setCampaignTime(Date.now());
+  }, [sponsors]);
 
   useEffect(() => {
-    if (!isLive || !sponsor.endsAt) return;
+    const now = Date.now();
+    const boundaries = sponsors.flatMap((candidate) => {
+      const startsAt = candidate.startsAt
+        ? Date.parse(candidate.startsAt)
+        : NaN;
+      const endsAt = candidate.endsAt
+        ? Date.parse(candidate.endsAt) + 1_000
+        : NaN;
 
-    const remainingMs = Date.parse(sponsor.endsAt) - Date.now() + 1_000;
+      return [startsAt, endsAt].filter(
+        (boundary) => Number.isFinite(boundary) && boundary > now,
+      );
+    });
+    const nextBoundary = boundaries.length ? Math.min(...boundaries) : null;
+
+    if (nextBoundary === null) return;
+
     const timeoutId = window.setTimeout(
       () => setCampaignTime(Date.now()),
-      Math.min(Math.max(remainingMs, 0), MAX_TIMEOUT_MS),
+      Math.min(Math.max(nextBoundary - now, 0), MAX_TIMEOUT_MS),
     );
 
     return () => window.clearTimeout(timeoutId);
-  }, [campaignTime, isLive, sponsor.endsAt]);
+  }, [campaignTime, sponsors]);
+
+  useEffect(() => {
+    impressionSent.current = false;
+  }, [sponsor?._id]);
 
   useEffect(() => {
     const strip = stripRef.current;
-    if (!isLive || !strip || impressionSent.current) return;
+    if (!sponsor || !strip || impressionSent.current) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -79,11 +110,10 @@ export function SponsorSupportStrip({ sponsor }: SponsorSupportStripProps) {
 
     observer.observe(strip);
     return () => observer.disconnect();
-  }, [isLive, value]);
+  }, [sponsor, value]);
 
   if (
-    !isLive ||
-    !sponsor._id ||
+    !sponsor?._id ||
     !sponsor.name ||
     !sponsor.campaignId ||
     !sponsor.destinationUrl

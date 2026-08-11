@@ -755,13 +755,13 @@ export const queryFooterData = defineQuery(`
   }
 `);
 
-export const queryActiveSponsor = defineQuery(`
+export const querySitewideSponsors = defineQuery(`
   *[
     _type == "sponsor" &&
     status == "live" &&
-    startsAt <= now() &&
+    sitewideSupport == true &&
     endsAt >= now()
-  ] | order(startsAt desc)[0]{
+  ] | order(coalesce(sitewidePriority, 0) desc, startsAt desc, _id asc){
     _id,
     name,
     "campaignId": campaignId.current,
@@ -769,15 +769,8 @@ export const queryActiveSponsor = defineQuery(`
     startsAt,
     endsAt,
     destinationUrl,
-    supportingCopy,
     ctaLabel,
-    discountCode,
-    desktopImage {
-      ${imageFields}
-    },
-    mobileImage {
-      ${imageFields}
-    }
+    discountCode
   }
 `);
 

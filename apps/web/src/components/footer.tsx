@@ -4,9 +4,9 @@ import Script from "next/script";
 import { SponsorSupportStrip } from "@/components/elements/sponsor-support-strip";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
-  queryActiveSponsor,
   queryFooterData,
   queryGlobalSeoSettings,
+  querySitewideSponsors,
 } from "@/lib/sanity/query";
 import type {
   QueryFooterDataResult,
@@ -40,7 +40,7 @@ export async function FooterServer() {
       query: queryGlobalSeoSettings,
     }),
     sanityFetch({
-      query: queryActiveSponsor,
+      query: querySitewideSponsors,
     }),
   ]);
 
@@ -51,11 +51,13 @@ export async function FooterServer() {
     return null;
   }
 
-  const sponsor = sponsorResponse.data;
+  const sponsors = sponsorResponse.data;
 
   return (
     <>
-      {sponsor && <SponsorSupportStrip sponsor={sponsor} />}
+      {sponsors?.length ? (
+        <SponsorSupportStrip sponsors={sponsors} initialTime={Date.now()} />
+      ) : null}
       <Footer data={response.data} settingsData={settingsResponse.data} />
     </>
   );

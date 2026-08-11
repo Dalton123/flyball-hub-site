@@ -40,6 +40,24 @@ export const sponsor = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "sitewideSupport",
+      title: "Show Sitewide Support Strip",
+      type: "boolean",
+      description:
+        "Opt this campaign into the compact Sponsored strip above the standard footer. Leave disabled for contextual-only campaigns.",
+      initialValue: false,
+    }),
+    defineField({
+      name: "sitewidePriority",
+      title: "Sitewide Priority",
+      type: "number",
+      description:
+        "Higher values win if multiple eligible sitewide campaigns overlap. Defaults to 0.",
+      initialValue: 0,
+      hidden: ({ document }) => document?.sitewideSupport !== true,
+      validation: (Rule) => Rule.integer().min(0),
+    }),
+    defineField({
       name: "startsAt",
       title: "Starts At",
       type: "datetime",
