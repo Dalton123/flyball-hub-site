@@ -9,6 +9,12 @@ import {
 } from "next-sanity";
 import type { ReactNode } from "react";
 
+import {
+  getExternalLinkRel,
+  isTrackableAffiliateLink,
+  trackAffiliateClick,
+  type GtagEventSender,
+} from "@/lib/affiliate-tracking";
 import { parseChildrenToSlug } from "@/utils";
 
 // Skeleton for code block loading state
@@ -78,6 +84,16 @@ function hasRenderableChildren(children: ReactNode): boolean {
   }
 
   return children != null && children !== false;
+}
+
+function linkText(children: ReactNode): string {
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children);
+  }
+  if (Array.isArray(children)) {
+    return children.map(linkText).join("");
+  }
+  return "";
 }
 
 const components: Partial<PortableTextReactComponents> = {
@@ -187,13 +203,38 @@ const components: Partial<PortableTextReactComponents> = {
         );
       }
       if (!hasRenderableChildren(children)) return null;
+
+      const isTrackedAffiliate = isTrackableAffiliateLink({
+        href: value.href,
+        isAffiliate: value.isAffiliate,
+        affiliateProgram: value.affiliateProgram,
+        affiliateMerchant: value.affiliateMerchant,
+        affiliatePlacementId: value.affiliatePlacementId,
+      });
+
       return (
         <Link
           className="text-primary underline decoration-primary/40 decoration-2 underline-offset-2 transition-all duration-200 hover:decoration-primary hover:decoration-[3px]"
           href={value.href}
           prefetch={false}
           target={value.openInNewTab ? "_blank" : "_self"}
-          rel={value.openInNewTab ? "noopener noreferrer" : undefined}
+          rel={getExternalLinkRel({
+            isAffiliate: isTrackedAffiliate,
+            openInNewTab: value.openInNewTab === true,
+          })}
+          onClick={() => {
+            if (!isTrackedAffiliate) return;
+
+            const gtag = (window as Window & { gtag?: GtagEventSender }).gtag;
+            trackAffiliateClick(gtag, {
+              affiliateProgram: value.affiliateProgram,
+              affiliateMerchant: value.affiliateMerchant,
+              affiliatePlacementId: value.affiliatePlacementId,
+              linkText: linkText(children).trim() || value.affiliateMerchant,
+              linkUrl: value.href,
+              pagePath: window.location.pathname,
+            });
+          }}
         >
           {children}
         </Link>

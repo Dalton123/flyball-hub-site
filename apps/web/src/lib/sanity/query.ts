@@ -25,6 +25,10 @@ const imageFragment = /* groq */ `
 const customLinkFragment = /* groq */ `
   ...customLink{
     openInNewTab,
+    isAffiliate,
+    affiliateProgram,
+    affiliateMerchant,
+    affiliatePlacementId,
     "href": select(
       type == "internal" => internal->slug.current,
       type == "external" => external,

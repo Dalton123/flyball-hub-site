@@ -5022,6 +5022,52 @@
           },
           "optional": true
         },
+        "isAffiliate": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        },
+        "affiliateProgram": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "awin"
+              },
+              {
+                "type": "string",
+                "value": "amazon"
+              },
+              {
+                "type": "string",
+                "value": "direct"
+              },
+              {
+                "type": "string",
+                "value": "other"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "affiliateMerchant": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "affiliatePlacementId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
         "href": {
           "type": "objectAttribute",
           "value": {

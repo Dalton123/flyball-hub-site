@@ -12,6 +12,13 @@ const allLinkableTypes = [
   { type: "page" },
 ];
 
+interface AffiliateLinkParent {
+  type?: string;
+  external?: string;
+  isAffiliate?: boolean;
+  affiliateProgram?: string;
+}
+
 // Shared preview configuration for URL types
 const urlPreview = {
   select: {
@@ -85,6 +92,87 @@ export const customUrl = defineType({
           return true;
         }),
       ],
+    }),
+    defineField({
+      name: "isAffiliate",
+      title: "Affiliate link",
+      type: "boolean",
+      description:
+        "Enable this only when Flyball Hub may earn commission from this link.",
+      initialValue: () => false,
+      hidden: ({ parent }) => parent?.type !== "external",
+      validation: (Rule) =>
+        Rule.custom((value, { parent }) => {
+          const link = parent as AffiliateLinkParent;
+          return value === true && link.type !== "external"
+            ? "Affiliate links must use an external URL"
+            : true;
+        }),
+    }),
+    defineField({
+      name: "affiliateProgram",
+      title: "Affiliate programme",
+      type: "string",
+      options: {
+        list: [
+          { title: "Awin", value: "awin" },
+          { title: "Amazon Associates", value: "amazon" },
+          { title: "Direct programme", value: "direct" },
+          { title: "Other", value: "other" },
+        ],
+      },
+      hidden: ({ parent }) => !parent?.isAffiliate,
+      validation: (Rule) =>
+        Rule.custom((value, { parent }) => {
+          const link = parent as AffiliateLinkParent;
+          return link.isAffiliate && !value
+            ? "Select the affiliate programme"
+            : true;
+        }),
+    }),
+    defineField({
+      name: "affiliateMerchant",
+      title: "Affiliate merchant",
+      type: "string",
+      description: "Use the advertiser name shown by the affiliate programme.",
+      hidden: ({ parent }) => !parent?.isAffiliate,
+      validation: (Rule) =>
+        Rule.custom((value, { parent }) => {
+          const link = parent as AffiliateLinkParent;
+          return link.isAffiliate && !value?.trim()
+            ? "Enter the affiliate merchant"
+            : true;
+        }),
+    }),
+    defineField({
+      name: "affiliatePlacementId",
+      title: "Affiliate placement ID",
+      type: "string",
+      description:
+        "Stable page and placement reference. For Awin, use the same value in clickref.",
+      hidden: ({ parent }) => !parent?.isAffiliate,
+      validation: (Rule) =>
+        Rule.custom((value, { parent }) => {
+          const link = parent as AffiliateLinkParent;
+          if (!link.isAffiliate) return true;
+          if (!value?.trim()) return "Enter a stable affiliate placement ID";
+          if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
+            return "Use lowercase letters, numbers and single hyphens only";
+          }
+          if (link.affiliateProgram === "awin" && link.external) {
+            try {
+              const clickRef = new URL(link.external).searchParams.get(
+                "clickref",
+              );
+              if (clickRef !== value) {
+                return "For Awin links, clickref must match this placement ID";
+              }
+            } catch {
+              return "Enter a valid Awin tracking URL";
+            }
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "href",
