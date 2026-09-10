@@ -3,7 +3,7 @@
 import { useOptimistic } from "@sanity/visual-editing/react";
 import dynamic from "next/dynamic";
 import { createDataAttribute } from "next-sanity";
-import { useCallback, useMemo } from "react";
+import { Fragment, type ReactNode, useCallback, useMemo } from "react";
 
 import { dataset, projectId, studioUrl } from "@/config";
 import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
@@ -141,6 +141,8 @@ export interface PageBuilderProps {
   readonly pageBuilder?: PageBuilderBlock[];
   readonly id: string;
   readonly type: string;
+  readonly as?: "main" | "div";
+  readonly afterBlock?: { key: string; content: ReactNode };
 }
 
 interface PageData {
@@ -308,6 +310,8 @@ export function PageBuilder({
   pageBuilder: initialBlocks = [],
   id,
   type,
+  as: Container = "main",
+  afterBlock,
 }: PageBuilderProps) {
   const blocks = useOptimisticPageBuilder(initialBlocks, id);
   const { renderBlock } = useBlockRenderer(id, type);
@@ -322,13 +326,18 @@ export function PageBuilder({
   }
 
   return (
-    <main
-      id="main-content"
+    <Container
+      id={Container === "main" ? "main-content" : undefined}
       className="flex flex-col bg-background"
       data-sanity={containerDataAttribute}
-      aria-label="Page content"
+      aria-label={Container === "main" ? "Page content" : undefined}
     >
-      {blocks.map(renderBlock)}
-    </main>
+      {blocks.map((block, index) => (
+        <Fragment key={`${block._type}-${block._key}`}>
+          {renderBlock(block, index)}
+          {afterBlock?.key === block._key && afterBlock.content}
+        </Fragment>
+      ))}
+    </Container>
   );
 }

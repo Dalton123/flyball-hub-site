@@ -1,4 +1,5 @@
-// import { PageBuilder } from "@/components/pagebuilder";
+import Link from "next/link";
+
 import { PageBuilder } from "@/components/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryHomePageData } from "@/lib/sanity/query";
@@ -39,5 +40,41 @@ export default async function Page() {
 
   const { _id, _type, pageBuilder } = homePageData ?? {};
 
-  return <PageBuilder pageBuilder={pageBuilder ?? []} id={_id} type={_type} />;
+  const blocks = pageBuilder ?? [];
+  const productBlock = blocks.find((block) => block._type === "appPromo");
+  const pricingLink = (
+    <section
+      className="container mx-auto px-4 pb-8 md:px-6"
+      aria-label="App pricing"
+    >
+      <div className="rounded-2xl border bg-muted/30 p-6 text-center">
+        <h2 className="text-xl font-semibold">
+          Find the right plan for your team
+        </h2>
+        <p className="mt-2 text-muted-foreground">
+          Compare free and Premium app features.
+        </p>
+        <Link
+          href="/pricing"
+          className="mt-4 inline-block rounded-md font-semibold text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"
+        >
+          Compare plans and pricing
+        </Link>
+      </div>
+    </section>
+  );
+
+  return blocks.length ? (
+    <PageBuilder
+      pageBuilder={blocks}
+      id={_id}
+      type={_type}
+      afterBlock={{
+        key: (productBlock ?? blocks[blocks.length - 1])!._key,
+        content: pricingLink,
+      }}
+    />
+  ) : (
+    <main id="main-content">{pricingLink}</main>
+  );
 }

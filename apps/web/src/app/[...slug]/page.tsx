@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { PageBuilder } from "@/components/pagebuilder";
+import { getMarketingPageTitle } from "@/lib/marketing-page-title";
 import { client } from "@/lib/sanity/client";
 import { sanityFetch } from "@/lib/sanity/live";
 import { querySlugPageData, querySlugPagePaths } from "@/lib/sanity/query";
@@ -36,7 +37,11 @@ export async function generateMetadata({
   return getSEOMetadata(
     pageData
       ? {
-          title: pageData?.seoTitle ?? pageData?.title ?? "",
+          title: getMarketingPageTitle(
+            slugString,
+            pageData?.seoTitle,
+            pageData?.title,
+          ),
           description: pageData?.seoDescription ?? pageData?.description ?? "",
           slug: pageData?.slug,
           contentId: pageData?._id,
@@ -66,7 +71,9 @@ export default async function SlugPage({
   }
 
   const { title, pageBuilder, _id, _type } = pageData ?? {};
-  const hasHeroBlock = Array.isArray(pageBuilder) && pageBuilder.some((block: { _type: string }) => block._type === "hero");
+  const hasHeroBlock =
+    Array.isArray(pageBuilder) &&
+    pageBuilder.some((block: { _type: string }) => block._type === "hero");
 
   return !Array.isArray(pageBuilder) || pageBuilder?.length === 0 ? (
     <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-4">
@@ -77,9 +84,7 @@ export default async function SlugPage({
     </div>
   ) : (
     <>
-      {!hasHeroBlock && title && (
-        <h1 className="sr-only">{title}</h1>
-      )}
+      {!hasHeroBlock && title && <h1 className="sr-only">{title}</h1>}
       <PageBuilder pageBuilder={pageBuilder} id={_id} type={_type} />
     </>
   );

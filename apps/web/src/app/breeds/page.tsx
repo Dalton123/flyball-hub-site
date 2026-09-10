@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
-
 import { Badge } from "@workspace/ui/components/badge";
+import type { Metadata } from "next";
 
 import { BreedGrid } from "@/components/breed-grid";
 import { BreedTraits } from "@/components/breed-traits";
+import { BackgroundPattern } from "@/components/elements/background-pattern";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
 import { PageBuilder } from "@/components/pagebuilder";
-import { BackgroundPattern } from "@/components/elements/background-pattern";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryBreedIndexPageData } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
@@ -70,7 +69,7 @@ export default async function BreedsIndexPage() {
   ];
 
   return (
-    <main className="bg-background">
+    <main id="main-content" tabIndex={-1} className="bg-background">
       <BreadcrumbJsonLd items={breadcrumbs} />
 
       {/* Hero Section */}
@@ -116,6 +115,7 @@ export default async function BreedsIndexPage() {
       {/* Page Builder Blocks */}
       {data?.pageBuilder && data.pageBuilder.length > 0 && (
         <PageBuilder
+          as="div"
           pageBuilder={data.pageBuilder}
           id={data._id}
           type={data._type}
