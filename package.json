@@ -7,6 +7,7 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "check-types": "turbo check-types",
+    "verify:social-preview": "node scripts/verify-social-preview.mjs",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
