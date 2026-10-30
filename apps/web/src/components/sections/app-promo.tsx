@@ -22,11 +22,11 @@ const ICON_MAP = {
 } as const;
 
 const DEFAULT_APP_PROMO = {
-  eyebrow: "Free team app",
+  eyebrow: "Free to start",
   title: "Run your flyball team from one place",
   highlightedText: "one place",
   description:
-    "Plan training, manage dogs and members, organise competitions, time runs from video, and keep race-day details together on web, iOS and Android.",
+    "Plan training, manage dogs and members, organise competitions, use Team Chat, time runs from video and keep achievements and race-day details together on web, iOS and Android.",
   socialProofText: "Built for flyball teams around the world",
   platformNote: "Use it on the web, iOS or Android",
 } as const;
@@ -57,7 +57,7 @@ const DEFAULT_FEATURES = [
     icon: "users" as const,
     title: "Team planning",
     description:
-      "Keep dogs, members, RSVPs, line-ups and repeated schedules tidy without spreadsheet drift",
+      "Keep dogs, members, RSVPs, line-ups, repeated schedules and achievements tidy without spreadsheet drift",
   },
   {
     _key: "default-2",
@@ -69,9 +69,9 @@ const DEFAULT_FEATURES = [
   {
     _key: "default-3",
     icon: "layoutGrid" as const,
-    title: "Stats and timing",
+    title: "Chat, stats and timing",
     description:
-      "Record results, save dog splits from video timing and spot clearer performance trends",
+      "Keep Premium Team Chat in one place, save video timings and review clearer performance trends",
   },
 ];
 

@@ -56,7 +56,7 @@ const appPromoDefaults = defineField({
       title: "Badge Text",
       type: "string",
       description: "Short badge shown above the headline.",
-      initialValue: "Free team app",
+      initialValue: "Free to start",
     }),
     defineField({
       name: "title",
@@ -80,7 +80,7 @@ const appPromoDefaults = defineField({
       description:
         "Global-first supporting copy. Keep it honest and avoid hardcoded team counts unless recently verified.",
       initialValue:
-        "Plan training, manage dogs and members, organise competitions, time runs from video, and keep race-day details together on web, iOS and Android.",
+        "Plan training, manage dogs and members, organise competitions, use Team Chat, time runs from video and keep achievements and race-day details together on web, iOS and Android.",
     }),
     defineField({
       name: "features",
@@ -93,7 +93,7 @@ const appPromoDefaults = defineField({
           _key: "default-records",
           title: "Team planning",
           description:
-            "Keep dogs, members, RSVPs, line-ups and repeated schedules tidy without spreadsheet drift",
+            "Keep dogs, members, RSVPs, line-ups, repeated schedules and achievements tidy without spreadsheet drift",
           icon: "users",
         },
         {
@@ -105,9 +105,9 @@ const appPromoDefaults = defineField({
         },
         {
           _key: "default-team-hub",
-          title: "Stats and timing",
+          title: "Chat, stats and timing",
           description:
-            "Record results, save dog splits from video timing and spot clearer performance trends",
+            "Keep Premium Team Chat in one place, save video timings and review clearer performance trends",
           icon: "layoutGrid",
         },
       ],
